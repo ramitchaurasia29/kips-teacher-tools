@@ -1,0 +1,185 @@
+/* =========================================================
+   BASE - design tokens, app shell, shared primitives, modal, toast
+   Loaded on every screen. Tool styles live in css/tools/<tool>/
+   ========================================================= */
+/* =========================================================
+   KIPS Teacher Tools – design system
+   Brand red + navy ink, teal (student), amber (attention)
+   ========================================================= */
+:root{
+  --red:#E5384F; --red-600:#CF2A45; --red-700:#A4123A; --red-900:#6E0A27;
+  --red-50:#FFF1F3; --red-100:#FFE0E5; --red-200:#FAC5CE;
+  --ink:#1D2140; --ink-2:#4B5170; --ink-3:#8087A3;
+  --line:#E9EAF1; --line-2:#DADCE8; --bg:#F6F5F8; --card:#fff;
+  --teal:#0E9F8E; --teal-50:#E6F6F3; --teal-700:#0B7A6D;
+  --amber:#F59E0B; --amber-50:#FFF6E3; --amber-700:#9A5B00;
+  --violet:#7C5CE0; --violet-50:#F0ECFD;
+  --blue:#3B6FE5; --blue-50:#EAF0FF;
+  --green:#16A34A; --green-50:#E8F7EE;
+  --r:16px; --r-sm:10px;
+  --sh-1:0 1px 2px rgba(29,33,64,.04);
+  --sh-2:0 2px 4px rgba(29,33,64,.05),0 12px 28px rgba(29,33,64,.08);
+  --sb:84px; --top:68px;
+  --font:Inter,"Segoe UI",system-ui,sans-serif; --head:"Plus Jakarta Sans",Inter,system-ui,sans-serif;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:var(--font);color:var(--ink);background:var(--bg);font-size:15px;line-height:1.55;-webkit-font-smoothing:antialiased}
+h1,h2,h3,h4{font-family:var(--head);margin:0;letter-spacing:-.01em}
+button,input,select,textarea{font:inherit;color:inherit}
+button{cursor:pointer}
+svg.i{width:20px;height:20px;stroke:currentColor;fill:none;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round;flex:none}
+svg.i.s{width:16px;height:16px}svg.i.xs{width:14px;height:14px}
+:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+::selection{background:var(--red-100)}
+
+/* ---------- Shell ---------- */
+.app{display:flex;height:100vh;height:100dvh;overflow:hidden}
+.sidebar{width:var(--sb);background:#fff;border-right:1px solid var(--line);display:flex;flex-direction:column;align-items:center;padding:16px 0;gap:8px;flex:none}
+.sb-logo{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;background:var(--red-50);color:var(--red-700);font:800 24px var(--head);margin-bottom:12px}
+.sb-btn{width:52px;height:46px;border:0;background:none;border-radius:12px;display:grid;place-items:center;color:var(--ink-2);transition:.15s;position:relative}
+.sb-btn:hover{background:var(--bg);color:var(--ink)}
+.sb-btn.active{background:var(--red);color:#fff}
+.sb-spacer{flex:1}
+.sb-btn[data-tip]:hover::after{content:attr(data-tip);position:absolute;left:62px;background:var(--ink);color:#fff;font-size:12px;padding:5px 9px;border-radius:7px;white-space:nowrap;z-index:60}
+.main{flex:1;min-width:0;display:flex;flex-direction:column}
+.topbar{height:var(--top);background:#fff;border-bottom:1px solid var(--line);display:flex;align-items:center;justify-content:space-between;padding:0 28px;flex:none}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-kips{font:800 28px Georgia,serif;letter-spacing:1px;color:var(--red-700);line-height:1}
+.brand-kips small{display:block;font:600 7.5px var(--font);letter-spacing:3px;color:var(--ink-3);text-align:right;margin-top:2px}
+.brand-powered{font-size:12px;color:var(--ink-2)}.brand-powered b{font-size:15px;color:var(--ink)}
+.top-right{display:flex;align-items:center;gap:16px}
+.tokens{display:flex;align-items:center;gap:7px;font-size:14px;background:var(--amber-50);padding:6px 12px;border-radius:99px}
+.coin{width:18px;height:18px;border-radius:50%;background:#F5B301;border:2px solid #FBD35C;flex:none}
+.avatar{width:40px;height:40px;border-radius:50%;background:var(--red);color:#fff;display:grid;place-items:center;font-weight:700}
+.content{flex:1;overflow-y:auto;position:relative}
+.page{max-width:1180px;margin:0 auto;padding:28px 32px 72px}
+
+/* ---------- Primitives ---------- */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:8px;border-radius:10px;padding:9px 15px;border:1px solid var(--line-2);background:#fff;font-weight:600;font-size:14px;transition:.15s;white-space:nowrap;line-height:1.2}
+.btn:hover{background:var(--bg);border-color:#c9cce0}
+.btn.primary{background:var(--red);border-color:var(--red);color:#fff}
+.btn.primary:hover{background:var(--red-600)}
+.btn.soft{background:var(--red-50);border-color:var(--red-100);color:var(--red-700)}
+.btn.soft:hover{background:var(--red-100)}
+.btn.ghost{border-color:transparent;background:none;color:var(--ink-2)}
+.btn.ghost:hover{background:#ECEDF4}
+.btn.lg{padding:14px 20px;font-size:15px;border-radius:12px;width:100%}
+.btn.sm{padding:6px 10px;font-size:13px}
+.btn.danger{color:#C62828}
+.icon-btn{width:36px;height:36px;border-radius:10px;border:0;background:none;color:var(--ink-3);display:grid;place-items:center;transition:.15s;position:relative}
+.icon-btn:hover{background:#ECEDF4;color:var(--ink)}
+.icon-btn.on{background:var(--red-50);color:var(--red-700)}
+.icon-btn.round{border:1px solid var(--line-2);background:#fff;color:var(--ink);border-radius:50%;width:40px;height:40px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-1)}
+.muted{color:var(--ink-3)}
+.pill{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;padding:3px 9px;border-radius:99px;background:#ECEDF4;color:var(--ink-2)}
+.pill.new{background:var(--green-50);color:var(--green)}
+.eyebrow{font:700 11px var(--font);letter-spacing:.09em;text-transform:uppercase;color:var(--red-700)}
+.crumbs{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--ink-3);margin-bottom:14px}
+.crumbs a{color:var(--ink-2);cursor:pointer}.crumbs a:hover{color:var(--red)}
+
+/* ---------- Form controls (shared) ---------- */
+.input{width:100%;border:1px solid var(--line-2);background:#fff;border-radius:10px;padding:11px 12px;outline:0;transition:.15s}
+.input:focus{border-color:var(--red);box-shadow:0 0 0 3px var(--red-100)}
+.input:disabled{background:#F4F4F8;color:var(--ink-3);cursor:not-allowed}
+.input.err{border-color:#D92D20;background:#FFF8F7}
+textarea.input{resize:vertical;min-height:80px}
+.hint{font-size:12px;color:var(--ink-3)}
+.derived{display:flex;flex-wrap:wrap;gap:8px}
+.dchip{display:inline-flex;gap:6px;background:#F3F4F6;border:1px solid #E3E5E8;color:#6B7076;border-radius:8px;padding:4px 10px;font-size:12px}.dchip b{color:#111827;font-weight:600}
+/* ---------- Status card (generating / unavailable) ---------- */
+.gen{max-width:520px;margin:9vh auto;padding:36px 32px;text-align:center}
+.orb{width:44px;height:44px;border-radius:50%;margin:0 auto 18px;border:4px solid var(--red-100);border-top-color:var(--red);animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+/* ---------- Modal / toast ---------- */
+.overlay{position:fixed;inset:0;background:rgba(29,33,64,.55);display:grid;place-items:center;z-index:100;padding:16px;animation:fade .15s}
+@keyframes fade{from{opacity:0}}
+.modal{background:#fff;border-radius:20px;max-width:540px;width:100%;padding:26px;box-shadow:0 30px 70px #0005;max-height:92vh;overflow:auto}
+.modal h3{font-size:20px;margin-bottom:4px}
+.modal .row{display:flex;gap:8px;margin:16px 0}
+.toast{position:fixed;bottom:26px;left:50%;transform:translate(-50%,30px);background:var(--ink);color:#fff;padding:12px 18px;border-radius:12px;opacity:0;pointer-events:none;transition:.25s;z-index:200;font-size:14px;max-width:90vw;box-shadow:var(--sh-2)}
+.toast.show{opacity:1;transform:translate(-50%,0)}
+.main,.content{min-width:0}
+@media (max-width:760px){
+  :root{--top:58px}
+  .app{flex-direction:column-reverse}
+  .sidebar{width:100%;height:60px;flex-direction:row;justify-content:space-around;padding:6px 8px;border-right:0;border-top:1px solid var(--line);gap:0}
+  .sb-logo,.sb-spacer,.sb-hide-m{display:none}
+  .sb-btn[data-tip]:hover::after{display:none}
+  .topbar{padding:0 14px}.brand-powered,.tok-l{display:none}.brand-kips{font-size:23px}.avatar{width:34px;height:34px}
+  .page{padding:16px 14px 40px}
+  .modal{padding:20px}
+}
+
+/* ---------- Shared tool form + generating styles (used by every tool's INPUT screen) ---------- */
+.tool-head{display:flex;gap:16px;align-items:center;justify-content:space-between;flex-wrap:wrap;margin-bottom:22px}
+.tool-head .l{display:flex;gap:14px;align-items:center}
+.tool-head h1{font-size:26px}.tool-head p{margin:2px 0 0;color:var(--ink-2)}
+.fsec{padding:24px;margin-bottom:18px}
+.fsec-h{display:flex;gap:12px;align-items:center;margin-bottom:18px}
+.step{width:30px;height:30px;border-radius:50%;background:var(--red);color:#fff;font:700 13px var(--head);display:grid;place-items:center;flex:none}
+.step.done{background:var(--green)}
+.fsec-h h2{font-size:17px}.fsec-h p{margin:0;font-size:13px;color:var(--ink-3)}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.field{display:flex;flex-direction:column;gap:7px;margin-bottom:16px}.field:last-child{margin-bottom:0}
+.lbl,.field>label{font-size:13px;font-weight:700}
+.req{color:var(--red)}.opt{font-weight:500;color:var(--ink-3);font-size:12px;margin-left:4px}
+.seg{display:flex;flex-wrap:wrap;gap:8px}
+.seg .chip{padding:9px 15px;font-size:14px}
+.pipe{list-style:none;padding:0;margin:24px 0 0;text-align:left;display:flex;flex-direction:column;gap:11px}
+.pipe li{display:flex;gap:11px;align-items:center;color:var(--ink-3);font-size:14px}
+.pipe .dot{width:22px;height:22px;border-radius:50%;border:2px solid var(--line-2);display:grid;place-items:center;flex:none;color:#fff}
+.pipe .dot svg{width:12px;height:12px;stroke-width:3}
+.pipe li.done{color:var(--ink)}.pipe li.done .dot{background:var(--green);border-color:var(--green)}
+.pipe li.now{color:var(--red-700);font-weight:600}.pipe li.now .dot{border-color:var(--red);border-top-color:transparent;animation:spin .8s linear infinite}
+@media (max-width:760px){
+  .grid2{grid-template-columns:1fr}.fsec{padding:18px 16px}
+}
+
+/* =========================================================
+   OUTPUT TOOLBAR - shared by every tool's output screen so width and
+   placement are identical. Only button labels differ per tool.
+   Slots (left to right): back | title | view switch | actions (primary button last, far right)
+   ========================================================= */
+.content.bg-white{background:#fff}
+.toolbar{position:sticky;top:0;z-index:40;background:var(--bg);border-bottom:1px solid var(--line)}
+.content.bg-white .toolbar{background:#fff}
+.toolbar-in{padding:10px 28px;display:grid;grid-template-columns:40px minmax(150px,1fr) 252px auto;column-gap:12px;align-items:center}
+.toolbar-in .mode{margin-right:12px}
+.tb-title{min-width:0}
+.tb-title small{display:block;color:var(--ink-3);font-size:12px;font-weight:500;line-height:1.2}
+.tb-title b{display:block;font-size:14px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mode{display:flex;width:252px;background:#E7E8F0;border-radius:12px;padding:3px}
+.mode button{flex:1;border:0;background:none;padding:8px 10px;border-radius:9px;font-weight:600;font-size:13.5px;color:var(--ink-2);text-align:center}
+.mode button.on{background:#fff;box-shadow:0 1px 3px #0002;color:var(--red-700)}
+.acts{display:flex;gap:8px;justify-content:flex-end;align-items:center;position:relative}
+.acts .btn{white-space:nowrap}
+.menu{position:absolute;right:0;top:calc(100% + 8px);background:#fff;border:1px solid var(--line);border-radius:14px;box-shadow:var(--sh-2);padding:6px;min-width:260px;z-index:60;display:none}
+.menu.open{display:block}
+.menu button{display:flex;gap:12px;align-items:center;width:100%;border:0;background:none;padding:10px;border-radius:10px;text-align:left;font-size:14px;font-weight:600}
+.menu button:hover{background:var(--bg)}
+.menu small{display:block;color:var(--ink-3);font-size:12px;font-weight:400}
+.menu .mi{width:34px;height:34px;border-radius:9px;display:grid;place-items:center;flex:none}
+.mi.t{background:var(--red-50);color:var(--red-700)}.mi.s{background:var(--teal-50);color:var(--teal-700)}
+@media (max-width:1240px){
+  .toolbar-in{display:flex;flex-wrap:wrap;padding:8px 20px}
+  .tb-title{flex:1 1 200px}.mode{order:2}.acts{order:3;width:100%;flex-wrap:wrap}
+}
+@media (max-width:760px){
+  .toolbar-in{padding:8px 14px}.tb-title{flex-basis:calc(100% - 52px)}.mode{width:100%}
+  .acts .btn{flex:1;justify-content:center}.acts .btn.primary{width:auto}
+  .menu{position:fixed;left:12px;right:12px;top:auto;bottom:72px}
+}
+
+/* shared: availability badge + small group title (INPUT screens) */
+.avail{font-size:12px;font-weight:600;padding:3px 10px;border-radius:99px}
+.avail.ok{background:var(--green-50);color:#166534}.avail.no{background:var(--amber-50);color:var(--amber-700)}
+.tg-title{font-size:12px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-3);margin-bottom:6px}
+.tgroup{margin-bottom:12px}
+
+/* shared INPUT bits: inline error line + generate bar */
+.errline{color:#D92D20;font-size:12.5px;margin-top:4px}
+.gen-bar{display:flex;justify-content:flex-end;align-items:center;gap:14px;flex-wrap:wrap}
+.gen-bar .btn{width:auto;min-width:240px}
+@media (max-width:760px){.gen-bar .btn{width:100%}}

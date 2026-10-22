@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>KIPS Teacher Tools</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="css/base.css?v=4">
+<link rel="stylesheet" href="css/hub.css">
+<link rel="stylesheet" href="css/panel.css">
+<link rel="stylesheet" href="css/book-picker.css">
+<link rel="stylesheet" href="css/editor-toolbar.css">
+<link rel="stylesheet" href="css/download-modal.css">
+<link rel="stylesheet" href="css/tools/activity-designer/input.css">
+<link rel="stylesheet" href="css/tools/activity-designer/output.css?v=12">
+<link rel="stylesheet" href="css/tools/assessment-generator/input.css">
+<link rel="stylesheet" href="css/tools/assessment-generator/output.css">
+<link rel="stylesheet" href="css/tools/assignment-generator/input.css?v=2">
+<link rel="stylesheet" href="css/tools/assignment-generator/output.css?v=17">
+<link rel="stylesheet" href="css/tools/daily-lesson-planner/input.css">
+<link rel="stylesheet" href="css/tools/daily-lesson-planner/output.css?v=16">
+<link rel="stylesheet" href="css/tools/chapter-lesson-planner/input.css?v=2">
+<link rel="stylesheet" href="css/tools/chapter-lesson-planner/output.css?v=2">
+<link rel="stylesheet" href="css/stage-colors.css?v=4">
+</head>
+<body>
+<div class="app">
+  <nav class="sidebar" id="sidebar" aria-label="Main navigation"></nav>
+  <div class="main">
+    <header class="topbar">
+      <div class="brand">
+        <span class="brand-kips">KIPS<small>LEARNING</small></span>
+        <span class="brand-powered">powered by <b>YoLearn.AI</b></span>
+      </div>
+      <div class="top-right">
+        <div class="tokens" title="Available tokens"><span class="coin"></span><b id="tokenCount">98</b><span class="tok-l"> tokens</span></div>
+        <div class="avatar" aria-label="Account">R</div>
+      </div>
+    </header>
+    <main class="content" id="view" tabindex="-1"></main>
+  </div>
+</div>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<div id="modalRoot"></div>
+<script src="js/core/icons.js"></script>
+<script src="js/core/utils.js"></script>
+<script src="js/core/random.js"></script>
+<script src="js/core/registry.js"></script>
+<script src="js/core/panel.js"></script>
+<script src="js/core/book-picker.js"></script>
+<script src="js/core/editor-toolbar.js"></script>
+<script src="js/core/download-modal.js"></script>
+<script src="js/tools/activity-designer/data.js"></script>
+<script src="js/tools/activity-designer/state.js"></script>
+<script src="js/tools/activity-designer/input.js"></script>
+<script src="js/tools/activity-designer/output.js"></script>
+<script src="js/tools/activity-designer/index.js"></script>
+<script src="js/tools/assessment-generator/data.js"></script>
+<script src="js/tools/assessment-generator/state.js"></script>
+<script src="js/tools/assessment-generator/input.js"></script>
+<script src="js/tools/assessment-generator/output.js"></script>
+<script src="js/tools/assessment-generator/index.js"></script>
+<script src="js/tools/daily-lesson-planner/data.js"></script>
+<script src="js/tools/daily-lesson-planner/state.js"></script>
+<script src="js/tools/daily-lesson-planner/input.js"></script>
+<script src="js/tools/daily-lesson-planner/output.js?v=4"></script>
+<script src="js/tools/daily-lesson-planner/index.js"></script>
+<script src="js/tools/chapter-lesson-planner/data.js"></script>
+<script src="js/tools/chapter-lesson-planner/state.js"></script>
+<script src="js/tools/chapter-lesson-planner/input.js"></script>
+<script src="js/tools/chapter-lesson-planner/output.js"></script>
+<script src="js/tools/chapter-lesson-planner/index.js"></script>
+<script src="js/tools/assignment-generator/data.js?v=3"></script>
+<script src="js/tools/assignment-generator/state.js?v=2"></script>
+<script src="js/tools/assignment-generator/input.js?v=2"></script>
+<script src="js/tools/assignment-generator/output.js?v=14"></script>
+<script src="js/tools/assignment-generator/index.js?v=2"></script>
+<script src="js/tools/coming-soon.js"></script>
+<script src="js/core/hub.js"></script>
+<script src="js/core/router.js"></script>
+<script src="js/main.js"></script>
+</body>
+</html>

@@ -1,0 +1,60 @@
+/* Chapter lesson planner - INPUT screens: setup form (shared panel + chapter cards), period map review, progress */
+
+/* chapter cards inside the shared input panel */
+.clp-cards{display:flex;flex-direction:column;gap:14px}
+.clp-card{display:flex;flex-direction:column;gap:14px;padding:16px;border:1px solid #e5e7ee;border-radius:14px;background:#fafbfc}
+.clp-ch{display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.clp-ch b{font:600 16px var(--head)}
+.clp-chn{min-width:28px;height:28px;padding:0 8px;border-radius:99px;display:grid;place-items:center;background:var(--red);color:#fff;font:700 13px var(--font)}
+.clp-need{display:inline-flex;align-items:center;gap:5px;margin-left:auto;padding:3px 10px;border-radius:99px;background:#FFF6E5;border:1px solid #F3D9A4;color:#9A5B00;font-size:12px}
+.clp-topics{display:flex;flex-direction:column;gap:8px}
+.clp-trow{display:flex;gap:8px;align-items:center}.clp-trow .input{flex:1}
+.clp-add{align-self:flex-start;font-size:13px;padding:7px 12px}
+.clp-file{display:inline-flex;align-items:center;gap:8px;width:fit-content;padding:6px 12px;border:1px dashed #cdd1dd;border-radius:10px;font-size:13px;color:var(--ink-2);cursor:pointer}
+.clp-file input{display:none}
+.ipb select.input:disabled{opacity:.6}
+/* on/off switch row */
+.clp-sw{position:relative;display:flex;align-items:center;justify-content:space-between;gap:14px;padding:12px 14px;border:1px solid #e5e7ee;border-radius:12px;background:#fff;cursor:pointer;transition:background .15s,border-color .15s}
+.clp-sw:hover{background:#f6f7fa}.clp-sw.on{border-color:var(--red-200);background:var(--red-50)}
+.clp-swt{display:flex;flex-direction:column;min-width:0}.clp-swt b{font-size:14px;font-weight:600}.clp-swt small{font-size:12px;line-height:1.4;color:var(--ink-3);margin-top:2px}
+.clp-sw input{position:absolute;opacity:0;pointer-events:none}
+.clp-sw i{flex:none;position:relative;width:40px;height:22px;border-radius:99px;background:#cfd3df;transition:background .15s}
+.clp-sw i::after{content:"";position:absolute;left:3px;top:3px;width:16px;height:16px;border-radius:50%;background:#fff;box-shadow:0 1px 2px rgba(0,0,0,.25);transition:transform .15s}
+.clp-sw input:checked~i{background:var(--red)}.clp-sw input:checked~i::after{transform:translateX(18px)}
+.clp-sw:has(input:focus-visible){box-shadow:0 0 0 3px var(--red-100)}
+
+/* period map review + progress (rendered with the shared output toolbar) */
+.view-clp .clp-out{max-width:980px;margin:0 auto;padding:24px 16px 72px;display:flex;flex-direction:column;gap:16px;font-family:var(--font)}
+.clp-tabs{display:flex;gap:6px;flex-wrap:wrap;padding:4px;background:#F3F4F6;border-radius:12px;width:fit-content;max-width:100%}
+.clp-tabs button{display:inline-flex;align-items:center;gap:6px;border:0;background:transparent;padding:8px 14px;border-radius:9px;font:600 13.5px var(--font);color:var(--ink-3)}
+.clp-tabs button small{color:var(--ink-3);font-weight:500}
+.clp-tabs button.on{background:#fff;color:var(--accent-ink,var(--red-700));box-shadow:0 1px 3px rgba(20,22,35,.1)}
+.clp-sum{padding:24px;border:1px solid var(--border,#eee);border-radius:14px;background:#fff;box-shadow:var(--shadow-card)}
+.clp-sum h1{margin:10px 0 12px;font:700 28px/1.2 var(--font);color:var(--ink-strong,#1b1e2b)}
+.clp-chips{display:flex;flex-wrap:wrap;gap:8px}.clp-chips span{padding:4px 12px;border-radius:99px;background:#F3F4F6;border:1px solid #E3E5E8;color:#4B5563;font-size:13px}
+.clp-why,.clp-warn{display:flex;gap:8px;align-items:flex-start;margin:12px 0 0;padding:10px 12px;border-radius:10px;font-size:13.5px}
+.clp-why{background:var(--tint-lavender,#f3f0fd);color:#4a3d8f}.clp-warn{background:var(--tint-peach,#fff3e8);color:#8a4b00}
+.clp-box{padding:20px 24px;border:1px solid var(--border,#eee);border-radius:14px;background:#fff;box-shadow:var(--shadow-card)}
+.clp-box h2{margin:0 0 14px;font:600 17px var(--font);color:var(--ink-strong,#1b1e2b)}
+.clp-lo{display:flex;align-items:center;gap:10px;margin-bottom:8px}.clp-lo .input{flex:1;height:40px;padding:0 12px;border:1px solid #e5e7ee;border-radius:10px}.clp-lo small{color:var(--ink-3);min-width:68px}
+.clp-chip{display:inline-flex;align-items:center;gap:6px;padding:4px 12px;border-radius:99px;border:1px solid #dcdfe8;background:#fff;font:600 12.5px var(--font);cursor:pointer}
+.clp-chip input{display:none}.clp-chip.on{background:var(--red-50);border-color:var(--red);color:var(--red-700)}
+.clp-objs{display:flex;flex-wrap:wrap;gap:8px}
+.clp-checks ul{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:8px}
+.clp-checks li{display:flex;gap:10px;align-items:flex-start;font-size:14px}.clp-checks li.ok svg{color:var(--green)}.clp-checks li.bad svg{color:var(--amber-700)}
+.clp-checks li small{display:block;color:#8a4b00;margin-top:1px}
+.clp-appr{display:flex;align-items:center;gap:12px;margin-top:16px;flex-wrap:wrap}
+.clp-pc{border:1px solid var(--border,#eee);border-radius:14px;background:#fff;box-shadow:var(--shadow-card);overflow:hidden}
+.clp-pc.locked{background:#fafafa}
+.clp-pch{display:flex;align-items:center;gap:10px;padding:12px 16px;background:var(--tint-rose,#fdecef);border-bottom:1px solid var(--accent-100,#fbd5db);flex-wrap:wrap}
+.clp-pn{flex:none;width:30px;height:30px;border-radius:50%;display:grid;place-items:center;background:var(--accent,var(--red));color:#fff;font:700 13px var(--font)}
+.clp-pch .input{height:38px;padding:0 12px;border:1px solid #e5e7ee;border-radius:10px;background-color:#fff;font-size:14px}
+.clp-type{width:150px}.clp-ttl{flex:1;min-width:180px}
+.clp-pa{display:flex;align-items:center;gap:6px;margin-left:auto}.clp-sm{font-size:12.5px;padding:6px 10px}
+.clp-pcb{display:grid;grid-template-columns:minmax(220px,1fr) 1.4fr;gap:20px;padding:16px}
+.clp-pcb .ifld{margin-bottom:12px}.clp-pcb .ifld:last-child{margin-bottom:0}
+.clp-pcb .input{height:40px;padding:0 12px;border:1px solid #e5e7ee;border-radius:10px;font-size:14px}
+.clp-pcb .ilist{max-height:230px}
+.clp-addp{align-self:flex-start}
+.clp-pipe li .clp-pl{flex:1}
+@media (max-width:760px){.clp-pcb{grid-template-columns:1fr}.clp-pa{margin-left:0}.clp-sum h1{font-size:23px}.clp-type{width:100%}}

@@ -1,0 +1,28 @@
+/* Assessment generator - INPUT screen */
+.ag-note{font-size:13px;color:var(--ink-3)}
+.chlist{display:flex;flex-direction:column;gap:8px}
+.chrow{display:flex;align-items:center;gap:12px;flex-wrap:wrap;border:1px solid var(--line);border-radius:12px;padding:10px 14px}
+.chrow.on{border-color:var(--red-200);background:#FFFBFB}
+.chk-l{display:flex;gap:10px;align-items:center;flex:1;min-width:180px;cursor:pointer}
+.chk-l input{width:18px;height:18px;accent-color:var(--red)}
+.up-btn{cursor:pointer}
+.blue-wrap{display:grid;grid-template-columns:minmax(0,1fr) 220px;gap:20px;align-items:start}
+.rows{display:flex;flex-direction:column;gap:10px;min-width:0}
+.rowhead,.qrow{display:grid;grid-template-columns:minmax(0,2.2fr) 90px 90px 70px 40px;gap:10px;align-items:center}
+.rowhead{font-size:12px;font-weight:700;color:var(--ink-3);letter-spacing:.04em;text-transform:uppercase}
+.qrow{border:1px solid var(--line);border-radius:12px;padding:10px;background:#FCFCFE}
+.qrow .input{padding:9px 10px}
+.qrow .sub{font:800 16px var(--head);text-align:center;color:var(--ink)}
+.qrow .rowerr{grid-column:1/-1;min-height:0}.qrow .rowerr:empty{display:none}
+.total-panel{position:sticky;top:20px;background:var(--red-50);border:1px solid var(--red-100);border-radius:14px;padding:18px}
+.tp-label{font-size:12px;font-weight:700;letter-spacing:.07em;text-transform:uppercase;color:var(--red-700)}
+.tp-num{font:800 44px var(--head);line-height:1.1;color:var(--red-900)}
+.tp-sub{font-size:14px;color:var(--ink-2);margin-top:2px}
+.tp-note{margin-top:12px;padding:9px 11px;background:#fff;border-radius:10px;font-size:13px;color:var(--amber-700)}
+.pct{display:flex;align-items:center;gap:14px;flex-wrap:wrap}.pct .input{width:110px}
+@media (max-width:900px){.blue-wrap{grid-template-columns:1fr}.total-panel{position:static;order:-1}}
+@media (max-width:760px){
+  .rowhead{display:none}
+  .qrow{grid-template-columns:1fr 1fr 1fr 40px}.qrow select{grid-column:1/-1}.qrow .sub::before{content:"= ";color:var(--ink-3);font-weight:500}
+  .gen-bar .btn{width:100%}
+}

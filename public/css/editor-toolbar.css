@@ -1,0 +1,30 @@
+/* Shared EDIT formatting toolbar (js/core/editor-toolbar.js) - same look in every tool */
+.edit-toolbar{position:fixed;transform:translateX(-50%);display:flex;align-items:center;gap:4px;flex-wrap:wrap;width:max-content;padding:6px 12px;background:#fff;border:1px solid var(--line-2);border-radius:14px;box-shadow:0 1px 8px rgba(29,33,64,.06);z-index:70}
+/* while the top Edit/Save button has editing open, per-section/per-question edit buttons are hidden */
+#view.is-editing [data-edit]{display:none!important}
+#view [data-edit].on{width:auto!important;padding:0 10px;display:inline-flex;align-items:center;gap:5px;background:var(--red-50);color:var(--red-700);font:600 13px var(--font)}
+#view [data-edit].on .lb{line-height:1}
+.qtools:has([data-edit].on){opacity:1;pointer-events:auto}
+/* inline mode (data-et="inline" on the editable parts): structure is fixed, so only text-styling controls remain */
+.edit-toolbar.inline #etBlock,.edit-toolbar.inline [data-cmd="insertUnorderedList"],.edit-toolbar.inline [data-cmd="insertOrderedList"],.edit-toolbar.inline [data-cmd="image"],.edit-toolbar.inline [data-cmd="table"],.edit-toolbar.inline [data-cmd="quote"],.edit-toolbar.inline [data-cmd="rule"],.edit-toolbar.inline [data-cmd="code"],.edit-toolbar.inline [data-cmd="clear"]{display:none}
+.edit-toolbar-mask{position:fixed;z-index:69;pointer-events:none}
+.edit-toolbar-mask[hidden]{display:none}
+#view.et-on>.toolbar+*{margin-top:var(--et-space,0)}
+.edit-toolbar[hidden]{display:none}
+.et-sep{width:1px;height:22px;background:var(--line-2);margin:0 8px;flex:none}
+.et-b{width:34px;height:34px;border:0;border-radius:8px;background:transparent;color:var(--ink-2);display:grid;place-items:center;flex:none;position:relative;cursor:pointer;padding:0}
+.et-b:hover{background:#F3F4F6;color:var(--ink)}
+.et-b.on{background:var(--red-50);color:var(--red-700)}
+.et-col i{position:absolute;left:9px;right:9px;bottom:6px;height:3px;border-radius:2px}
+.et-col input{position:absolute;inset:0;opacity:0;width:100%;height:100%;cursor:pointer;padding:0;border:0}
+.et-dd{position:relative;flex:none}
+.et-dd-b{width:100%;height:36px;display:flex;align-items:center;justify-content:space-between;gap:6px;padding:0 12px;border:1px solid var(--line-2);border-radius:10px;background:#fff;font-size:14px;color:var(--ink)}
+.et-dd-b:hover{border-color:var(--ink-3)}
+.et-dd-l{overflow:hidden;white-space:nowrap;text-overflow:ellipsis}
+.et-pop{display:none;position:absolute;top:calc(100% + 4px);left:0;min-width:100%;max-height:280px;overflow-y:auto;background:#fff;border:1px solid var(--line-2);border-radius:10px;box-shadow:var(--sh-2);padding:4px;z-index:60}
+.et-dd.open .et-pop{display:block}
+.et-pop button{display:block;width:100%;text-align:left;border:0;background:transparent;padding:7px 10px;border-radius:7px;font-size:14px;white-space:nowrap}
+.et-pop button:hover{background:#F3F4F6}
+.edit-toolbar button:focus-visible{outline:2px solid var(--red);outline-offset:1px}
+@media (max-width:760px){.edit-toolbar{padding:6px 10px}}
+@media print{.edit-toolbar,.edit-toolbar-mask{display:none!important}#view.et-on>.toolbar+*{margin-top:0}}

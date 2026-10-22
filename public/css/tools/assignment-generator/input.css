@@ -1,0 +1,48 @@
+/* Assignment generator - INPUT screen (on the shared input panel) + My assignments */
+.ipb .asg-src{display:flex;gap:10px;padding:12px 14px;border-radius:12px;font-size:13px;line-height:1.5}
+.asg-src.ok{background:var(--green-50);color:#14532D}
+.asg-src.warn{background:var(--amber-50);color:var(--amber-700)}
+.asg-src>svg{margin-top:2px}
+.asg-src-acts{display:flex;align-items:center;gap:14px;flex-wrap:wrap;margin-top:10px}
+.asg-src-acts .btn{cursor:pointer;background:#fff}
+.asg-unv{display:flex;gap:8px;align-items:center;font-weight:600;cursor:pointer}
+.asg-unv input{width:17px;height:17px;accent-color:var(--red)}
+
+/* objective suggestions */
+.asg-sug{display:flex;flex-direction:column;gap:6px;align-items:flex-start}
+.asg-chip{border:1px solid #e5e7ee;background:#fff;border-radius:99px;padding:6px 13px;font-size:12.5px;color:var(--ink-2);text-align:left;transition:.15s}
+.asg-chip:hover{border-color:var(--red);background:var(--red-50);color:var(--red-700)}
+
+/* More options */
+.ipb details.more>summary{cursor:pointer}
+/* "More options": no outline; a soft background on hover */
+.ipb details#asgMore.more{border:0;border-radius:12px;transition:background .15s}
+.ipb details#asgMore.more>summary{border-radius:12px;transition:background .15s}
+.ipb details#asgMore.more>summary:hover{background:#f6f7fa}
+.ipb details.more>*:not(summary){margin-top:16px}
+.ipb details.more>.irow2,.ipb details.more>.asg-tog{margin-left:16px;margin-right:16px}
+.ipb details.more>.ifld{margin-left:16px;margin-right:16px}
+.asg-in .ifld{margin:0}
+.asg-tog{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 14px;border:1px solid #e5e7ee;border-radius:10px;cursor:pointer}
+.asg-tog b{display:block;font-size:14px;font-weight:600}.asg-tog small{display:block;color:var(--ink-3);font-size:12px}
+.asg-tog input{flex:none;appearance:none;-webkit-appearance:none;width:40px;height:22px;border-radius:99px;background:#d9dce6;position:relative;cursor:pointer;transition:.18s;margin:0}
+.asg-tog input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.18s;box-shadow:0 1px 2px #0003}
+.asg-tog input:checked{background:var(--red)}.asg-tog input:checked::after{left:21px}
+.asg-tog input:focus-visible{outline:2px solid var(--red);outline-offset:2px}
+.ipb input[type=date].input{padding-right:12px}
+.iph .btn.sm{white-space:nowrap}
+
+/* My assignments */
+.asg-mine{max-width:820px}
+.asg-mine-h{display:flex;gap:14px;align-items:center;margin-bottom:22px}
+.asg-mine-h h1{font-size:24px}.asg-mine-h p{margin:2px 0 0}
+.asg-mine-list{display:flex;flex-direction:column;gap:10px}
+.asg-mine-row{display:flex;align-items:center;gap:14px;padding:14px 16px}
+.asg-mine-row .ti{width:40px;height:40px;border-radius:10px;background:var(--red-50);color:var(--red-700);display:grid;place-items:center;flex:none}
+.asg-mine-t{flex:1;min-width:0}.asg-mine-t b{display:block;font-size:15px}.asg-mine-t small{color:var(--ink-3)}
+.asg-empty{display:flex;flex-direction:column;align-items:center;gap:8px;text-align:center;padding:48px 24px}
+.asg-empty svg{width:34px;height:34px;color:var(--red)}
+@media (max-width:760px){
+  .asg-mine-row{flex-wrap:wrap}.asg-mine-t{flex-basis:calc(100% - 60px)}
+  .iph .btn.sm{display:none}
+}

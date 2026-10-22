@@ -1,0 +1,37 @@
+/* Activity Designer - INPUT screen (form + generating) */
+/* ---------- Form ---------- */
+.form-layout{display:grid;grid-template-columns:minmax(0,1fr) 340px;gap:24px;align-items:start}
+.errmsg{color:#D92D20;font-size:12px;display:none}.field.has-err .errmsg{display:block}
+.source{display:flex;gap:10px;padding:12px 14px;border-radius:12px;font-size:13px;margin-top:4px}
+.source.ok{background:var(--green-50);color:#14532D}.source.warn{background:var(--amber-50);color:var(--amber-700)}.source.idle{background:#F1F2F7;color:var(--ink-2)}
+.opts{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+.opt-card{border:1.5px solid var(--line);background:#fff;border-radius:12px;padding:13px;text-align:left;display:flex;flex-direction:column;gap:5px;transition:.15s;position:relative}
+.opt-card:hover{border-color:var(--red-200);transform:translateY(-1px)}
+.opt-card.on{border-color:var(--red);background:var(--red-50)}
+.opt-card.on::after{content:"✓";position:absolute;top:8px;right:10px;color:var(--red);font-weight:800;font-size:13px}
+.opt-card .oi{width:34px;height:34px;border-radius:9px;background:var(--red-50);color:var(--red-700);display:grid;place-items:center}
+.opt-card.on .oi{background:#fff}
+.opt-card b{font-size:14px;margin-top:4px}.opt-card span.d{font-size:12px;color:var(--ink-3);line-height:1.35}
+.drop{border:1.5px dashed #C5C9DC;border-radius:12px;padding:18px;text-align:center;color:var(--ink-2);background:#FBFBFE;cursor:pointer;display:block;transition:.15s}
+.drop:hover{border-color:var(--red);background:var(--red-50)}.drop input{display:none}
+.drop svg{margin:0 auto 4px;color:var(--red)}
+.sticky{position:sticky;top:20px}
+.summary{padding:20px}
+.summary h3{font-size:15px;margin-bottom:4px}
+.progress{height:6px;background:#ECEDF4;border-radius:4px;overflow:hidden;margin:10px 0 14px}.progress i{display:block;height:100%;background:var(--red);border-radius:4px;transition:width .3s}
+.tip{margin-top:14px;padding:12px 14px;background:#F4F4F8;border-radius:12px;font-size:13px;color:var(--ink-2)}
+.mobile-gen{display:none}
+
+/* ---------- Generating ---------- */
+
+.form-layout>*{min-width:0}
+@media (max-width:1000px){
+  .form-layout{grid-template-columns:minmax(0,1fr)}.sticky{position:static}.summary-desktop{display:none}.mobile-gen{display:block}
+}
+
+
+.req-list{list-style:none;margin:0 0 14px;padding:0;display:flex;flex-direction:column;gap:8px;font-size:13px}
+.req-list li{display:flex;gap:9px;align-items:center;color:var(--ink-3)}
+.req-list li .ck{width:18px;height:18px;border-radius:50%;border:1.5px solid var(--line-2);display:grid;place-items:center;flex:none;color:#fff}
+.req-list li.ok{color:var(--ink)}.req-list li.ok .ck{background:var(--green);border-color:var(--green)}
+.req-list li .v{margin-left:auto;font-weight:600;max-width:150px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}

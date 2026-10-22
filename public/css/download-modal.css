@@ -1,0 +1,15 @@
+/* Shared DOWNLOAD modal options (js/core/download-modal.js): radio cards */
+.dl-opts{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px}
+.dl-opt{position:relative;display:flex;align-items:flex-start;gap:12px;padding:12px 14px;border:1px solid var(--line-2);border-radius:12px;background:#fff;cursor:pointer;transition:background .15s,border-color .15s,box-shadow .15s}
+.dl-opt:hover{background:#F6F7FA;border-color:#C9CCDA}
+.dl-opt.on{background:var(--red-50);border-color:var(--red)}
+.dl-opt.on:hover{background:var(--red-100)}
+.dl-opt input{position:absolute;opacity:0;pointer-events:none}
+.dl-dot{flex:none;width:18px;height:18px;margin-top:2px;border-radius:50%;border:1.5px solid #B7BBCB;background:#fff;display:grid;place-items:center;transition:border-color .15s}
+.dl-opt.on .dl-dot{border-color:var(--red)}
+.dl-opt.on .dl-dot::after{content:"";width:8px;height:8px;border-radius:50%;background:var(--red)}
+.dl-opt:has(input:focus-visible){box-shadow:0 0 0 3px var(--red-100)}
+.dl-tx{display:flex;flex-direction:column;min-width:0}
+.dl-tx b{font:600 14px/1.35 var(--font);color:var(--ink)}
+.dl-opt.on .dl-tx b{color:var(--red-700)}
+.dl-tx small{margin-top:2px;font-size:12px;line-height:1.35;color:var(--ink-3)}

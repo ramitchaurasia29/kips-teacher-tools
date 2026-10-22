@@ -1,0 +1,7 @@
+{
+  "name": "kips-teacher-tools",
+  "version": "1.0.0",
+  "private": true,
+  "description": "KIPS Teacher AI Tools - Activity Designer",
+  "scripts": { "start": "node server.js" }
+}

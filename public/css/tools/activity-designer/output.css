@@ -1,0 +1,203 @@
+/* Activity Designer - OUTPUT screen (Teacher View + Student View + share) */
+/* ---------- Output: toolbar ---------- */
+
+/* ---------- Output: layout ---------- */
+.out{max-width:1380px;margin:0 auto;padding:24px 28px 80px}
+
+/* ---------- Output: header line ---------- */
+
+/* ---------- Output: blocks ---------- */
+.blk{background:#fff;border:1px solid var(--line);border-radius:var(--r);box-shadow:var(--sh-1);margin-bottom:18px;scroll-margin-top:84px;overflow:hidden}
+.blk-h{display:flex;align-items:center;gap:12px;padding:16px 20px 0}
+.blk-n{width:30px;height:30px;border-radius:9px;background:var(--red-50);color:var(--red-700);font:800 13px var(--head);display:grid;place-items:center;flex:none}
+.blk-h h2{font-size:18px;flex:1;display:flex;align-items:center;gap:10px;flex-wrap:wrap}
+.blk-tools{display:flex;gap:2px;opacity:.0;transition:.15s}
+.blk:hover .blk-tools,.blk:focus-within .blk-tools,.blk.editing .blk-tools{opacity:1}
+.blk-body{padding:14px 20px 20px}
+.blk-body p{margin:0 0 10px}.blk-body ul,.blk-body ol{margin:0 0 6px;padding-left:22px}.blk-body li{margin-bottom:6px}
+.blk.editing{border-color:var(--amber);box-shadow:0 0 0 3px #F59E0B33}
+.blk.editing .blk-body{background:#FFFDF6}
+.blk-body[contenteditable=true]{outline:0;cursor:text}
+.sub-h{font:700 14px var(--font);color:var(--ink-3);margin:16px 0 8px}
+.two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.note{border-radius:12px;padding:14px 16px;font-size:14px;background:#F7F8FB;border:1px solid var(--line)}
+.note b.t{display:flex;gap:7px;align-items:center;font-size:13.5px;margin-bottom:5px;color:var(--ink-3)}
+.mats{display:grid;grid-template-columns:1fr 1fr;gap:10px;list-style:none;padding:0!important}
+.mats li{display:flex;gap:11px;align-items:flex-start;border:1px solid var(--line);border-radius:12px;padding:11px 12px;margin:0!important}
+.mats b{display:block;font-size:14px}.mats small{color:var(--ink-3);font-size:12px;line-height:1.35;display:block}
+.qty{margin-left:auto;background:var(--blue-50);color:#274DB0;font:700 12px var(--font);padding:2px 9px;border-radius:99px;white-space:nowrap;flex:none}
+.prep{list-style:none;padding:0!important;counter-reset:p}
+.prep li{counter-increment:p;display:flex;gap:12px;align-items:flex-start}
+.prep li::before{content:counter(p);width:24px;height:24px;border-radius:50%;background:var(--ink);color:#fff;font:700 12px var(--head);display:grid;place-items:center;flex:none;margin-top:1px}
+
+/* time strip + timeline */
+.tl{list-style:none;margin:0;padding:0!important}
+.tl>li{display:grid;grid-template-columns:36px 1fr;gap:14px;margin:0!important;position:relative}
+.tl .rl{display:flex;flex-direction:column;align-items:center}
+.tl .nm{width:32px;height:32px;border-radius:50%;background:var(--red-50);border:1px solid var(--red-200);color:var(--red-700);font:800 13px var(--head);display:grid;place-items:center;flex:none}
+.tl .ln{flex:1;width:2px;background:var(--line-2);margin:2px 0}
+.tl>li:last-child .ln{display:none}
+.stp{border:1px solid var(--line);border-radius:14px;margin-bottom:14px;overflow:hidden;background:#fff}
+.stp-h{display:flex;gap:10px;align-items:center;padding:12px 16px;border-bottom:1px solid var(--line);background:#FBFBFD}
+.stp-h h3{font-size:15px;flex:1}
+.dur{display:inline-flex;gap:5px;align-items:center;font:700 12px var(--font);padding:4px 10px;border-radius:99px;background:var(--red-50);color:var(--red-700)}
+.stp-b{display:grid;grid-template-columns:1fr 1fr}
+.stp-b>div{padding:12px 16px;font-size:14px}
+.stp-b>div+div{border-left:1px solid var(--line)}
+.stp-b .k{display:flex;gap:6px;align-items:center;font:700 11px var(--font);letter-spacing:.07em;text-transform:uppercase;margin-bottom:4px}
+.k.tc{color:var(--red-700)}.k.sd{color:var(--teal-700)}
+.stp-f{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--line)}
+.stp-f>div{padding:10px 16px;font-size:13.5px}
+.stp-f .ask{background:var(--amber-50)}.stp-f .look{background:var(--green-50)}
+.stp-f .k{font:700 11px var(--font);letter-spacing:.07em;text-transform:uppercase;margin-bottom:2px;display:flex;gap:6px;align-items:center}
+.ask .k{color:var(--amber-700)}.look .k{color:#14653A}
+
+/* answers */
+.ans-list{list-style:none;padding:0!important;display:flex;flex-direction:column;gap:10px}
+.ans-list li{border:1px solid var(--line);border-radius:12px;padding:12px 14px;margin:0!important}
+.ans-list .q{font-weight:700;display:flex;gap:9px}
+.ans-list .q span{background:var(--ink);color:#fff;border-radius:6px;font:700 11px var(--head);padding:2px 7px;height:fit-content;margin-top:3px}
+.ans-list .a{margin:6px 0 0 34px;color:var(--ink-2);font-size:14px}
+.ans-list .alt{margin:4px 0 0 34px;font-size:12.5px;color:var(--ink-3)}
+/* rubric */
+.tbl{overflow-x:auto;border:1px solid var(--line);border-radius:12px}
+table{border-collapse:collapse;width:100%;font-size:14px}
+th{background:#F5F5FA;text-align:left;font:700 11px var(--font);letter-spacing:.07em;text-transform:uppercase;color:var(--ink-2)}
+th,td{padding:11px 14px;border-bottom:1px solid var(--line);vertical-align:top}
+tr:last-child td{border-bottom:0}
+td.pts{font:800 15px var(--head);color:var(--red-700);text-align:center;width:70px}
+tfoot td{background:var(--red-50);font-weight:700}
+/* diff */
+.diff{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+.dcol{border:1px solid var(--line);background:#FBFBFD;border-radius:12px;padding:14px;font-size:14px}
+.dcol b{display:block;margin-bottom:4px;font:700 12px var(--font);letter-spacing:.06em;text-transform:uppercase;color:var(--ink-2)}
+.safety,.access{display:flex;gap:12px;border-radius:12px;padding:14px 16px}
+.safety{background:var(--amber-50);border:1px solid #F7E2B5}.safety>svg{color:var(--amber-700);margin-top:2px}
+.access{background:var(--blue-50);border:1px solid #D5E1FA}.access>svg{color:#274DB0;margin-top:2px}
+.safety ul,.access ul{margin:4px 0 0!important;padding-left:18px}
+.ticks{list-style:none;padding:0!important}
+.ticks li{position:relative;padding-left:24px}
+.ticks li::before{content:"";position:absolute;left:3px;top:7px;width:10px;height:6px;border-left:2px solid var(--green);border-bottom:2px solid var(--green);transform:rotate(-45deg)}
+.notice{display:flex;gap:10px;border-radius:10px;padding:10px 12px;font-size:13.5px;margin-top:12px}
+.notice.info{background:var(--blue-50);color:#1F3F94}.notice.warn{background:var(--amber-50);color:var(--amber-700)}
+.sheet-note{display:flex;gap:8px;align-items:center;font-size:13px;color:var(--ink-3);margin-bottom:12px}
+.sheet-note a{color:var(--red-700);font-weight:600;cursor:pointer;text-decoration:underline}
+.sheet{border:1px solid var(--line);border-radius:12px;padding:6px 20px 20px;background:#FCFDFD}
+.mcq{margin-top:14px}.mcq b{display:block;margin-bottom:6px}
+.opts-row{display:grid;grid-template-columns:1fr 1fr;gap:6px 16px;font-size:14px}
+.drawbox{margin-top:14px;border:1.5px dashed #B7BDD0;border-radius:12px;min-height:130px;padding:10px 14px;color:var(--ink-3);font-size:13px}
+.exit{margin-top:14px;border:1.5px solid var(--teal);border-radius:12px;padding:12px 14px;background:#fff}
+.exit b{display:block;font:700 11px var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--teal-700);margin-bottom:4px}
+.ws .safety{margin-top:0}
+
+/* ---------- Student paper ---------- */
+.paper{background:#fff;border:1px solid var(--line);border-radius:6px;box-shadow:var(--sh-2);padding:0;overflow:hidden}
+.paper-top{background:var(--teal-50);border-bottom:1px solid #CDEAE5;color:var(--teal-700);padding:24px 44px}
+.paper-top h1{color:var(--ink)}
+.paper-top small{letter-spacing:.1em;font-weight:700;font-size:11px}
+.paper-top h1{font-size:28px;margin:4px 0 0}
+.paper-info{display:flex;flex-wrap:wrap;gap:8px 22px;margin-top:14px;font:600 14px var(--font);color:var(--ink)}
+.paper-info small{display:block;font:700 10.5px var(--font);letter-spacing:.08em;text-transform:uppercase;color:var(--teal-700);margin-bottom:1px}
+.paper-body{padding:26px 44px 40px}
+.meta{display:grid;grid-template-columns:2fr 1.2fr 1fr 1fr;gap:18px;margin-bottom:6px}
+.meta div{border-bottom:1.5px solid var(--ink-3);padding-bottom:3px;font-size:12.5px;color:var(--ink-2)}
+.ws{margin-top:22px}
+.ws h3{display:flex;gap:10px;align-items:center;font-size:16px;margin-bottom:8px}
+.ws h3 i{font:800 12px var(--head);font-style:normal;background:var(--teal);color:#fff;width:24px;height:24px;border-radius:50%;display:grid;place-items:center}
+/* Worksheet sections (Student View + Teacher View task sheet): Roman numerals, plain text, no badge */
+.paper .ws h3,.sheet .ws h3{gap:8px}
+.paper .ws h3 i,.sheet .ws h3 i{background:none;color:var(--ink);width:auto;height:auto;border-radius:0;display:inline;font:700 16px var(--head);min-width:1.6em}
+.paper .ws h3 i::after,.sheet .ws h3 i::after{content:"."}
+.ws p,.ws li{margin-bottom:6px}
+.ws ol{padding-left:22px}
+.ws .box{background:var(--teal-50);border-radius:12px;padding:12px 14px}
+.ws table td{height:52px}.ws table td:first-child{width:46%;font-weight:500;background:#FBFDFD}
+.ws table{min-width:0}
+.line{display:block;border-bottom:1.5px dotted #A5ABC3;height:26px}
+.chk{list-style:none;padding:0!important;display:grid;grid-template-columns:1fr 1fr;gap:4px 16px}
+.chk li::before{content:"☐ ";color:var(--teal-700);font-weight:700}
+.paper [contenteditable=true]{outline:2px dashed var(--amber);outline-offset:-2px;background:#FFFDF6}
+
+.sw{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:13px 0;border-top:1px solid var(--line);font-size:14px}
+.sw small{display:block;color:var(--ink-3)}
+.sw input{width:40px;height:22px;accent-color:var(--red);flex:none}
+.ver{display:flex;gap:12px;align-items:center;background:var(--bg);border-radius:12px;padding:12px 14px;margin-top:6px}
+.ver.dirty{background:var(--amber-50)}
+@media (max-width:1280px){
+}
+@media (max-width:1000px){
+}
+@media (max-width:760px){
+  .two,.diff,.mats,.stp-b,.stp-f,.chk{grid-template-columns:1fr}
+  .stp-b>div+div{border-left:0;border-top:1px solid var(--line)}
+  .out{padding:16px 14px 60px}
+  .blk-tools{opacity:1}
+  .tl>li{grid-template-columns:28px 1fr;gap:10px}.tl .nm{width:28px;height:28px;font-size:12px}
+  .paper-top,.paper-body{padding-left:20px;padding-right:20px}
+  .meta{grid-template-columns:1fr 1fr}
+}
+/* ---------- Print ---------- */
+@media print{
+  @page{margin:12mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.blk-tools,.toast,.no-print{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}
+  body{background:#fff}.out{padding:0;max-width:none}
+  .blk,.paper{box-shadow:none;break-inside:avoid-page}
+  body.print-student #pane-teacher{display:none!important}
+  body.print-student #pane-student{display:block!important}
+  body.print-teacher #pane-student{display:none!important}
+  body.print-teacher #sec-tasksheet{display:none!important}
+}
+
+/* single-column document */
+.out{max-width:900px;margin:0 auto;padding:24px 28px 80px}
+.src-line{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:600;padding:9px 12px;border-radius:10px;margin-bottom:16px}
+.src-line.ok{background:var(--green-50);color:#166534}.src-line.warn{background:var(--amber-50);color:var(--amber-700)}
+.act-title{font-size:20px;margin:0 0 8px;color:var(--red-900)}
+.sheet-note{font-size:13px;color:var(--ink-3);margin-bottom:12px}
+@media (max-width:760px){.out{padding:16px 14px 60px}}
+
+/* white background on the output screen */
+
+/* ---------- Theme: matches Daily Lesson Planner (screen only; print rules above are unchanged) ---------- */
+.view-ad{
+  --accent:#eb445a; --accent-hover:#d63a50; --accent-ink:#c2263f; --accent-50:#fdecef; --accent-100:#fbd5db;
+  --tint-rose:#fdecef; --tint-peach:#fff3e8; --tint-lavender:#f3f0fd; --tint-mint:#e8f6f0; --tint-sky:#eaf3fd;
+  --ink-strong:#1b1e2b; --ink-body:#2e3242; --ink-muted:#626778;
+  --surface:#fff; --surface-soft:#fafafa; --border:#eee; --border-strong:#e2e2e8;
+  --shadow-card:0 1px 2px rgba(20,22,35,.04),0 2px 8px rgba(20,22,35,.03);
+  --r-card:14px; --r-ctl:10px; --r-pill:99px;
+  --red:var(--accent); --red-600:var(--accent-hover); --red-50:var(--accent-50); --red-100:var(--accent-100);
+  --line:var(--border); --line-2:var(--border-strong);
+}
+.view-ad .out{color:var(--ink-body)}
+.view-ad .blk{border-radius:var(--r-card);border-color:var(--border);box-shadow:var(--shadow-card);transition:border-color .18s}
+.view-ad .blk:hover{border-color:var(--border-strong)}
+.view-ad .blk-h{padding:var(--s3,24px) 24px 0}
+.view-ad .blk-body{padding:14px 24px 24px}
+.view-ad .blk-h h2{font:600 18px/1.3 var(--font);color:var(--ink-strong)}
+.view-ad .blk-n{border-radius:50%;background:var(--accent);color:#fff}
+.view-ad .act-title{font:700 30px/1.2 var(--font);color:var(--ink-strong);letter-spacing:-.01em}
+.view-ad .sub-h,.view-ad .note b.t,.view-ad th{color:var(--ink-muted)}
+.view-ad th{background:var(--surface-soft)}
+.view-ad .note,.view-ad .dcol{background:var(--tint-sky);border-color:#dbe9f8;border-radius:var(--r-ctl)}
+.view-ad .stp{border-radius:var(--r-card)}
+.view-ad .stp-h{background:#F3F4F6;border-bottom-color:#E3E5E8}
+.view-ad .tl .nm{background:var(--accent);border-color:var(--accent);color:#fff}
+.view-ad .dur{background:#fff;color:#374151;border:1px solid #E3E5E8}
+.view-ad .k.tc{color:var(--accent-ink)}
+.view-ad .stp-f .ask{background:var(--tint-peach)}.view-ad .stp-f .look{background:var(--tint-mint)}
+.view-ad .safety{background:var(--tint-peach);border-color:#f7dcc0}
+.view-ad .access{background:var(--tint-lavender);border-color:#e6e0fa}
+.view-ad .tbl,.view-ad .mats li,.view-ad .ans-list li{border-radius:var(--r-ctl)}
+.view-ad td.pts{color:var(--accent-ink)}
+.view-ad tfoot td{background:var(--tint-rose)}
+.view-ad .qty{background:var(--tint-lavender);color:#4a3d8f}
+.view-ad .src-line{border-radius:var(--r-ctl)}
+.view-ad .dchip{background:#F3F4F6;border:1px solid #E3E5E8;color:#6B7076}
+.view-ad .dchip b{color:#111827;font-weight:600}
+.view-ad .src-line.ok{background:var(--tint-mint);color:#17674a}
+.view-ad .src-line.warn{background:var(--tint-peach);color:#8a4b00}
+.view-ad .btn:focus-visible,.view-ad .icon-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+@media (prefers-reduced-motion:reduce){.view-ad *{transition:none!important}}

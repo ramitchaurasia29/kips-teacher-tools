@@ -1,0 +1,37 @@
+/* Shared stage colour coding for the lesson planners (Daily + Chapter).
+   Each stage gets one hue (sc0..sc6); the same hue colours its segment in the time bar and its header bar,
+   so a teacher can match the two at a glance. Print keeps the PRD tokens: stage bars alternate primary / accent. */
+.sc0{--sc:#eb445a;--sc-bg:#fdecef;--sc-bd:#fbd5db;--sc-ink:#c2263f}
+.sc1{--sc:#d9650f;--sc-bg:#fff1e5;--sc-bd:#f9d6b6;--sc-ink:#a8500a}
+.sc2{--sc:#2f9e6a;--sc-bg:#e8f6f0;--sc-bd:#cfeadc;--sc-ink:#17674a}
+.sc3{--sc:#1d9aa0;--sc-bg:#e5f5f6;--sc-bd:#c4e6e8;--sc-ink:#12717a}
+.sc4{--sc:#2f7fd1;--sc-bg:#eaf3fd;--sc-bd:#d3e4f7;--sc-ink:#1f5fa6}
+.sc5{--sc:#7c5ce0;--sc-bg:#f3f0fd;--sc-bd:#e0d9fa;--sc-ink:#4a3d8f}
+.sc6{--sc:#d6479a;--sc-bg:#fdeef7;--sc-bd:#f6d2e7;--sc-ink:#9b2a6c}
+
+.view-dlp .gseg.gseg,.view-clp .gseg.gseg{background:var(--sc)}
+.view-dlp .stage .sbar,.view-clp .stage .sbar{background:var(--sc-bg);border-bottom-color:var(--sc-bd)}
+.view-dlp .stage .snum,.view-clp .stage .snum{background:var(--sc)}
+.view-dlp .stage .stime,.view-clp .stage .stime{color:var(--sc-ink)}
+/* screen: no outline around a stage and no divider lines inside it (the coloured header, tinted bands and spacing separate the parts) */
+@media screen{
+  .view-dlp .stage,.view-clp .stage{border:0;box-shadow:none}
+  .view-dlp .stage .srow,.view-clp .stage .srow,.view-dlp .stage .scols,.view-clp .stage .scols{border-top:0}
+  .view-dlp .stage .scols>div+div,.view-clp .stage .scols>div+div{border-left:0}
+  /* spacing: even rhythm inside a stage (12px rows), a clearly bigger gap between stages (32px) */
+  .view-dlp .stage .srow,.view-clp .stage .srow{padding:12px 20px}
+  .view-dlp .stage .scols,.view-clp .stage .scols{gap:0 16px}
+  .view-dlp .stage .scols>div,.view-clp .stage .scols>div{padding:12px 20px}
+  .view-dlp .stage,.view-clp .stage{margin-bottom:32px}
+  .view-dlp .stage:last-child,.view-clp .stage:last-child{margin-bottom:0}
+  .view-dlp .stage .srow.cfl,.view-clp .stage .srow.cfl{background:transparent}
+  /* header bar: fully rounded, no bottom line; the stage has no hover effect */
+  .view-dlp .stage .sbar,.view-clp .stage .sbar{border:0;border-radius:12px}
+  .view-dlp .stage,.view-clp .stage{overflow:visible;transition:none}
+  .view-dlp .stage:hover,.view-clp .stage:hover{border:0;box-shadow:none}
+}
+
+@media print{
+  .gseg.gseg{background:#1F3A5F!important}.gseg.alt.alt{background:#2A7F7A!important}
+  .stage .sbar.sbar{background:#1F3A5F!important}.stage.alt .sbar.sbar{background:#2A7F7A!important}
+}
