@@ -76,7 +76,7 @@ function outputView() {
     <div class="tb-title"><small>Activity designer</small><b>${esc(m.subject)} (${esc(m.grade)}) · ${esc(m.topic)}</b></div>
     <div class="mode" role="tablist"><button class="${student ? 'on' : ''}" data-mode="student" role="tab">Student View</button><button class="${student ? '' : 'on'}" data-mode="teacher" role="tab">Teacher View</button></div>
     <div class="acts"><button class="btn ${cur.editing ? 'soft' : ''}" id="editAll">${ic(cur.editing ? 'save' : 'edit', 's')}<span class="lb">${cur.editing ? 'Save' : 'Edit'}</span></button>
-      <button class="btn" id="dlBtn" aria-haspopup="dialog">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
+      ${printBtn('adPrint')}<button class="btn primary" id="dlBtn" aria-haspopup="dialog">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
   <div class="out" id="out">
     <div id="pane-teacher" ${student ? 'hidden' : ''}>
       ${a.source.verified ? '' : `<div class="src-line warn">${ic('alert', 's')} ${esc(a.source.note)}</div>`}
@@ -115,6 +115,7 @@ function bindOutput() {
   };
   $$('[data-mode]').forEach(b => b.onclick = async () => { if (cur.mode === b.dataset.mode) return; if (!await confirmLeave()) return; cur.mode = b.dataset.mode; cur.editing = false; rerender(); $('#view').scrollTo(0, 0); });
   $('#dlBtn').onclick = () => downloadModal({ view: cur.mode, file: adFileName, run: adDownload, ...AD_DL });
+  bindPrint('adPrint', { run: view => adDownload(view, 'print') });
   $$('[data-go-student]').forEach(a => a.onclick = async () => { if (!await confirmLeave()) return; cur.editing = false; cur.mode = 'student'; rerender(); });
   /* top button and section buttons stay in sync: the top one reads Save while ANY section is open */
   const anyOpen = () => !!$('#view [contenteditable="true"]');
@@ -134,10 +135,15 @@ function bindOutput() {
 }
 
 /* ---------- Print and export (PRD §9) – two separate files: Teacher Guide and Student Worksheet (no answer key); PDF or Print ---------- */
-const AD_DL = { formats: ['pdf', 'print'] }; // View choices stay "Teacher View" / "Student View" (modal default); each still exports its own PRD file
+const AD_DL = { formats: ['word', 'pdf'] }; // View choices stay "Teacher View" / "Student View" (modal default); each still exports its own file. Print is its own toolbar button
 const adFileName = view => { const m = cur.data.meta; return [m.subject, m.grade, m.topic, 'Activity', view === 'teacher' ? 'Teacher_Guide' : 'Student_Worksheet'].join('_').replace(/[^\w]+/g, '_').replace(/_+/g, '_'); };
 function adDownload(view, fmt) {
   const name = adFileName(view);
+  if (fmt === 'word') { // only the chosen view's pane, without edit tools or notes meant for the screen
+    const pane = $(view === 'teacher' ? '#pane-teacher' : '#pane-student').cloneNode(true);
+    pane.querySelectorAll('.blk-tools,.no-print,.sheet-note,button,[contenteditable]').forEach(x => x.matches('[contenteditable]') ? x.removeAttribute('contenteditable') : x.remove());
+    return downloadWord(name, pane.innerHTML, 'h1,h2,h3{color:#23262F}h2{border-bottom:1px solid #ccc}');
+  }
   const t = $('#pane-teacher'), s = $('#pane-student'), prev = [t.hidden, s.hidden], title = document.title;
   document.body.classList.add('print-' + view); t.hidden = s.hidden = false; if (fmt === 'pdf') document.title = name; // the PDF file name comes from the page title
   const undo = () => { document.body.classList.remove('print-' + view); t.hidden = prev[0]; s.hidden = prev[1]; document.title = title; window.removeEventListener('afterprint', undo); };

@@ -46,8 +46,8 @@ function agFormView() {
   const body = [
     ibook(`Class ${f.grade} ${f.subject}`, `${f.subject} · KIPS`),
     `<div class="irow2">${ifield('School name', `<input id="school" class="input" maxlength="80" value="${esc(f.school)}" placeholder="Printed at the top of the paper">`, { opt: 1, for: 'school' })}${ifield('Time (minutes)', `<input id="time" class="input" type="number" min="1" value="${f.time}">`, { opt: 1, for: 'time' })}</div>`,
-    `<div class="irow2">${ilocked('Grade', 'Grade ' + f.grade)}${ilocked('Subject', f.subject)}</div>`,
-    `<div class="irow2">${ifield('Assessment name', iselect('assessment', AG_ASSESSMENTS.map(a => a.id), f.assessment), { req: 1, for: 'assessment' })}${f.assessment === 'Other' ? ifield('Name', `<input id="otherName" class="input" maxlength="60" value="${esc(f.otherName)}">${err('other')}`, { req: 1, for: 'otherName' }) : '<div></div>'}</div>`,
+    `<div class="irow2">${ilocked('Grade', 'Grade ' + f.grade)}${ifield('Assessment name', iselect('assessment', AG_ASSESSMENTS.map(a => a.id), f.assessment), { req: 1, for: 'assessment' })}</div>`,
+    f.assessment === 'Other' ? ifield('Name', `<input id="otherName" class="input" maxlength="60" value="${esc(f.otherName)}">${err('other')}`, { req: 1, for: 'otherName' }) : '',
     ifield('Chapters', `${chapterDrop}${statusRows ? `<div class="ilist">${statusRows}</div>` : ''}${err('chapters')}`, { req: 1 }),
     f.chapters.length ? ifield('Topics', topicDrop, { opt: 1 }) : '',
     isec('Questions and marks'),

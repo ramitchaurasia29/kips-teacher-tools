@@ -45,7 +45,7 @@ function dlpOutputView() {
   return `<div class="toolbar"><div class="toolbar-in">
     <button class="icon-btn round" id="dlpBack" aria-label="Change settings">${ic('back')}</button>
     <div class="tb-title"><small>Daily lesson planner</small><b>${m.grade ? 'Grade ' + esc(m.grade) + ' · ' : ''}${esc(m.subject)} · ${esc(m.topic)}</b></div>
-    <div class="acts"><button class="btn" id="dlpEdit">${ic('edit', 's')}<span class="lb">Edit</span></button><button class="btn primary" id="dlpDl" aria-haspopup="dialog">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
+    <div class="acts"><button class="btn" id="dlpEdit">${ic('edit', 's')}<span class="lb">Edit</span></button>${printBtn('dlpPrint')}<button class="btn primary" id="dlpDl" aria-haspopup="dialog">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
   <div class="dlp-out" id="dlpOut">${p._edited || dlpDocHTML(p)}</div>`;   // _edited = the saved, teacher-edited document (lives on this plan, so a new plan starts clean)
 }
 
@@ -92,13 +92,14 @@ function dlpBindOutput() {
   });
   $('#dlpBack').onclick = () => { commit(); navigate('#/daily-lesson-planner'); };
   /* PRD §3/§17: Word (editable master) and PDF come from the same lesson data. One document, so no View row. */
+  bindPrint('dlpPrint', { views: false, run: () => { if (editing()) { commit(); rerender(); } dlpDownload('print'); } });
   $('#dlpDl').onclick = () => { if (editing()) { commit(); rerender(); } downloadModal({ views: false, file: () => dlpFileName(dlpPlan), formats: ['word', 'pdf'], run: (v, fmt) => dlpDownload(fmt) }); };
 }
 
 /* §17: both files from the same lesson data in one action; file name Grade-Subject-Lesson-Title */
 const dlpFileName = p => `${p.metadata.grade ? 'Grade-' + p.metadata.grade + '-' : ''}${p.metadata.subject}-${p.metadata.title}`.replace(/[^A-Za-z0-9]+/g, '-').replace(/^-|-$/g, '').slice(0, 90);
 function dlpDownload(fmt = 'both') { // fmt: 'word' | 'pdf' | 'both' (both = the PRD's one-action default)
-  const p = dlpPlan, name = dlpFileName(p), html = p._edited ? p._edited.replace(/<button[\s\S]*?<\/button>/g, '') : dlpDocHTML(p, true), results = [], wantWord = fmt !== 'pdf', wantPdf = fmt !== 'word';
+  const p = dlpPlan, name = dlpFileName(p), html = p._edited ? p._edited.replace(/<button[\s\S]*?<\/button>/g, '') : dlpDocHTML(p, true), results = [], wantWord = fmt === 'word' || fmt === 'both', wantPdf = fmt !== 'word';   // 'print' opens the print dialog only
   if (wantWord) try {
     const css = 'body{font-family:Arial;font-size:10pt;color:#1F2A37}h1{font-size:20pt;color:#1F3A5F}h2{font-size:13pt;color:#2A7F7A}table{border-collapse:collapse;width:100%}th{background:#1F3A5F;color:#fff;text-align:left;padding:4pt}td{border:1px solid #CBD5DF;padding:4pt;vertical-align:top}td.lab{background:#EAF1F6}.sbar{background:#1F3A5F;color:#fff;padding:4pt}.warm th{background:#B9771A}.hwbox,.final{background:#FDF3E7;border:1px solid #E8A33D;padding:6pt}.ml{font-size:7.5pt;text-transform:uppercase;color:#5B6470;display:block}.ml-n{text-transform:none;font-size:9.5pt}';
     const blob = new Blob([`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(name)}</title><style>@page{size:A4;margin:19mm}${css}</style></head><body>${html}<p style="font-size:8pt;color:#5B6470">${esc(p.metadata.title)} | ${esc((p.metadata.grade ? 'Grade ' + p.metadata.grade + ' ' : '') + p.metadata.subject)}</p></body></html>`], { type: 'application/msword' });

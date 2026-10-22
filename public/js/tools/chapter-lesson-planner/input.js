@@ -20,9 +20,9 @@ function clpCardsHTML(f) {
 const clpSwitch = (id, label, hint, on) => `<label class="clp-sw ${on ? 'on' : ''}" for="${id}"><span class="clp-swt"><b>${label}</b><small>${hint}</small></span><input type="checkbox" role="switch" id="${id}" ${on ? 'checked' : ''}><i aria-hidden="true"></i></label>`;
 function clpFormView() {
   const f = clpForm, varies = k => f[k] === 'varies', customMin = f.minCustom || !CLP_MINUTES.includes(+f.minutes);
-  const cat = agChapters(f.grade, f.subject), topicOpts = f.chapters.flatMap(c => (cat.find(x => x.id === c.key)?.topics || []).map(t => ({ value: `${c.key}::${t.title}`, label: t.title, group: c.title, chapter: c.key })));
+  const cat = agChapters(f.grade, f.subject);
   const body = [
-    ibook(`Class ${f.grade} ${f.subject}`, `${f.subject} · KIPS`) + `<div class="irow2">${ilocked('Grade', 'Grade ' + f.grade)}${ilocked('Subject', f.subject)}</div>`,
+    ibook(`Class ${f.grade} ${f.subject}`, `${f.subject} · KIPS`) + ilocked('Grade', 'Grade ' + f.grade),
     `<div class="irow2">${ifield('Period Length', iselect('minutes', [...CLP_MINUTES.map(m => [m, m + ' minutes']), ['custom', 'Custom']], customMin ? 'custom' : f.minutes), { for: 'minutes', hint: 'Same for every period of a chapter.' })}
       ${ifield('Number of Periods', iselect('periods', CLP_PERIODS, f.periods), { for: 'periods', hint: f.periods === 'ai' ? 'The period map shows the reason for the number chosen.' : 'Shared by every chapter unless a chapter sets its own.' })}</div>`,
     customMin ? ifield('Custom Minutes', `<input id="customMin" class="input" type="number" min="10" max="120" value="${f.minutes}" placeholder="Minutes per period">`, { for: 'customMin' }) : '',
@@ -35,12 +35,8 @@ function clpFormView() {
     ifield('Homework', iselect('homework', CLP_HOMEWORK, f.homework), { for: 'homework' }),
     idrField('Bloom’s Range', { id: 'clpBloom', multi: true, placeholder: 'Select Bloom’s levels', search: false, options: DLP_BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: lower to higher order across the chapter.' }),
     ifield('Additional Details', `<textarea id="details" class="input" placeholder="Class size, resources, language level and other constraints">${esc(f.details)}</textarea>`, { opt: 1, for: 'details' }),
-    isec('Chapters'),
     idrField('Chapters', { id: 'clpCh', multi: true, placeholder: 'Select chapters', searchPlaceholder: 'Search chapters', allLabel: 'Select all chapters', options: cat.map(c => ({ value: c.id, label: c.title })), selected: f.chapters.map(c => c.key),
-      onChange: ids => { f.chapters = cat.filter(c => ids.includes(c.id)).map((c, i) => f.chapters.find(x => x.key === c.id) || { ...clpChapterCard({ key: c.id, num: cat.indexOf(c) + 1, title: c.title }), topics: c.topics.map(t => t.title) }); clpRedraw(); } }, { req: 1, hint: 'Each chapter becomes a card below.' }),
-    idrField('Topics', { id: 'clpTopic', multi: true, placeholder: f.chapters.length ? 'Select topics' : 'Select a chapter first', searchPlaceholder: 'Search topics', allLabel: 'Select all topics', disabled: !f.chapters.length,
-      options: topicOpts, selected: topicOpts.filter(o => f.chapters.find(c => c.key === o.chapter).topics.includes(o.label)).map(o => o.value), empty: 'No topics in these chapters',
-      onChange: ids => { f.chapters.forEach(c => (cat.find(x => x.id === c.key)?.topics || []).forEach(t => { const on = ids.includes(`${c.key}::${t.title}`), has = c.topics.includes(t.title); if (on && !has) c.topics.push(t.title); if (!on && has) c.topics = c.topics.filter(x => x !== t.title); })); clpRedraw(); } }, { opt: 1, hint: 'Topics you tick here fill the chapter cards. You can still add your own on each card.' }),
+      onChange: ids => { f.chapters = cat.filter(c => ids.includes(c.id)).map((c, i) => f.chapters.find(x => x.key === c.id) || { ...clpChapterCard({ key: c.id, num: cat.indexOf(c) + 1, title: c.title }), topics: c.topics.map(t => t.title) }); clpRedraw(); } }, { req: 1, hint: 'Each chapter becomes a card below, with its topics.' }),
     `<div id="clpCards" class="clp-cards">${clpCardsHTML(f)}</div>`,
   ].join('');
   return ipanel({ formId: 'clpFormEl', title: 'Chapter lesson planner', body, issue: clpIssue(f), genId: 'clpGen', genLabel: 'Create period map', wide: true, tool: 'chapter-lesson-planner' });

@@ -3,7 +3,7 @@
    fmt is 'word' | 'pdf' | 'print'. The tool decides how to produce each format; the modal and its CTA ("Download") stay identical. */
 /* Optional: views = { teacher: 'Teacher Guide', student: 'Student Worksheet' } (labels), formats = ['word','pdf','print'] (the formats that tool's PRD allows) */
 /* views: false hides the View row (tools with a single document); defaultFormat picks the pre-selected format (default: the first) */
-function downloadModal({ view, file, run, views = { teacher: 'Teacher View', student: 'Student View' }, formats = ['word', 'pdf', 'print'], defaultFormat }) {
+function downloadModal({ view, file, run, views = { teacher: 'Teacher View', student: 'Student View' }, formats = ['word', 'pdf'], defaultFormat }) {
   /* View = radio cards (real radio inputs, css/download-modal.css); Format = chips (toggle buttons, shared .chip style) */
   const card = (attr, v, label, on) => `<label class="dl-opt ${on ? 'on' : ''}"><input type="radio" name="dl-${attr}" data-${attr}="${v}" ${on ? 'checked' : ''}><span class="dl-dot" aria-hidden="true"></span><span class="dl-tx"><b>${label}</b></span></label>`;
   const chip = (v, label, on) => `<button type="button" class="chip ${on ? 'on' : ''}" data-xf="${v}" aria-pressed="${on}">${label}</button>`;
@@ -20,6 +20,27 @@ function downloadModal({ view, file, run, views = { teacher: 'Teacher View', stu
   $$('[data-xv]').forEach(b => b.onchange = () => { view = b.dataset.xv; $$('[data-xv]').forEach(x => x.closest('.dl-opt').classList.toggle('on', x === b)); label(); });
   $$('[data-xf]').forEach(b => b.onclick = () => { fmt = b.dataset.xf; $$('[data-xf]').forEach(x => { x.classList.toggle('on', x === b); x.setAttribute('aria-pressed', x === b); }); label(); });
   $('#my').onclick = () => { close(); run(view, fmt); };
+}
+
+/* Shared PRINT button for every output toolbar: sits just left of Download.
+   printBtn(id) gives the markup; bindPrint(id, { views, run }) wires it.
+   views: true  -> a small dropdown (Student view / Teacher view); run(view) prints the one chosen
+   views: false -> single-document tool: run() prints straight away */
+const printBtn = id => `<button class="btn" id="${id}" type="button" aria-haspopup="menu" aria-expanded="false">${ic('print', 's')}<span class="lb">Print</span></button>`;
+function bindPrint(id, { views = true, run }) {
+  const btn = $('#' + id); if (!btn) return;
+  if (!views) { btn.onclick = () => run(); return; }
+  const close = () => { btn.parentNode.querySelector('.print-menu')?.remove(); btn.setAttribute('aria-expanded', 'false'); document.removeEventListener('mousedown', away, true); document.removeEventListener('keydown', key, true); };
+  const away = e => { if (!e.target.closest('.print-menu') && e.target.closest('#' + id) !== btn) close(); };
+  const key = e => { if (e.key === 'Escape') { e.stopImmediatePropagation(); close(); btn.focus(); } };
+  btn.onclick = () => {
+    if (btn.getAttribute('aria-expanded') === 'true') return close();
+    btn.setAttribute('aria-expanded', 'true');
+    btn.insertAdjacentHTML('afterend', `<div class="print-menu" role="menu"><button type="button" role="menuitem" data-pv="student">Student view</button><button type="button" role="menuitem" data-pv="teacher">Teacher view</button></div>`);
+    const menu = btn.parentNode.querySelector('.print-menu'); menu.style.right = btn.parentNode.clientWidth - btn.offsetLeft - btn.offsetWidth + 'px';   // line the menu up under the Print button
+    btn.parentNode.querySelectorAll('.print-menu [data-pv]').forEach(b => b.onclick = () => { close(); run(b.dataset.pv); });
+    document.addEventListener('mousedown', away, true); document.addEventListener('keydown', key, true);
+  };
 }
 
 /* Saves HTML as a Word-openable .doc file */

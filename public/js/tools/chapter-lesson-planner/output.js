@@ -83,7 +83,7 @@ function clpOutputView() {
   return `<div class="toolbar"><div class="toolbar-in">
     <button class="icon-btn round" id="clpBack" aria-label="Back to the period map">${ic('back')}</button>
     <div class="tb-title"><small>Chapter lesson planner</small><b>${esc(clpGradeSubject(M))}${many ? ` · ${clpPlans.length} chapters` : ` · ${esc(clpChapterTitle(M))}`}</b></div>
-    <div class="acts"><button class="btn primary" id="clpDl">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
+    <div class="acts">${printBtn('clpPrint')}<button class="btn primary" id="clpDl">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
   <div class="clp-out" id="clpOut">${many ? `<div class="clp-tabs no-print" role="tablist">${clpPlans.map((p, k) => `<button class="${k === clpTab ? 'on' : ''}" data-ptab="${k}" role="tab">${p.metadata.chapter_number != null ? 'Ch ' + p.metadata.chapter_number + ' · ' : ''}${esc(p.metadata.chapter_title)}</button>`).join('')}<button class="${onIndex ? 'on' : ''}" data-ptab="${clpPlans.length}" role="tab">Term index</button></div>` : ''}
     ${onIndex ? clpTermHTML(clpPlans) : clpDocHTML(plan)}</div>`;
 }
@@ -93,7 +93,8 @@ function clpBindOutput() {
   $('#clpBack').onclick = () => navigate(clpMaps.length ? '#/chapter-lesson-planner/map' : '#/chapter-lesson-planner');
   $$('[data-ptab]').forEach(b => b.onclick = () => { clpTab = +b.dataset.ptab; rerender(); $('#view').scrollTo(0, 0); });
   $$('[data-expand]').forEach(b => b.onclick = () => clpExpand(clpPlans[Math.min(clpTab, clpPlans.length - 1)], +b.dataset.expand));
-  $('#clpDl').onclick = clpDownload;
+  $('#clpDl').onclick = () => clpDownload();
+  bindPrint('clpPrint', { views: false, run: () => clpDownload(true) });
 }
 
 /* §10.8 Expand: the Daily lesson planner gets the period's topics, objectives, type, length, style, pedagogy and a context note.
@@ -133,15 +134,15 @@ function clpZip(files) {
   [[0, 0x06054b50, 4], [4, 0, 2], [6, 0, 2], [8, files.length, 2], [10, files.length, 2], [12, size, 4], [16, off, 4], [20, 0, 2]].forEach(([o, v, s]) => s === 4 ? end.setUint32(o, v, true) : end.setUint16(o, v, true));
   return new Blob([...parts, ...central, end.buffer], { type: 'application/zip' });
 }
-function clpDownload() {
+function clpDownload(printOnly = false) {   // printOnly: just the print dialog (the Print button), no Word files
   const plans = clpPlans, many = plans.length > 1, M = plans[0].metadata, done = [];
-  try {
+  if (!printOnly) try {
     if (many) {
       const day = new Date().toISOString().slice(0, 10), name = `${M.grade ? 'Grade-' + M.grade + '-' : ''}${clpSlug(M.subject || 'Subject')}-Chapter-Plans-${day}`;
       clpSave(name + '.zip', clpZip([...plans.map(p => [clpFile(p.metadata) + '.doc', clpWordHTML(clpDocHTML(p, false), p.metadata)]), ['Term-index.doc', clpWordHTML(clpTermHTML(plans), M)]])); done.push('Word');
     } else { clpSave(clpFile(M) + '.doc', new Blob([clpWordHTML(clpDocHTML(plans[0], false), M)], { type: 'application/msword' })); done.push('Word'); }
   } catch (e) { console.error(e); }
-  if (!done.length) toast('Word files could not be created. Try again.'); // only report files that exist
+  if (!printOnly && !done.length) toast('Word files could not be created. Try again.'); // only report files that exist
   // PDF: the print dialog shows every chapter (and the term index) so one PDF holds the whole plan
   const out = $('#clpOut'), keep = out.innerHTML, name = many ? `${clpSlug(M.subject || 'Subject')}-Chapter-Plans` : clpFile(M), t0 = document.title;
   out.innerHTML = (many ? clpTermHTML(plans) : '') + plans.map(p => clpDocHTML(p, false)).join('');

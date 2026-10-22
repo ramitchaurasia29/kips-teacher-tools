@@ -82,7 +82,7 @@ function agOutputView() {
     <button class="icon-btn round" id="agBack" aria-label="Change settings">${ic('back')}</button>
     <div class="tb-title"><small>Assessment generator</small><b>Class ${esc(m.grade)} ${esc(m.subject)} · ${esc(m.assessment_name === 'Other' ? m.title : m.assessment_name)}</b></div>
     <div class="mode" role="tablist"><button class="${t ? '' : 'on'}" data-view="student" role="tab">Student view</button><button class="${t ? 'on' : ''}" data-view="teacher" role="tab">Teacher view</button></div>
-    <div class="acts"><button class="btn" id="agEdit">${ic('edit', 's')}<span class="lb">Edit</span></button><button class="btn primary" id="agDl" aria-haspopup="dialog">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
+    <div class="acts"><button class="btn" id="agEdit">${ic('edit', 's')}<span class="lb">Edit</span></button>${printBtn('agPrint')}<button class="btn primary" id="agDl" aria-haspopup="dialog">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
   <div class="ag-out" id="agOut">${agPaperHTML(p, t)}</div>`;
 }
 
@@ -96,6 +96,7 @@ function agBindOutput() {
     if (open()) { const r = await unsavedModal(); if (r === 'cancel') return; if (r === 'save') commitEdits(); }   // discard: the re-render rebuilds from the saved paper
     agView = b.dataset.view; rerender();
   });
+  bindPrint('agPrint', { run: view => { keepEdits(); agDownload(view, 'print'); } });
   $('#agDl').onclick = () => { keepEdits(); downloadModal({ view: agView, file: agFileName, run: agDownload, formats: ['word', 'pdf'] }); }; // PRD §10.5: Word or PDF
   /* every value (question text, options, answer, solution, marking points, Column B...) is a span.ed inside fixed structure */
   const norm = s => String(s ?? '').replace(/\s+/g, ' ').trim();
@@ -141,7 +142,7 @@ async function agDownload(view, fmt) {
     const blob = new Blob([`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(name)}</title><style>@page{size:A4;margin:20mm}${css}</style></head><body>${html}</body></html>`], { type: 'application/msword' });
     const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name + '.doc'; document.body.appendChild(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(a.href), 4000);
   }
-  if (fmt === 'pdf' || fmt === 'both') { // PDF comes from the print dialog, so the chosen view is shown first, then the open view is restored
+  if (fmt === 'pdf' || fmt === 'both' || fmt === 'print') { // PDF and Print both come from the print dialog, so the chosen view is shown first, then the open view is restored
     const t0 = document.title, back = agView, show = () => { $('#view').innerHTML = agOutputView(); agBindOutput(); }; document.title = name;
     if (view !== agView) { agView = view; show(); }
     const undo = () => { document.title = t0; if (agView !== back) { agView = back; show(); } window.removeEventListener('afterprint', undo); };

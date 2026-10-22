@@ -12,4 +12,8 @@
 .dl-tx{display:flex;flex-direction:column;min-width:0}
 .dl-tx b{font:600 14px/1.35 var(--font);color:var(--ink)}
 .dl-opt.on .dl-tx b{color:var(--red-700)}
+/* Print dropdown under the toolbar's Print button */
+.print-menu{position:absolute;top:calc(100% + 6px);right:0;min-width:170px;padding:4px;background:#fff;border:1px solid var(--line-2);border-radius:12px;box-shadow:var(--sh-2);z-index:60;display:flex;flex-direction:column}
+.print-menu button{border:0;background:transparent;text-align:left;padding:9px 12px;border-radius:8px;font:500 14px var(--font);color:var(--ink);cursor:pointer;white-space:nowrap}
+.print-menu button:hover,.print-menu button:focus-visible{background:var(--red-50);color:var(--red-700);outline:0}
 .dl-tx small{margin-top:2px;font-size:12px;line-height:1.35;color:var(--ink-3)}

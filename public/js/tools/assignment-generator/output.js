@@ -196,7 +196,7 @@ function asgOutputView() {
     <button class="icon-btn round" id="asgBack" aria-label="Change settings">${ic('back')}</button>
     <div class="tb-title"><small id="asgBadge">${asgBadge()}</small><b>Class ${esc(m.grade)} ${esc(m.subject)} · ${esc(m.topic)}</b></div>
     <div class="mode" role="tablist"><button class="${t ? '' : 'on'}" data-view="student" role="tab">Student View</button><button class="${t ? 'on' : ''}" data-view="teacher" role="tab">Teacher View</button></div>
-    <div class="acts"><button class="btn" id="asgEdit">${ic('edit', 's')}<span class="lb">Edit</span></button><button class="btn" id="asgExport">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
+    <div class="acts"><button class="btn" id="asgEdit">${ic('edit', 's')}<span class="lb">Edit</span></button>${printBtn('asgPrint')}<button class="btn primary" id="asgExport">${ic('download', 's')}<span class="lb">Download</span></button></div></div></div>
   <div class="asg-out" id="asgOut">${asgDocHTML(d, asgView)}</div>`;
 }
 const asgSerialize = el => el.innerHTML.replace(/ contenteditable="(true|false)"/g, '');
@@ -248,6 +248,7 @@ function asgBindOutput() {
     syncTop();
   });
   $('#asgExport').onclick = asgDownloadModal;
+  bindPrint('asgPrint', { run: view => asgExport(view, 'print') });
 }
 
 /* ---------- §10.5 Share student version: review tick, link, revoke, publish updated version ---------- */
@@ -285,7 +286,7 @@ function asgSharedView(id) {
 }
 
 /* ---------- §10.5 Download: the shared modal opens on the view on screen; Word, PDF or print ---------- */
-const asgDownloadModal = () => downloadModal({ view: asgView, file: v => asgFile(asgDoc.data, v), run: asgExport, formats: ['word', 'pdf', 'print'] });
+const asgDownloadModal = () => downloadModal({ view: asgView, file: v => asgFile(asgDoc.data, v), run: asgExport, formats: ['word', 'pdf'] });
 function asgExport(view, fmt) {
   const d = asgDoc.data, html = asgDocHTML(d, view, 'plain'), name = asgFile(d, view);
   if (view === 'student' && !asgStudentClean(html, d)) return toast('Export blocked: the student version contains teacher content.'); // V1
