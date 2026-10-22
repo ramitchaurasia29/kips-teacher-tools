@@ -157,5 +157,25 @@
     top(b, on) { b.className = 'btn' + (on ? ' soft' : ''); b.innerHTML = `${ic(on ? 'save' : 'edit', 's')}<span class="lb">${on ? 'Save' : 'Edit'}</span>`; },
   };
 
+  /* locked parts: while any part is open for editing, hovering or clicking a fixed element with its own text says it cannot be edited.
+     Nothing is blocked or changed here (the tools already keep those parts non-editable); controls and editable text are skipped. */
+  const tip = document.createElement('div'); tip.className = 'et-lock-tip'; tip.hidden = true; tip.textContent = 'This element cannot be edited';
+  let tipTimer = 0;
+  const hideTip = () => { clearTimeout(tipTimer); tip.hidden = true; };
+  const lockedTarget = t => {
+    const v = view(); if (!v || !v.classList.contains('et-on') || !(t instanceof Element) || !v.contains(t)) return null;
+    if (t.closest('[contenteditable="true"],button,a,input,select,textarea,label,[data-edit],.toolbar,.edit-toolbar,.no-print')) return null;
+    return [...t.childNodes].some(n => n.nodeType === 3 && n.textContent.trim()) ? t : null;
+  };
+  const showTip = (e, auto) => {
+    if (!tip.isConnected) document.body.append(tip);
+    tip.hidden = false; tip.style.left = Math.min(e.clientX + 12, innerWidth - tip.offsetWidth - 8) + 'px'; tip.style.top = e.clientY + 16 + 'px';
+    clearTimeout(tipTimer); if (auto) tipTimer = setTimeout(hideTip, 1500);
+  };
+  document.addEventListener('mouseover', e => { clearTimeout(tipTimer); if (lockedTarget(e.target)) tipTimer = setTimeout(() => showTip(e), 350); else hideTip(); });
+  document.addEventListener('mouseout', hideTip);
+  document.addEventListener('click', e => { if (lockedTarget(e.target)) showTip(e, true); });
+  document.addEventListener('scroll', hideTip, true);
+
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mount); else mount();
 })();

@@ -104,7 +104,7 @@ function clpExpand(plan, n) {
   if (!b) { b = { id, grade: +M.grade || 1, subject: M.subject || 'General', chapters: [{ title: M.chapter_title, topics: [] }] }; DLP_CATALOGUE.push(b); }
   row.topics.forEach(t => { if (!b.chapters[0].topics.includes(t)) b.chapters[0].topics.push(t); });
   const keys = dlpTopics().filter(t => t.key.startsWith(id + '|') && row.topics.includes(t.title)).map(t => t.key);
-  dlpForm = { ...dlpDefaults(), grade: M.grade ? String(+M.grade || 1) : '', topics: keys, duration: M.period_minutes, style: DLP_STYLES.includes(row.teaching_style) ? row.teaching_style : 'AI Recommended', pedagogy: DLP_PEDS.includes(row.pedagogy) ? row.pedagogy : 'AI Recommended',
+  dlpForm = { ...dlpDefaults(), grade: M.grade ? String(+M.grade || 1) : '', chapters: [id + '|0'], topics: keys, duration: M.period_minutes, style: DLP_STYLES.includes(row.teaching_style) ? row.teaching_style : 'AI Recommended', pedagogy: DLP_PEDS.includes(row.pedagogy) ? row.pedagogy : 'AI Recommended',
     objectives: p.objectives.map(o => o.text).join('\n'), details: `From ${clpChapterTitle(M)}, period ${p.period} of ${plan.periods.length} (${clpTypeName(p.type)}): ${p.title}.${p.recap ? ' Recap: ' + p.recap : ''}${p.bridge ? ' ' + p.bridge : ''}` };
   navigate('#/daily-lesson-planner/generating');
 }

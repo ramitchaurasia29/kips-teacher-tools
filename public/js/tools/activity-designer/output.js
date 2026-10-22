@@ -105,20 +105,29 @@ function bindOutput() {
   $('#view').classList.add('bg-white', 'view-ad'); $('#view').classList.toggle('is-editing', !!cur.editing);
   const rerender = () => { const y = $('#view').scrollTop; $('#view').innerHTML = outputView(); bindOutput(); $('#view').scrollTop = y; };
   $('#backBtn').onclick = () => { if (cur.editing) { cur.editing = false; saveDraft(true); } navigate('#/activity-designer'); };
-  $$('[data-mode]').forEach(b => b.onclick = () => { if (cur.mode === b.dataset.mode) return; if (cur.editing) saveDraft(true); cur.mode = b.dataset.mode; cur.editing = false; rerender(); $('#view').scrollTo(0, 0); });
+  /* leaving a view with edits open: ask first (Save keeps them, Discard restores the text from when edit mode opened, Cancel stays) */
+  const markOpen = () => { if (!anyOpen()) cur._snap = { edits: JSON.stringify(cur.edits), dirty: cur.dirty }; };
+  const confirmLeave = async () => {
+    if (!anyOpen()) return true;
+    const r = await unsavedModal(); if (r === 'cancel') return false;
+    if (r === 'save') saveDraft(true); else if (cur._snap) { cur.edits = JSON.parse(cur._snap.edits); cur.dirty = cur._snap.dirty; }
+    return true;
+  };
+  $$('[data-mode]').forEach(b => b.onclick = async () => { if (cur.mode === b.dataset.mode) return; if (!await confirmLeave()) return; cur.mode = b.dataset.mode; cur.editing = false; rerender(); $('#view').scrollTo(0, 0); });
   $('#dlBtn').onclick = () => downloadModal({ view: cur.mode, file: adFileName, run: adDownload, ...AD_DL });
-  $$('[data-go-student]').forEach(a => a.onclick = () => { if (cur.editing) saveDraft(true); cur.editing = false; cur.mode = 'student'; rerender(); });
+  $$('[data-go-student]').forEach(a => a.onclick = async () => { if (!await confirmLeave()) return; cur.editing = false; cur.mode = 'student'; rerender(); });
   /* top button and section buttons stay in sync: the top one reads Save while ANY section is open */
   const anyOpen = () => !!$('#view [contenteditable="true"]');
   const syncTop = () => { cur.editing = anyOpen(); window.editUI.top($('#editAll'), cur.editing); };
   $('#editAll').onclick = () => { // Edit -> Save: opens every section; Save stores the draft and closes every open section
     if (anyOpen()) { setAllEditing(false); $$('[data-edit]').forEach(b => window.editUI.sec(b, false)); saveDraft(); }
-    else setAllEditing(true);
+    else { markOpen(); setAllEditing(true); }
     syncTop();
   };
   $$('[data-body]').forEach(el => el.addEventListener('input', () => { el.dataset.touched = 1; cur.edits[el.dataset.body] = serialize(el); cur.dirty = true; }));
   $$('[data-edit]').forEach(b => b.onclick = () => { // pencil -> "tick Done" for that section; Done closes it and keeps the draft saved
     const id = b.dataset.edit, el = $(`[data-body="${id}"]`), on = el.contentEditable !== 'true';
+    if (on) markOpen();
     setEditing(id, on); window.editUI.sec(b, on); if (on) el.focus(); else saveDraft(true);
     syncTop();
   });

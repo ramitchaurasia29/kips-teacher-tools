@@ -1,21 +1,24 @@
 /* Daily lesson planner - INPUT (PRD §3: every field is optional; AI Recommended is a valid choice) on the shared input panel */
 
 /* §2: with nothing to go on, ask one concise clarification instead of generating */
-const dlpIssue = f => (!f.topics.length && !f.fileName && !f.details.trim()) ? 'Which topic should this lesson cover? Pick a topic, add details, or upload a reference document.' : '';
+const dlpIssue = f => !f.chapters.length ? 'Select at least one chapter to generate the lesson plan.' : !f.topics.length ? 'Select at least one topic to generate the lesson plan.' : '';
 
 function dlpFormView() {
   const f = dlpForm, list = dlpTopics(f.grade, f.bookId), bk = DLP_CATALOGUE.find(b => b.id === f.bookId), customTime = f.duration && !DLP_DURATIONS.includes(+f.duration);
-  /* the PRD lists Topics only (no Chapter or Subject input): every topic of the book, grouped by chapter */
-  const topicDrop = idrField('Topics', { id: 'dlpTopic', multi: true, placeholder: 'Select topics', searchPlaceholder: 'Search topics', allLabel: 'Select all topics',
-    options: list.map(t => ({ value: t.key, label: t.title, group: t.chapter })), selected: f.topics, empty: 'No topics for this book',
-    onChange: ids => { f.topics = ids; dlpRedraw(); } }, { opt: 1 });
+  /* Chapters first (required); Topics then lists only the topics of the chosen chapters, grouped by chapter */
+  const chapters = dlpChapters(f.grade, f.bookId), topicOpts = list.filter(t => f.chapters.includes(t.chapterKey));
+  const chapterDrop = idrField('Chapters', { id: 'dlpChapter', multi: true, placeholder: 'Select chapters', searchPlaceholder: 'Search chapters', allLabel: 'Select all chapters',
+    options: chapters.map(c => ({ value: c.key, label: c.title })), selected: f.chapters, empty: 'No chapters for this book',
+    onChange: ids => { f.chapters = ids; f.topics = f.topics.filter(k => ids.some(c => k.startsWith(c + '|'))); dlpRedraw(); } }, { req: 1 });   // drop topics of removed chapters
+  const topicDrop = idrField('Topics', { id: 'dlpTopic', multi: true, placeholder: f.chapters.length ? 'Select topics' : 'Select a chapter first', searchPlaceholder: 'Search topics', allLabel: 'Select all topics', disabled: !f.chapters.length,
+    options: topicOpts.map(t => ({ value: t.key, label: t.title, group: t.chapter })), selected: f.topics, empty: 'No topics in these chapters',
+    onChange: ids => { f.topics = ids; dlpRedraw(); } }, { req: 1 });
   const body = [
     bk ? ibook(`Class ${bk.grade} ${bk.subject}`, bk.subject) + ilocked('Grade', 'Grade ' + bk.grade) : '',
-    topicDrop,
+    chapterDrop, topicDrop,
     `<div class="irow2">${ifield('Teaching Style', iselect('style', DLP_STYLES, f.style), { for: 'style' })}${ifield('Pedagogy Approach', iselect('pedagogy', DLP_PEDS, f.pedagogy), { for: 'pedagogy' })}</div>`,
-    `<div class="irow2">${ifield('Lesson Duration', iselect('duration', [...DLP_DURATIONS.map(m => [m, m + ' minutes']), ['custom', 'Custom']], customTime ? 'custom' : f.duration, 'Not set (a duration is suggested)'), { opt: 1, for: 'duration' })}</div>`,
+    `<div class="irow2">${ifield('Lesson Duration', iselect('duration', [...DLP_DURATIONS.map(m => [m, m + ' minutes']), ['custom', 'Custom']], customTime ? 'custom' : f.duration, 'Not set (a duration is suggested)'), { opt: 1, for: 'duration' })}${idrField('Bloom’s Levels', { id: 'dlpBloom', multi: true, placeholder: 'Select Bloom’s levels', search: false, options: DLP_BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: a balanced progression is used.' })}</div>`,
     customTime || f.durCustom ? ifield('Custom minutes', `<input id="customDur" class="input" type="number" min="5" max="180" placeholder="Minutes" value="${customTime ? f.duration : ''}">`, { opt: 1, for: 'customDur' }) : '',
-    idrField('Bloom’s Levels', { id: 'dlpBloom', multi: true, placeholder: 'Select Bloom’s levels', searchPlaceholder: 'Search levels', options: DLP_BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: a balanced progression is used.' }),
     `<div class="irow2">${ifield('Engagement Activity', `<input id="engage" class="input" list="engageList" value="${esc(f.engage)}" placeholder="Choose or type your own"><datalist id="engageList">${DLP_ENGAGE.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`, { opt: 1, for: 'engage' })}
       ${ifield('Homework', `<input id="homework" class="input" list="hwList" value="${esc(f.homework)}" placeholder="Choose or type your own"><datalist id="hwList">${DLP_HOMEWORK.map(x => `<option value="${esc(x)}">`).join('')}</datalist>`, { opt: 1, for: 'homework' })}</div>`,
     ifield('Learning Objectives', `<textarea id="objectives" class="input" placeholder="One per line. Leave blank and measurable objectives are written for you">${esc(f.objectives)}</textarea>`, { opt: 1, for: 'objectives' }),
@@ -29,7 +32,7 @@ function dlpFormView() {
 const dlpBooks = () => DLP_CATALOGUE.map(b => ({ id: b.id, grade: b.grade, subject: b.subject, title: `Class ${b.grade} ${b.subject}` }));
 function dlpPickBook(b) {
   if (dlpForm.bookId === b.id) return;
-  Object.assign(dlpForm, { bookId: b.id, grade: String(b.grade), topics: [] });
+  Object.assign(dlpForm, { bookId: b.id, grade: String(b.grade), chapters: [], topics: [] });
 }
 
 function dlpRedraw() { ipRedraw(dlpFormView(), dlpBindForm); }

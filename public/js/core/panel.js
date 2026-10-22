@@ -66,11 +66,11 @@ function idrListHTML(c) {
   }).join('');
 }
 function idropHTML(c) {
-  c = { multi: false, selected: [], placeholder: 'Select', searchPlaceholder: 'Search', allLabel: 'Select all', empty: 'Nothing to choose from yet', disabled: false, ...c };
+  c = { multi: false, selected: [], placeholder: 'Select', searchPlaceholder: 'Search', allLabel: 'Select all', empty: 'Nothing to choose from yet', disabled: false, search: true, ...c };
   idrCfg[c.id] = c;
   const open = idrState.open === c.id && !c.disabled;
   return `<div class="idr ${open ? 'open' : ''}" data-idr-root="${c.id}"><button type="button" class="input isel idr-btn ${c.selected.length ? '' : 'idr-ph'}" data-idr-toggle="${c.id}" aria-haspopup="listbox" aria-expanded="${open}" ${c.disabled ? 'disabled' : ''}><span>${esc(idrLabel(c))}</span></button>
-    ${open ? `<div class="idr-pop"><label class="idr-search">${ic('search', 's')}<input type="text" data-idr-q="${c.id}" value="${esc(idrState.q[c.id] || '')}" placeholder="${esc(c.searchPlaceholder)}" autocomplete="off"></label>
+    ${open ? `<div class="idr-pop">${c.search ? `<label class="idr-search">${ic('search', 's')}<input type="text" data-idr-q="${c.id}" value="${esc(idrState.q[c.id] || '')}" placeholder="${esc(c.searchPlaceholder)}" autocomplete="off"></label>` : ''}
       ${c.multi && c.options.length ? idrAllHTML(c) : ''}<div class="idr-list" data-idr-list="${c.id}" role="listbox" ${c.multi ? 'aria-multiselectable="true"' : ''}>${idrListHTML(c)}</div></div>` : ''}</div>`;
 }
 /* the field wrapper used by tools: label, control, hint */

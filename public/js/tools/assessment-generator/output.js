@@ -91,7 +91,11 @@ function agBindOutput() {
   const rerender = () => { const y = $('#view').scrollTop; $('#view').innerHTML = agOutputView(); agBindOutput(); $('#view').scrollTop = y; };
   const keepEdits = () => { if ($('.ed[contenteditable="true"]')) commitEdits(); }; // leaving while editing keeps the edits
   $('#agBack').onclick = () => { keepEdits(); navigate('#/assessment-generator'); };
-  $$('[data-view]').forEach(b => b.onclick = () => { keepEdits(); agView = b.dataset.view; rerender(); });
+  $$('[data-view]').forEach(b => b.onclick = async () => {
+    if (agView === b.dataset.view) return;
+    if (open()) { const r = await unsavedModal(); if (r === 'cancel') return; if (r === 'save') commitEdits(); }   // discard: the re-render rebuilds from the saved paper
+    agView = b.dataset.view; rerender();
+  });
   $('#agDl').onclick = () => { keepEdits(); downloadModal({ view: agView, file: agFileName, run: agDownload, formats: ['word', 'pdf'] }); }; // PRD §10.5: Word or PDF
   /* every value (question text, options, answer, solution, marking points, Column B...) is a span.ed inside fixed structure */
   const norm = s => String(s ?? '').replace(/\s+/g, ' ').trim();

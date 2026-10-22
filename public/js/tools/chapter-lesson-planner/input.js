@@ -1,7 +1,7 @@
 /* Chapter lesson planner - INPUT (PRD §5 setup on the shared input panel), then the period map review (§9) and generation progress (§4.1 step 4) */
 
 const clpHasContent = c => c.topics.some(t => t.trim()) || c.objectives.trim() || c.reference.trim() || c.fileName;
-const clpIssue = f => f.chapters.some(clpHasContent) ? '' : 'Add at least one chapter with topics, objectives or reference text.';
+const clpIssue = f => !f.chapters.length ? 'Select at least one chapter.' : f.chapters.some(clpHasContent) ? '' : 'Add at least one chapter with topics, objectives or reference text.';
 const CLP_PERIODS = [['ai', 'AI Recommended'], ...Array.from({ length: 11 }, (_, i) => [i + 2, String(i + 2)])];
 const CLP_CH_PERIODS = [['shared', 'As shared setting'], ['ai', 'AI Recommended'], ...Array.from({ length: 11 }, (_, i) => [String(i + 2), String(i + 2)])];
 
@@ -33,7 +33,7 @@ function clpFormView() {
     `<div class="irow2">${clpSwitch('revision', 'Revision period', 'On by default when the chapter has 5 or more periods. It comes just before the assessment.', f.revision !== 'off')}
       ${clpSwitch('assessment', 'Assessment period', 'Off by default. When on, the last period is a full test with an answer key.', f.assessment)}</div>`,
     ifield('Homework', iselect('homework', CLP_HOMEWORK, f.homework), { for: 'homework' }),
-    idrField('Bloom’s Range', { id: 'clpBloom', multi: true, placeholder: 'Select Bloom’s levels', searchPlaceholder: 'Search levels', options: DLP_BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: lower to higher order across the chapter.' }),
+    idrField('Bloom’s Range', { id: 'clpBloom', multi: true, placeholder: 'Select Bloom’s levels', search: false, options: DLP_BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: lower to higher order across the chapter.' }),
     ifield('Additional Details', `<textarea id="details" class="input" placeholder="Class size, resources, language level and other constraints">${esc(f.details)}</textarea>`, { opt: 1, for: 'details' }),
     isec('Chapters'),
     idrField('Chapters', { id: 'clpCh', multi: true, placeholder: 'Select chapters', searchPlaceholder: 'Search chapters', allLabel: 'Select all chapters', options: cat.map(c => ({ value: c.id, label: c.title })), selected: f.chapters.map(c => c.key),

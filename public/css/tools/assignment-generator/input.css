@@ -23,7 +23,8 @@
 .ipb details.more>.irow2,.ipb details.more>.asg-tog{margin-left:16px;margin-right:16px}
 .ipb details.more>.ifld{margin-left:16px;margin-right:16px}
 .asg-in .ifld{margin:0}
-.asg-tog{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 14px;border:1px solid #e5e7ee;border-radius:10px;cursor:pointer}
+.asg-in.one{grid-template-columns:1fr}   /* no extra field to show: the dropdown takes the full row; picking an option that needs one halves it */
+.asg-tog{display:flex;justify-content:space-between;align-items:center;gap:16px;padding:12px 0;border:0;cursor:pointer}
 .asg-tog b{display:block;font-size:14px;font-weight:600}.asg-tog small{display:block;color:var(--ink-3);font-size:12px}
 .asg-tog input{flex:none;appearance:none;-webkit-appearance:none;width:40px;height:22px;border-radius:99px;background:#d9dce6;position:relative;cursor:pointer;transition:.18s;margin:0}
 .asg-tog input::after{content:"";position:absolute;top:3px;left:3px;width:16px;height:16px;border-radius:50%;background:#fff;transition:.18s;box-shadow:0 1px 2px #0003}

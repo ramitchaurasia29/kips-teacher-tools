@@ -7,14 +7,15 @@
 
 const BOOKS = {
   'Class 3 General Science – KIPS': { grade: 'Grade 3', subject: 'General Science', board: 'KIPS',
-    topics: ['Roots', 'Stem', 'Leaves, Flowers & Fruits', 'Habitats', 'Food Habits'] },
+    chapters: [{ title: 'Plants Around Us', topics: ['Roots', 'Stem', 'Leaves, Flowers & Fruits'] }, { title: 'Animals Around Us', topics: ['Habitats', 'Food Habits'] }] },
   'Class 6 Science – NCERT': { grade: 'Grade 6', subject: 'Science', board: 'NCERT',
-    topics: ['Filtration', 'Evaporation', 'Sedimentation & Decantation', 'Types of Fibres', 'Spinning'] },
+    chapters: [{ title: 'Separation of Substances', topics: ['Filtration', 'Evaporation', 'Sedimentation & Decantation'] }, { title: 'Fibre to Fabric', topics: ['Types of Fibres', 'Spinning'] }] },
   'Class 8 Mathematics – NCERT': { grade: 'Grade 8', subject: 'Mathematics', board: 'NCERT',
-    topics: ['Area of Trapezium', 'Surface Area', 'Probability'] },
+    chapters: [{ title: 'Mensuration', topics: ['Area of Trapezium', 'Surface Area'] }, { title: 'Data Handling', topics: ['Probability'] }] },
   'Class 5 EVS – KIPS (content pending)': { grade: 'Grade 5', subject: 'EVS', board: 'KIPS', noSource: true,
-    topics: ['Rivers', 'Wells'] },
+    chapters: [{ title: 'Our Water Sources', topics: ['Rivers', 'Wells'] }] },
 };
+Object.values(BOOKS).forEach(b => b.topics = b.chapters.flatMap(c => c.topics));   // the flat topic list the rest of the tool uses
 const TYPES = [
   ['Hands-on experiment', 'flask', 'Do, observe and record'],
   ['Group discussion', 'chat', 'Talk, debate, reason'],

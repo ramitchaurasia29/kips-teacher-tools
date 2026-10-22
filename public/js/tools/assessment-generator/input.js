@@ -44,9 +44,9 @@ function agFormView() {
   const topicDrop = idropHTML({ id: 'agTopic', multi: true, placeholder: 'Select topics', searchPlaceholder: 'Search topics', allLabel: 'Select all topics', options: picked.flatMap(c => c.topics.map(t => ({ value: t.id, label: t.title, group: c.title }))), selected: f.topics,
     onChange: ids => { f.topics = ids; agRedraw(); } });
   const body = [
-    isec('Paper details'),
+    ibook(`Class ${f.grade} ${f.subject}`, `${f.subject} · KIPS`),
     `<div class="irow2">${ifield('School name', `<input id="school" class="input" maxlength="80" value="${esc(f.school)}" placeholder="Printed at the top of the paper">`, { opt: 1, for: 'school' })}${ifield('Time (minutes)', `<input id="time" class="input" type="number" min="1" value="${f.time}">`, { opt: 1, for: 'time' })}</div>`,
-    ibook(`Class ${f.grade} ${f.subject}`, `${f.subject} · KIPS`) + `<div class="irow2">${ilocked('Grade', 'Grade ' + f.grade)}${ilocked('Subject', f.subject)}</div>`,
+    `<div class="irow2">${ilocked('Grade', 'Grade ' + f.grade)}${ilocked('Subject', f.subject)}</div>`,
     `<div class="irow2">${ifield('Assessment name', iselect('assessment', AG_ASSESSMENTS.map(a => a.id), f.assessment), { req: 1, for: 'assessment' })}${f.assessment === 'Other' ? ifield('Name', `<input id="otherName" class="input" maxlength="60" value="${esc(f.otherName)}">${err('other')}`, { req: 1, for: 'otherName' }) : '<div></div>'}</div>`,
     ifield('Chapters', `${chapterDrop}${statusRows ? `<div class="ilist">${statusRows}</div>` : ''}${err('chapters')}`, { req: 1 }),
     f.chapters.length ? ifield('Topics', topicDrop, { opt: 1 }) : '',
@@ -62,7 +62,7 @@ function agFormView() {
       <div id="panelSlot">${agPanelHTML()}</div></div>`,
     isec('Fine-tune'),
     `<div class="irow2">${ifield('Difficulty', iselect('difficulty', DIFFICULTIES, f.difficulty), { opt: 1, for: 'difficulty', hint: 'Mixed: 30% easy, 50% medium, 20% hard.' })}${ifield('Diagram-based questions (%)', `<input id="diag" class="input" type="number" min="0" max="50" step="5" value="${f.diagramPercent}"><span class="ihint" id="diagLine">${esc(agDiagramLine())}</span>`, { opt: 1, for: 'diag' })}</div>`,
-    idrField('Bloom’s levels', { id: 'agBloom', multi: true, placeholder: 'Select Bloom’s levels', searchPlaceholder: 'Search levels', options: BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: a grade-appropriate mix is used.' }),
+    idrField('Bloom’s levels', { id: 'agBloom', multi: true, placeholder: 'Select Bloom’s levels', search: false, options: BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms, onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: a grade-appropriate mix is used.' }),
   ].join('');
   return ipanel({ formId: 'agForm', title: 'Assessment generator', body, issue: agFirstIssue(f), genId: 'agGen', genLabel: 'Generate paper', wide: true, tool: 'assessment-generator' });
 }

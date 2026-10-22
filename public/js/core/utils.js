@@ -29,5 +29,18 @@ function confirmModal({ title, body, ok = 'Continue', cancel = 'Cancel' }) {
   });
 }
 
+/* shown before a view switch while edits are open: resolves 'save' | 'discard' | 'cancel' (overlay click or Esc = cancel, i.e. stay) */
+function unsavedModal() {
+  return new Promise(res => {
+    $('#modalRoot').innerHTML = `<div class="overlay" id="ov"><div class="modal" role="dialog" aria-modal="true"><h3>Save your edits?</h3><p class="muted" style="margin:6px 0 20px">You have unsaved edits in this view. Save them before switching?</p>
+      <div style="display:flex;gap:10px;justify-content:flex-end"><button class="btn" id="mc">Cancel</button><button class="btn" id="md">Discard</button><button class="btn primary" id="ms">Save</button></div></div></div>`;
+    const key = e => { if (e.key === 'Escape') { e.stopImmediatePropagation(); done('cancel'); } };
+    const done = v => { document.removeEventListener('keydown', key, true); $('#modalRoot').innerHTML = ''; res(v); };
+    document.addEventListener('keydown', key, true);
+    $('#mc').onclick = () => done('cancel'); $('#md').onclick = () => done('discard'); $('#ms').onclick = () => done('save'); $('#ov').onclick = e => e.target.id === 'ov' && done('cancel');
+    $('#ms').focus();
+  });
+}
+
 /* wire every [data-nav] link inside root (the router only does it once per route; forms that redraw call this) */
 const bindNav = root => $$('[data-nav]', root || document).forEach(b => b.onclick = () => navigate(b.dataset.nav));

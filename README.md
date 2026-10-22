@@ -74,3 +74,4 @@ Route handlers are `[pattern, fn]` pairs; return `'redirect'` from `fn` if it ca
 | `#/activity-designer/sample` | OUTPUT with the PRD Filtration sample |
 | `#/activity-designer/open/<id>` | reopen a saved activity |
 | `#/s/<id>` | student-facing shared worksheet |
+# Teacher-Side-Tool-Kips

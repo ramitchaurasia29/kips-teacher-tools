@@ -44,15 +44,16 @@ function asgFormView() {
     src ? `<div class="asg-src ${src[0]}">${ic(src[1])}<div>${src[2]}</div></div>` : '',
     ifield('Assignment type', iselect('asgType', ASG_TYPES.map(t => [t.id, t.label]), f.type), { req: 1, for: 'asgType', hint: lowRes ? 'For students below Grade 5 this becomes “Ask and find out” with family and book sources.' : T.desc }),
     ifield('Submission date', `<input id="asgDue" class="input" type="date" min="${asgToday()}" value="${f.dueDate}">`, { req: 1, for: 'asgDue', hint: 'Printed on the Student View as “Submit by”.' }),
-    ifield('Learning objective', `<textarea id="asgObj" class="input" placeholder="Leave blank and we will write one from the topic">${esc(f.objective)}</textarea>${sug.length ? `<div class="asg-sug">${sug.map((s, i) => `<button type="button" class="asg-chip" data-sug="${i}">${esc(s)}</button>`).join('')}</div>` : ''}`, { opt: 1, for: 'asgObj' }),
-    `<div class="irow2">${ifield('Difficulty', iselect('asgDiff', ASG_DIFFS, f.difficulty), { for: 'asgDiff', hint: f.difficulty === 'Mixed' ? 'About 30% easy, 50% medium, 20% hard.' : '' })}${ifield('Completion time', iselect('asgTime', [...ASG_TIMES.map(t => [t, t + ' minutes']), ['custom', 'Custom']], f.timeCustom ? 'custom' : f.time), { req: 1, for: 'asgTime', hint: f.type === 'project' ? 'For a project this is the total working time across days.' : '' })}</div>`,
+    `<div class="irow2">${ifield('Completion time', iselect('asgTime', [...ASG_TIMES.map(t => [t, t + ' minutes']), ['custom', 'Custom']], f.timeCustom ? 'custom' : f.time), { req: 1, for: 'asgTime', hint: f.type === 'project' ? 'For a project this is the total working time across days.' : '' })}${ifield('Difficulty', iselect('asgDiff', ASG_DIFFS, f.difficulty), { for: 'asgDiff', hint: f.difficulty === 'Mixed' ? 'About 30% easy, 50% medium, 20% hard.' : '' })}</div>`,
     f.timeCustom ? ifield('Custom time (minutes)', `<input id="asgTimeN" class="input" type="number" min="5" max="600" value="${f.time}">`, { req: 1, for: 'asgTimeN' }) : '',
+    ifield('Learning objective', `<textarea id="asgObj" class="input" placeholder="Leave blank and we will write one from the topic">${esc(f.objective)}</textarea>${sug.length ? `<div class="asg-sug">${sug.map((s, i) => `<button type="button" class="asg-chip" data-sug="${i}">${esc(s)}</button>`).join('')}</div>` : ''}`, { opt: 1, for: 'asgObj' }),
     `<details class="more" id="asgMore" ${asgMoreOpen ? 'open' : ''}><summary>More options</summary>
-      ${ifield('Task formats', ilist(ASG_FORMATS.map(x => ({ label: x[1], checked: f.formats.includes(x[0]), attrs: `data-fmt="${x[0]}"` })), { cols: 2 }), { opt: 1, hint: `Recommended for this type: ${T.rec}. Leave all unticked to use it.` })}
-      <div class="irow2 asg-in">${ifield('Number of tasks', iselect('asgCountMode', [['ai', 'AI recommends'], ['set', 'Set a number']], f.taskCount === 'ai' ? 'ai' : 'set'), { opt: 1, for: 'asgCountMode' })}${f.taskCount !== 'ai' ? ifield('Tasks (1 to 40)', `<input id="asgCountN" class="input" type="number" min="1" max="40" value="${f.taskCount}">`, { for: 'asgCountN' }) : '<div></div>'}</div>
-      <div class="irow2 asg-in">${ifield('Marks', iselect('asgMarksMode', [['custom', 'Custom marks'], ['none', 'No marks']], f.marksMode), { opt: 1, for: 'asgMarksMode' })}${marksOn ? ifield('Total marks', `<input id="asgMarks" class="input" type="number" min="1" max="200" value="${f.marks}">`, { for: 'asgMarks' }) : '<div></div>'}</div>
+      ${idrField('Task formats', { id: 'asgFormats', multi: true, placeholder: 'Select task formats', search: false, allLabel: 'Select all formats', options: ASG_FORMATS.map(x => ({ value: x[0], label: x[1] })), selected: f.formats, onChange: ids => { f.formats = ids; } }, { opt: 1, hint:`Recommended for this type: ${T.rec}. Leave all unticked to use it.` })}
+      <div class="irow2 asg-in${f.taskCount !== 'ai' ? '' : ' one'}">${ifield('Number of tasks', iselect('asgCountMode', [['ai', 'AI recommends'], ['set', 'Set a number']], f.taskCount === 'ai' ? 'ai' : 'set'), { opt: 1, for: 'asgCountMode' })}${f.taskCount !== 'ai' ? ifield('Tasks (1 to 40)', `<input id="asgCountN" class="input" type="number" min="1" max="40" value="${f.taskCount}">`, { for: 'asgCountN' }) : ''}</div>
+      <div class="irow2 asg-in${marksOn ? '' : ' one'}">${ifield('Marks', iselect('asgMarksMode', [['custom', 'Custom marks'], ['none', 'No marks']], f.marksMode), { opt: 1, for: 'asgMarksMode' })}${marksOn ? ifield('Total marks', `<input id="asgMarks" class="input" type="number" min="1" max="200" value="${f.marks}">`, { for: 'asgMarks' }) : ''}</div>
       ${marksOn ? asgToggle('asgRubric', 'Include rubric', 'Criteria with full, partial and not yet levels.', f.rubric) + asgToggle('asgStuMarks', 'Show marks in Student View', 'Off hides marks and the rubric from students.', f.studentMarks) : ''}
-      ${ifield('Additional instructions', `<textarea id="asgExtra" class="input" placeholder="Word limit, formatting, examples, restrictions, materials">${esc(f.extra)}</textarea>`, { opt: 1, for: 'asgExtra' })}</details>`,
+      ${ifield('Additional instructions', `<textarea id="asgExtra" class="input" placeholder="Word limit, formatting, examples, restrictions, materials">${esc(f.extra)}</textarea>`, { opt: 1, for: 'asgExtra' })}
+      ${idrField('Bloom’s levels', { id: 'asgBloom', multi: true, placeholder: 'Select Bloom’s levels', search: false, options: ASG_BLOOMS.map(b => ({ value: b, label: b })), selected: f.blooms || [], onChange: ids => { f.blooms = ids; } }, { opt: 1, hint: 'None chosen: levels are recommended from the assignment type and grade.' })}</details>`,
   ].join('');
   return ipanel({ formId: 'asgForm', title: 'Assignment generator', body, issue: asgIssue(f), genId: 'asgGen', genLabel: 'Generate assignment', wide: false,
     tool: 'assignment-generator' });
@@ -83,10 +84,13 @@ function asgBindForm() {
   $('#asgDiff').onchange = e => { f.difficulty = e.target.value; redraw(); };
   $('#asgTime').onchange = e => { if (e.target.value === 'custom') f.timeCustom = true; else { f.timeCustom = false; f.time = +e.target.value; } redraw(); };
   $('#asgTimeN')?.addEventListener('input', e => { f.time = +e.target.value; touch(); });
-  $$('[data-fmt]').forEach(i => i.onchange = () => { const v = i.dataset.fmt; f.formats = i.checked ? [...f.formats, v] : f.formats.filter(x => x !== v); redraw(); });
   $('#asgCountMode').onchange = e => { f.taskCount = e.target.value === 'ai' ? 'ai' : 8; redraw(); };
   $('#asgCountN')?.addEventListener('input', e => { f.taskCount = e.target.value; touch(); });
-  $('#asgMarksMode').onchange = e => { f.marksMode = e.target.value; redraw(); };
+  $('#asgMarksMode').onchange = e => { // PRD rows 10-12: turning marks on starts from the type's marks and rubric default, and shows marks in the Student View
+    f.marksMode = e.target.value;
+    if (f.marksMode === 'custom') { const T = asgType(f.type); f.marks = T.marks; f.rubric = T.rubric; f.studentMarks = true; }
+    redraw();
+  };
   $('#asgMarks')?.addEventListener('input', e => { f.marks = e.target.value; touch(); });
   $('#asgRubric')?.addEventListener('change', e => f.rubric = e.target.checked);
   $('#asgStuMarks')?.addEventListener('change', e => f.studentMarks = e.target.checked);

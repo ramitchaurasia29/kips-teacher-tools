@@ -19,7 +19,7 @@ function asgTaskHTML(t, teacher, d, tools) {
   const tool = '';
   const done = t.milestone ? (teacher ? `<span class="asg-date">by ${asgFmtDate(t.date)}</span>` : `<div class="asg-done"><i></i> Done. Finish by <b>${asgFmtDate(t.date)}</b></div>`) : '';
   const space = teacher ? '' : t.draw ? '<div class="asg-draw"><span>Draw here</span></div>' : alines(t.answer_lines);
-  return `<div class="asg-q"><div class="asg-ql"><b class="asg-qn">Q${t.n}</b><span class="asg-qt">${esc(t.text)}${teacher && t.milestone ? ' ' + done : ''}</span>${asgPill(t.marks, show)}${tool}</div>${opts}${tbl}${!teacher && t.milestone ? done : ''}${space}</div>`;
+  return `<div class="asg-q"><div class="asg-ql"><b class="asg-qn">Q${t.n}</b><span class="asg-qt">${esc(t.text)}${teacher && t.milestone ? ' ' + done : ''}</span>${asgPill(t.marks, show)}${teacher && t.bloom ? `<span class="asg-m asg-bl">${esc(t.bloom)}</span>` : ''}${tool}</div>${opts}${tbl}${!teacher && t.milestone ? done : ''}${space}</div>`;
 }
 function asgTasksHTML(d, teacher, tools) {
   const m = d.metadata, B = d.type_blocks, show = teacher ? m.marks_enabled : m.marks_in_student_view; let h = '';
@@ -37,16 +37,19 @@ function asgTasksHTML(d, teacher, tools) {
 
 /* ---------- Teacher sections 1-7 (§10.2) ---------- */
 function asgOverviewHTML(d) {
-  const m = d.metadata, kv = [['Title', asgTitle(d)], ['Difficulty', cap(m.difficulty)], ['Questions / tasks', m.task_count], ['Completion time', `${m.completion_minutes} minutes`], ['Submission date', asgFmtDate(m.due_date)], ['Total marks', m.marks_enabled ? m.total_marks : 'No marks']];
+  const m = d.metadata, used = ASG_BLOOMS.filter(b => d.sections.some(s => s.tasks.some(t => t.bloom === b))), missed = (m.blooms || []).filter(b => !used.includes(b));
+  const bloomTxt = (used.join(', ') || 'None') + (missed.length ? `. Not covered: ${missed.join(', ')}.` : '');   // PRD 10.2 #1: levels used, and any chosen level with no question
+  const kv = [['Title', asgTitle(d)], ['Difficulty', cap(m.difficulty)], ['Bloom’s levels', bloomTxt], ['Questions / tasks', m.task_count], ['Completion time', `${m.completion_minutes} minutes`], ['Submission date', asgFmtDate(m.due_date)], ['Total marks', m.marks_enabled ? m.total_marks : 'No marks']];
   return `<dl class="asg-kv">${kv.map(r => `<div><dt>${r[0]}</dt><dd>${esc(r[1])}</dd></div>`).join('')}<div class="wide"><dt>Objective</dt><dd>${esc(m.objective)}</dd></div></dl><div class="asg-sh">Expected learning outcomes</div><ul class="asg-ticks">${alist(d.outcomes)}</ul>`;
 }
 const asgDeliverableHTML = d => `<p>${esc(d.deliverable.text)}</p>${d.deliverable.length_guide.length ? asgTbl(['Part', 'Length'], d.deliverable.length_guide.map(x => `<tr><td class="lab">${esc(x.item)}</td><td>${esc(x.length)}</td></tr>`)) : ''}`;
 function asgGuidanceHTML(d) {                 // §10.2 #5: per question, expected answer or key points, accept also, marking points
   const tasks = d.sections.flatMap(s => s.tasks), on = d.metadata.marks_enabled;
-  if (!on) return `<ul class="asg-checklist">${tasks.map(t => `<li><b>Q${t.n}</b> ${esc(t.answer)}${t.accept_also ? ` <i>Accept also: ${esc(t.accept_also)}</i>` : ''}</li>`).join('')}</ul>`;
-  return asgTbl(['Q', 'Expected answer / key points', 'Accept also', 'Marking points'], tasks.map(t => {
+  const tm = d.metadata.assignment_type === 'chapter_revision' ? Object.fromEntries(d.type_blocks.revision.topic_map.map(x => [x.task, x.topic])) : null;   // Chapter revision: question -> topic, so the teacher sees what to reteach
+  if (!on) return `<ul class="asg-checklist">${tasks.map(t => `<li><b>Q${t.n}</b>${tm ? ` <i>(${esc(tm[t.n])})</i>` : ''} ${esc(t.answer)}${t.accept_also ? ` <i>Accept also: ${esc(t.accept_also)}</i>` : ''}</li>`).join('')}</ul>`;
+  return asgTbl(['Q', ...(tm ? ['Topic'] : []), 'Expected answer / key points', 'Accept also', 'Marking points'], tasks.map(t => {
     const ans = t.table?.answers ? t.table.answers.map((a, i) => `<div>${esc(t.table.rows[i][0])}: ${esc(a)}</div>`).join('') : esc(t.answer);
-    return `<tr><td class="lab">Q${t.n}</td><td>${ans}${t.format === 'mcq' && t.explain ? `<div class="asg-why">${esc(t.explain)}</div>` : ''}</td><td>${esc(t.accept_also || '–')}</td><td>${t.marking_points.map(p => `${esc(p.point)} (${p.marks})`).join('; ')}${t.partial_credit ? `<div class="asg-why">${esc(t.partial_credit)}</div>` : ''}</td></tr>`;
+    return `<tr><td class="lab">Q${t.n}</td>${tm ? `<td>${esc(tm[t.n])}</td>` : ''}<td>${ans}${t.format === 'mcq' && t.explain ? `<div class="asg-why">${esc(t.explain)}</div>` : ''}</td><td>${esc(t.accept_also || '–')}</td><td>${t.marking_points.map(p => `${esc(p.point)} (${p.marks})`).join('; ')}${t.partial_credit ? `<div class="asg-why">${esc(t.partial_credit)}</div>` : ''}</td></tr>`;
   }), 'gd');
 }function asgEvaluationHTML(d) {
   const ev = d.evaluation, m = d.metadata;
@@ -77,9 +80,10 @@ function asgStudentLearn(d) {
 }
 
 /* ---------- Section lists ---------- */
+const ASG_T_EMOJI = { t1: '📋', t2: '📝', t3: '🧩', t4: '📦', t5: '✅', t6: '📊', t7: '💡' };   // on the Teacher View section headings only (not in the Word copy)
 const ASG_T_TITLES = { t1: 'Assignment overview', t2: 'Student instructions', t3: 'Detailed tasks', t4: 'Expected deliverable', t5: 'Answer guidance', t6: 'Evaluation', t7: 'Teacher notes' };
 function asgTeacherSections(d) {
-  const secs = [['t1', asgOverviewHTML(d)], ['t2', `<ul class="asg-bul">${alist(d.instructions)}</ul>`], ['t3', asgTasksHTML(d, true, true)], ['t4', asgDeliverableHTML(d)], ['t5', asgGuidanceHTML(d)]];
+  const secs = [['t1', asgOverviewHTML(d)], ['t2', `<ol class="asg-bul">${alist(d.instructions)}</ol>`], ['t3', asgTasksHTML(d, true, true)], ['t4', asgDeliverableHTML(d)], ['t5', asgGuidanceHTML(d)]];
   if (d.metadata.marks_enabled) secs.push(['t6', asgEvaluationHTML(d)]);
   secs.push(['t7', asgNotesHTML(d)]);
   return secs.map(s => [s[0], ASG_T_TITLES[s[0]], s[1]]);
@@ -102,7 +106,7 @@ function asgTeacherHTML(d) {
   const summary = asgPlain || !(bad.length || warn.length) ? '' : `<div class="asg-sum no-print ${bad.length || warn.length ? 'warn' : ''}">${ic(bad.length || warn.length ? 'alert' : 'tick', 's')}<span>${bad.length ? `${bad.length} check${bad.length > 1 ? 's' : ''} need attention.` : ''}${warn.map(w => ' ' + esc(w)).join('')}</span></div>`;
   return `<article class="asg-teacher">${hero}${summary}${asgTeacherSections(d).map((s, i) => {
     const notes = bad.filter(c => CHECK_SECTION[c.id] === s[0]).map(c => `<div class="asg-secnote">${esc(c.note)}</div>`).join('');
-    return `<section class="asg-card" data-sec="${s[0]}"><div class="asg-ch"><span class="asg-n">${s[0].slice(1)}</span><h2>${esc(s[1])}</h2>${asgTools(s[0], s[1])}</div>${notes}<div class="asg-cb" data-body="${s[0]}">${asgBodyHTML(s[0], s[2])}</div></section>`;
+    return `<section class="asg-card" data-sec="${s[0]}"><div class="asg-ch"><span class="asg-n">${s[0].slice(1)}</span><h2>${asgPlain ? '' : `<span class="asg-em" aria-hidden="true">${ASG_T_EMOJI[s[0]] || ''}</span>`}${esc(s[1])}</h2>${asgTools(s[0], s[1])}</div>${notes}<div class="asg-cb" data-body="${s[0]}">${asgBodyHTML(s[0], s[2])}</div></section>`;
   }).join('')}<div class="asg-tfoot">Teacher View | ${esc(asgTitle(d))}</div></article>`;
 }
 
@@ -205,7 +209,16 @@ function asgBindOutput() {
   const D = asgDoc, rerender = () => { const y = $('#view').scrollTop; $('#view').innerHTML = asgOutputView(); asgBindOutput(); $('#view').scrollTop = y; };
   const autosave = () => { if ($('[data-body][contenteditable="true"]')) { D.changed = false; asgSaveDoc(); } }; // leaving while editing keeps the edits
   $('#asgBack').onclick = () => { autosave(); navigate('#/assignment-generator'); };
-  $$('[data-view]').forEach(b => b.onclick = () => { if (asgView === b.dataset.view) return; autosave(); asgView = b.dataset.view; rerender(); $('#view').scrollTo(0, 0); });
+  let snap = null;   // the document as it was when edit mode opened, so Discard can restore it (edits are written live on input)
+  const markOpen = () => { if (!editing()) snap = { edits: JSON.stringify(D.edits), version: D.version, changed: D.changed, dirty: D.dirty }; };
+  $$('[data-view]').forEach(b => b.onclick = async () => {
+    if (asgView === b.dataset.view) return;
+    if (editing()) {
+      const r = await unsavedModal(); if (r === 'cancel') return;
+      if (r === 'save') autosave(); else if (snap) Object.assign(D, { edits: JSON.parse(snap.edits), version: snap.version, changed: snap.changed, dirty: snap.dirty });
+    }
+    asgView = b.dataset.view; rerender(); $('#view').scrollTo(0, 0);
+  });
   const bodies = k => $$(`[data-body="${k}"]`);   // a Student View section can continue over several sheets
   /* Editing changes the CONTENT only: marks, Q numbers, section bars, option letters, table headers/labels and answer spaces stay fixed */
   const FIXED = '.asg-m,.asg-qn,.asg-sub-h,.asg-opts i,.asg-line,.asg-draw,.asg-done,.asg-date,th,td.lab';
@@ -217,7 +230,7 @@ function asgBindOutput() {
   $('#view').classList.remove('is-editing');
   $('#asgEdit').onclick = () => { // Edit -> Save: every section opens; Save stores the assignment and closes every open section
     if (editing()) { D.changed = false; asgSaveDoc(); rerender(); toast('Saved to My assignments'); return; }
-    $$('[data-body]').forEach(el => open(el, true));
+    markOpen(); $$('[data-body]').forEach(el => open(el, true));
     $('#view').classList.add('is-editing'); syncTop(); $('[data-body]')?.focus();
   };
   $$('[data-body]').forEach(el => el.addEventListener('keydown', e => { // one-line values (question text, options) stay one line so the layout cannot break
@@ -227,6 +240,7 @@ function asgBindOutput() {
   $$('[data-body]').forEach(el => el.addEventListener('input', () => { const k = el.dataset.body; D.edits[k] = bodies(k).map(asgSerialize).join(''); asgChanged(); }));
   $$('[data-edit]').forEach(b => b.onclick = () => { // pencil -> "tick Done" for that section
     const els = bodies(b.dataset.edit), on = els[0].contentEditable !== 'true';
+    if (on) markOpen();
     els.forEach(el => open(el, on));
     window.editUI.sec(b, on);
     if (on) els[0].focus();

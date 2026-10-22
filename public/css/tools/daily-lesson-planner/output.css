@@ -77,6 +77,7 @@
 .view-dlp .scols{display:grid;grid-template-columns:1fr 1fr;border-top:1px solid var(--border)}
 .view-dlp .scols>div{padding:12px var(--s2)}.view-dlp .scols>div+div{border-left:1px solid var(--border)}
 .view-dlp .scols ul{margin:0;padding-left:20px}.view-dlp .scols li{margin-bottom:6px}
+.view-dlp .ml.ml-n{text-transform:none;letter-spacing:.02em;font-size:14px}
 .view-dlp .ml.t,.view-dlp .ml.s{display:inline-block;padding:2px 10px;border-radius:var(--r-pill);margin-bottom:8px}
 .view-dlp .ml.t{background:var(--tint-rose);color:var(--accent-ink)}.view-dlp .ml.s{background:var(--tint-mint);color:#17674a}
 .view-dlp .rchips{display:flex;flex-wrap:wrap;gap:6px}
@@ -107,16 +108,11 @@
 .view-dlp .final .ml{color:var(--accent-ink)}
 
 /* edit mode: the document shows it is open for editing; fixed parts (labels, times, headers) are not editable */
-.view-dlp .dlp-doc.editing{outline:2px dashed #F59E0B;outline-offset:8px;border-radius:var(--r-card)}
-.view-dlp .dlp-doc.editing [contenteditable=true]{cursor:text;border-radius:6px;outline:1px dashed transparent;outline-offset:2px;transition:outline-color .12s,background .12s}
-.view-dlp .dlp-doc.editing [contenteditable=true]:hover{outline-color:#F3C677}
-.view-dlp .dlp-doc.editing [contenteditable=true]:focus{outline:2px solid #F59E0B;background:#FFFDF6}
-.view-dlp .dlp-doc.editing [contenteditable=false]{cursor:default}
+/* (editable-div fill, hover and selection come from the shared rules in editor-toolbar.css) */
 /* section Edit pencil: appears on hover (always on touch), turns into the red "Save" pill while that section is open */
 .view-dlp .dh2{display:flex;align-items:center}
 .view-dlp .dlp-sedit{margin-left:auto;width:32px;height:32px;opacity:0;transition:opacity .15s,background .15s}
 .view-dlp .dsec:hover .dlp-sedit,.view-dlp .dsec:focus-within .dlp-sedit,.view-dlp .dlp-sedit.on,.view-dlp .dlp-sedit:focus-visible{opacity:1}
-.view-dlp .dsec.sec-editing{outline:2px dashed #F59E0B;outline-offset:4px}
 @media (max-width:760px){.view-dlp .dlp-sedit{opacity:1}}
 @media print{.dlp-sedit{display:none!important}}
 

@@ -6,12 +6,13 @@ function draftsHTML(limit = 6) {
   return `<div class="section-title"><h3>Saved activities</h3></div><div class="draft-row">${l.map(d => `<button class="card draft" data-nav="#/activity-designer/open/${d.id}"><span class="ti">${ic('doc')}</span><span><b>${esc(d.data.title)}</b><small>${esc(d.data.meta.subject)} · ${esc(d.data.meta.grade)} · ${d.data.meta.duration} min${d.published ? ' · Shared' : ''}</small></span></button>`).join('')}</div>`;
 }
 
-const REQ = [['book', 'Book'], ['topic', 'Topic'], ['type', 'Activity type'], ['grouping', 'Grouping'], ['materials', 'Materials'], ['level', 'Learning level']];
+const REQ = [['book', 'Book'], ['chapter', 'Chapter'], ['topic', 'Topic'], ['type', 'Activity type'], ['grouping', 'Grouping'], ['materials', 'Materials'], ['level', 'Learning level']];
 const filled = k => k === 'materials' ? form.materials.length > 0 : !!form[k];
 
 /* first thing still missing (shown in the panel footer; Generate stays disabled until it is '') */
 function adIssue(f = form) {
   if (!f.book) return 'Please select a book';
+  if (!f.chapter) return 'Please select a chapter';
   if (!f.topic) return 'Please select a topic';
   if (BOOKS[f.book].noSource && !f.unverified && !f.fileName) return 'Please upload content or continue with unverified generation';
   if (!f.type) return 'Please select an activity type';
@@ -22,14 +23,16 @@ function adIssue(f = form) {
 }
 
 function formView() {
-  const f = form, b = BOOKS[f.book], topics = b ? b.topics : [];
+  const f = form, b = BOOKS[f.book], chapters = b ? b.chapters : [], topics = chapters.find(c => c.title === f.chapter)?.topics || [];
   const src = !b ? null
     : b.noSource ? ['warn', 'alert', `Source content for this book isn’t available yet. Upload your own material below, or continue with <b>unverified general knowledge</b> – the result won’t be marked as textbook-aligned.<label style="display:flex;gap:8px;margin-top:8px;font-weight:600"><input type="checkbox" id="unverified" ${f.unverified ? 'checked' : ''}> Continue with unverified generation</label>`]
       : null;
   const typeDesc = (TYPES.find(t => t[0] === f.type) || [])[2];
   const body = [
     b ? ibook(f.book, `${b.subject} · ${b.board}`) + ilocked('Grade', b.grade) : '',
-    idrField('Topic', { id: 'adTopic', placeholder: 'Select a topic', searchPlaceholder: 'Search topics', options: topics.map(t => ({ value: t, label: t })), selected: f.topic ? [f.topic] : [], empty: 'No topics for this book',
+    idrField('Chapter', { id: 'adChapter', placeholder: 'Select a chapter', searchPlaceholder: 'Search chapters', options: chapters.map(c => ({ value: c.title, label: c.title })), selected: f.chapter ? [f.chapter] : [], empty: 'No chapters for this book',
+      onChange: ([c]) => { if (c !== form.chapter) Object.assign(form, { chapter: c, topic: '' }); adRedraw(); } }, { req: 1 }),
+    idrField('Topic', { id: 'adTopic', placeholder: f.chapter ? 'Select a topic' : 'Select a chapter first', searchPlaceholder: 'Search topics', disabled: !f.chapter, options: topics.map(t => ({ value: t, label: t })), selected: f.topic ? [f.topic] : [], empty: 'No topics in this chapter',
       onChange: ([t]) => { form.topic = t; adRedraw(); } }, { req: 1 }),
     src ? `<div class="source ${src[0]}">${ic(src[1])}<div>${src[2]}</div></div>` : '',
     ifield('Activity type', iselect('type', TYPES.map(t => t[0]), f.type, 'Select activity type'), { req: 1, for: 'type', hint: typeDesc }),
@@ -38,7 +41,7 @@ function formView() {
     ifield('Duration', iselect('duration', DURATIONS.map(d => [d, d + ' minutes']), f.duration, 'Select duration'), { req: 1, for: 'duration' }),
     ifield('Available materials', ilist(MATERIALS.map(m => ({ label: m, checked: f.materials.includes(m), attrs: `data-mat="${esc(m)}"` }))), { req: 1, hint: 'Select all that apply' }),
     ifield('Learning level', iselect('level', LEVELS, f.level, 'Select learning level'), { req: 1, for: 'level' }),
-    idrField('Bloom’s levels', { id: 'adBloom', multi: true, placeholder: 'Select Bloom’s levels', searchPlaceholder: 'Search levels', options: AD_BLOOMS.map(x => ({ value: x, label: x })), selected: f.blooms || [], onChange: ids => { form.blooms = ids; } }, { opt: 1, hint: 'None selected: AI recommends from the activity type and grade.' }),
+    idrField('Bloom’s levels', { id: 'adBloom', multi: true, placeholder: 'Select Bloom’s levels', search: false, options: AD_BLOOMS.map(x => ({ value: x, label: x })), selected: f.blooms || [], onChange: ids => { form.blooms = ids; } }, { opt: 1, hint: 'None selected: AI recommends from the activity type and grade.' }),
     ifield('Learning objective', `<textarea id="objective" class="input" placeholder="Optional: e.g. Understand how filtration separates insoluble solids from liquids">${esc(f.objective)}</textarea>${f.topic ? `<div class="asg-sug">${adSuggestions(f).map((s, i) => `<button type="button" class="asg-chip" data-sug="${i}">${esc(s)}</button>`).join('')}</div>` : ''}`, { opt: 1, for: 'objective' }),
     ifield('Additional instructions', `<textarea id="extra" class="input" placeholder="Optional: e.g. Avoid heating or special equipment">${esc(f.extra)}</textarea>`, { opt: 1, for: 'extra' }),
     ifield('Upload your own content', `<label class="drop"><input type="file" id="file" accept=".pdf,.doc,.docx,.txt">${ic('upload')}<b>${f.fileName ? esc(f.fileName) : 'Click to upload'}</b><div class="hint">PDF, DOCX or TXT – the activity will be built from your document.</div></label>`, { opt: 1 }),
@@ -50,7 +53,7 @@ function formView() {
 const adBooks = () => Object.entries(BOOKS).map(([k, b]) => ({ id: k, grade: +b.grade.replace(/\D/g, ''), subject: b.subject, title: k, board: b.board }));
 function adPickBook(b) {
   if (form.book === b.id) return;
-  form.book = b.id; form.topic = ''; form.unverified = false;
+  form.book = b.id; form.chapter = ''; form.topic = ''; form.unverified = false;
 }
 
 function adRedraw() { ipRedraw(formView(), bindForm); }

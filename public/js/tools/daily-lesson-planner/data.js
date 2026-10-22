@@ -20,8 +20,10 @@ const DLP_CATALOGUE = [
   { id: 'g7sci', grade: 7, subject: 'Science', chapters: [{ title: 'Nutrition in Plants', topics: ['Photosynthesis', 'Modes of nutrition'] }] },
 ];
 function dlpTopics(grade, bookId) {
-  return DLP_CATALOGUE.filter(b => (!grade || b.grade === +grade) && (!bookId || b.id === bookId)).flatMap(b => b.chapters.flatMap((c, ci) => c.topics.map((t, ti) => ({ key: `${b.id}|${ci}|${ti}`, grade: b.grade, subject: b.subject, chapter: c.title, title: t }))));
+  return DLP_CATALOGUE.filter(b => (!grade || b.grade === +grade) && (!bookId || b.id === bookId)).flatMap(b => b.chapters.flatMap((c, ci) => c.topics.map((t, ti) => ({ key: `${b.id}|${ci}|${ti}`, chapterKey: `${b.id}|${ci}`, grade: b.grade, subject: b.subject, chapter: c.title, title: t }))));
 }
+/* the chapters of the same book(s) dlpTopics covers: the Chapters dropdown, and the filter that decides which topics are offered */
+const dlpChapters = (grade, bookId) => DLP_CATALOGUE.filter(b => (!grade || b.grade === +grade) && (!bookId || b.id === bookId)).flatMap(b => b.chapters.map((c, ci) => ({ key: `${b.id}|${ci}`, title: c.title })));
 const dlpTopicByKey = k => dlpTopics().find(t => t.key === k);
 
 /* ---------- Topic knowledge for the mock (the real tool retrieves this from the book / reference document) ---------- */

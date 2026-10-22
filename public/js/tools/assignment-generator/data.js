@@ -6,6 +6,9 @@
 
 const ASG_DIFFS = ['Easy', 'Medium', 'Hard', 'Mixed'];
 const ASG_TIMES = [15, 30, 45, 60];
+const ASG_BLOOMS = ['Remembering', 'Understanding', 'Applying', 'Analyzing', 'Evaluating', 'Creating'];
+/* none chosen: levels recommended from the type (indexes into ASG_BLOOMS); below Grade 5 only the first two */
+const ASG_BLOOM_AI = { practice_worksheet: [0, 1, 2], real_life_application: [1, 2, 3], research_task: [1, 3, 4], project: [2, 3, 5], essay_creative_writing: [1, 2, 5], chapter_revision: [0, 1, 2] };
 const ASG_FORMATS = [['short', 'Short answer'], ['long', 'Long answer'], ['mcq', 'MCQ'], ['case', 'Case study'], ['diagram', 'Diagram-based'], ['open', 'Open-ended'], ['practical', 'Practical task'], ['mixed', 'Mixed format']];
 
 /* §6.1 type catalogue: defaults for time, marks and rubric */
@@ -147,7 +150,7 @@ function asgMeta(c, cnt) {
     assignment_type: f.type, type_label: asgTypeLabel(f.type, book.grade), objective: f.objective.trim() || asgSuggestions(book, c.tp)[0], difficulty: f.difficulty.toLowerCase(),
     completion_minutes: c.minutes, due_date: f.dueDate, task_formats: f.formats.slice(), task_count: cnt.count, task_count_source: cnt.source,
     marks_enabled: c.marksOn, total_marks: c.total, rubric: c.marksOn && !!f.rubric, marks_in_student_view: c.marksOn && !!f.studentMarks,
-    additional_instructions: f.extra.trim(), source_status: status, assignment_version: 1 };
+    blooms: (f.blooms || []).slice(), additional_instructions: f.extra.trim(), source_status: status, assignment_version: 1 };
 }
 
 /* ---------- Task building blocks ---------- */
@@ -294,6 +297,9 @@ function asgLines(t, marksOn) {
 function asgFinish(d, c) {
   const all = []; let n = 0;
   d.sections.forEach(s => s.tasks.forEach(t => { t.n = ++n; t.objective_id = 'LO1'; all.push(t); }));
+  /* Bloom's level per task, rising across the assignment: only the chosen levels (each used at least once when the count allows), else the type/grade recommendation */
+  const chosen = ASG_BLOOMS.filter(b => (c.f.blooms || []).includes(b)), pool = chosen.length ? chosen : (ASG_BLOOM_AI[c.f.type] || [0, 1, 2]).slice(0, c.grade < 5 ? 2 : 3).map(i => ASG_BLOOMS[i]);
+  all.forEach((t, i) => t.bloom = pool[Math.floor(i * pool.length / all.length)]);
   if (c.marksOn) { const ms = largestRemainder(all.map(t => t.w), c.total); all.forEach((t, i) => t.marks = ms[i]); }
   all.forEach(t => { t.marking_points = asgPoints(t); t.answer_lines = asgLines(t, c.marksOn); delete t.w; });
   d.sections.forEach(s => s.marks = s.tasks.reduce((a, t) => a + t.marks, 0));
