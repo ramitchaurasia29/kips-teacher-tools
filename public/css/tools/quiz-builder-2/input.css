@@ -1,0 +1,17 @@
+/* Quiz Builder 2.0 - INPUT: steppers, question-type / Bloom chips and the difficulty buttons (prefixed qb2- so they cannot affect other tools) */
+.qb2-step{display:flex;align-items:center;gap:8px}
+.qb2-step .input{width:80px;height:42px;padding:0 6px;text-align:center;font-size:15px;font-weight:500;-moz-appearance:textfield}
+.qb2-step .input::-webkit-outer-spin-button,.qb2-step .input::-webkit-inner-spin-button{-webkit-appearance:none;margin:0}
+.qb2-sb{flex:none;width:40px;height:40px;border:1px solid #e5e7ee;border-radius:10px;background:#fff;font:600 20px/1 var(--font);color:var(--ink);cursor:pointer;transition:.15s}
+.qb2-sb:hover:not(:disabled){border-color:var(--red);color:var(--red-700);background:var(--red-50)}
+.qb2-sb:disabled{color:#c3c6d2;cursor:not-allowed;background:#fafafa}
+.qb2-range{margin-left:4px;font-size:12.5px;color:var(--ink-3)}
+.qb2-chips{display:grid;grid-template-columns:1fr 1fr;gap:8px 10px}
+.qb2-chip{display:flex;align-items:center;justify-content:center;gap:6px;min-height:34px;padding:6px 12px;border:1px solid #dfe1e8;border-radius:99px;background:#fff;font:500 12.5px var(--font);color:var(--ink-2);cursor:pointer;transition:.15s}
+.qb2-chip:hover{border-color:var(--red);background:var(--red-50)}
+.qb2-chip.on{border-color:var(--red);color:var(--red-700);background:#fff;font-weight:600}
+.qb2-chip .i{width:12px;height:12px;stroke-width:3}
+.qb2-diffs{display:grid;grid-template-columns:repeat(3,1fr);gap:10px}
+.qb2-diff{min-height:46px;border:2px solid #e5e7ee;border-radius:14px;background:#fff;font:500 12.5px var(--font);color:var(--ink-2);cursor:pointer;transition:.15s}
+.qb2-diff:hover{border-color:var(--red-200)}
+.qb2-diff.on{border-color:var(--red);color:var(--red-700);font-weight:600}

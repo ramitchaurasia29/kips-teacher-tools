@@ -1,0 +1,108 @@
+/* Case Study Builder 2.0 - OUTPUT: Student (A4 paper) / Teacher view of one case study. Scoped to #view.view-cs2 / prefixed cs2- so it cannot affect other tools. */
+.cs2-wrap{max-width:900px;margin:0 auto;padding:0 28px 90px;color:#1b1e2b}
+
+/* heading block */
+#view.view-cs2 h1.cs2-qh{margin:8px 0 0;text-align:center;font:700 28px/1.2 var(--font);letter-spacing:.01em;color:#111}
+.cs2-sheet{display:grid;gap:14px;margin:22px 0 22px;font:700 15px/1.3 var(--font);color:#111}
+.cs2-sheet>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.cs2-sheet>.r2,.cs2-sheet>.r3{display:grid;grid-template-columns:1fr 1fr 1fr}.cs2-sheet>.r2 span:nth-child(2),.cs2-sheet>.r3 span:nth-child(2){justify-self:center}.cs2-sheet>.r2 span:nth-child(3),.cs2-sheet>.r3 span:nth-child(3){justify-self:end}
+.cs2-ul{display:inline-block;border-bottom:2px solid #111;height:14px;vertical-align:baseline}
+.cs2-ul.w1{width:210px}.cs2-ul.w2{width:90px}.cs2-ul.w3{width:80px}
+#view.view-cs2 h2.cs2-title{margin:30px 0 0;font:700 36px/1.15 var(--font);letter-spacing:-.015em;color:#B01E3A}
+.cs2-meta{margin:10px 0 0;font:13.5px/1.5 var(--font);color:#626778}
+
+/* Teacher view: the settings it was built from, then a question-number bar */
+.cs2-sum{display:grid;gap:18px;margin:26px 0 0}
+.cs2-sl{margin-bottom:8px;font:600 12.5px var(--font);letter-spacing:.06em;text-transform:uppercase;color:#626778}
+.cs2-chips{display:flex;flex-wrap:wrap;gap:8px}
+.cs2-sc{padding:9px 16px;border-radius:99px;background:#EFEFF3;font:500 15px/1.3 var(--font);color:#1b1e2b}
+.cs2-qchips{position:sticky;top:var(--cs2-top,64px);z-index:30;display:flex;flex-wrap:wrap;gap:8px;margin:0;padding:12px 0;max-height:140px;overflow-y:auto;background:#fff;border-bottom:1px solid #E8E9EE}
+.cs2-qc{min-width:32px;height:32px;padding:0 8px;border:0;border-radius:9px;background:#EFEFEF;font:600 12.5px var(--font);color:#555;cursor:pointer;transition:.15s}
+.cs2-qc:hover{background:#E4E4E4}
+.cs2-bar+.cs2-qchips{margin-top:12px}
+.cs2-tag{display:block;margin:0 0 6px;font-size:12px;color:#626778}
+.cs2-bar:has(+.cs2-qchips){border-bottom:0;padding-bottom:0}
+
+/* sections */
+.cs2-sec{margin-top:30px}
+#view.view-cs2 h2.cs2-st{margin:0;font:600 19px/1.3 var(--font);color:#1b1e2b}
+.cs2-st span{color:#E04158}
+.cs2-bar{display:flex;align-items:baseline;justify-content:space-between;gap:16px;padding-bottom:12px;border-bottom:1px solid #E8E9EE}
+.cs2-cnt{font-size:13px;color:#626778}
+.cs2-scn{margin-top:14px;padding:20px 28px;border-radius:22px;background:#F5F5F5}
+.cs2-scn p{margin:0;font:15.5px/1.75 var(--font);color:#1b1e2b}.cs2-scn p+p{margin-top:14px}
+.cs2-ins{display:grid;grid-template-columns:120px minmax(0,1fr);gap:16px;margin-top:22px;font:15px/1.65 var(--font)}
+.cs2-il{font-size:13.5px;color:#626778;padding-top:2px}
+.cs2-ins p{margin:0;color:#1b1e2b}
+
+/* Student view: A4 sheets on a grey canvas */
+.cs2-wrap.paper{max-width:none;padding:24px 0 70px;background:#EEF0F4;min-height:calc(100vh - 130px)}
+.cs2-pages{display:flex;flex-direction:column;align-items:center;gap:22px}
+.cs2-page{position:relative;flex:none;width:210mm;min-height:297mm;padding:16mm 18mm 9mm;background:#fff;border:1px solid #D9DCE5;border-radius:6px;box-shadow:0 1px 2px rgba(20,22,35,.04),0 8px 24px rgba(20,22,35,.08);display:flex;flex-direction:column}
+.cs2-pbody{flex:1 1 auto;min-height:0}.cs2-pbody.fix{flex:none;height:262mm}
+.cs2-pfoot{flex:none;margin-top:10px;display:flex;justify-content:space-between;padding-top:5pt;border-top:1px solid #E3E5EA;font:9pt var(--font);color:#6B7084}
+.cs2-pages .cs2-sheet{gap:10px;font-size:14px;margin-bottom:0}
+.cs2-pages .cs2-sec{margin-top:22px}
+.cs2-pages h2.cs2-title{font-size:30px}
+.cs2-pages .cs2-bar{padding-bottom:8px}
+.cs2-pages .cs2-scn{padding:16px 24px}.cs2-pages .cs2-scn p{font-size:14.5px;line-height:1.65}
+@media (max-width:900px){.cs2-pages{zoom:.8}}
+@media (max-width:780px){.cs2-pages{zoom:.65}}
+@media (max-width:640px){.cs2-pages{zoom:.5}}
+@media (max-width:520px){.cs2-pages{zoom:.4}}
+
+/* questions */
+.cs2-qs{list-style:none;margin:0;padding:0}
+.cs2-q{display:grid;grid-template-columns:60px minmax(0,1fr);padding:24px 0;border-bottom:1px solid #E8E9EE}
+.cs2-n{font:500 24px/1.2 var(--font);color:#E04158}
+.cs2-b{position:relative;min-width:0}
+.cs2-m{position:absolute;top:0;right:0;font-size:12px;color:#626778}
+.cs2-t{margin:0;padding-right:72px;font:600 15.5px/1.65 var(--font);color:#1b1e2b}
+.cs2-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px;margin-top:14px;font-size:14.5px;color:#626778}
+.cs2-o{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.cs2-l{flex:none;display:grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:#EFEFEF;font:600 11px var(--font);color:#1b1e2b}
+.cs2-o.ok{color:#1b1e2b;font-weight:600}
+.cs2-o.ok .cs2-l{background:#EE4259;color:#fff}.cs2-o.ok .cs2-l .i{width:12px;height:12px;stroke-width:3}
+.cs2-lines{margin-top:12px}
+.cs2-line{border-bottom:1px solid #b9bdc9;height:34px}
+.cs2-pages .cs2-q{grid-template-columns:44px minmax(0,1fr);padding:15px 0;border-bottom:0}
+.cs2-pages .cs2-n{font-size:21px}
+.cs2-pages .cs2-t{font-size:14.5px;line-height:1.55}
+.cs2-pages .cs2-opts{margin-top:10px;gap:6px 24px;font-size:14px}
+
+/* answers (Teacher view) */
+.cs2-answ{margin-top:14px}
+.cs2-ans{padding:16px 20px;border-radius:16px;background:#ED4459;color:#fff;font-size:14px;line-height:1.65}
+.cs2-ans b{font-weight:700}.cs2-al+.cs2-al{margin-top:4px}
+.cs2-ans p{margin:8px 0 0;font-weight:400}.cs2-al+p{margin-top:10px}
+.cs2-ans p:first-child{margin-top:0}
+
+/* edit-time helper: + Add line (only while a value in that question is open) */
+#view.view-cs2 .ed-tools{display:none;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0 0;font:500 12.5px var(--font);color:#8b90a1}
+#view.view-cs2 .cs2-q:has(.ed[contenteditable=true]) .ed-tools{display:flex}
+#view.view-cs2 .ed-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 14px var(--font);color:#268EFF;cursor:pointer}
+#view.view-cs2 .ed-link:hover{color:#1773DB;text-decoration:underline}
+
+/* edit state of the values (pale-blue box when open) */
+#view.view-cs2 .ed[contenteditable=true]{box-sizing:border-box;padding:2px 8px;border:1px solid #D5E8FF;border-radius:8px;background:#F2F8FF;color:#171717;outline:0;cursor:text;caret-color:#268EFF}
+#view.view-cs2 .ed.ml[contenteditable=true]{display:block;white-space:pre-line}   /* a wrapping paragraph is ONE box, not one box per line */
+#view.view-cs2 .cs2-ans .ed[contenteditable=true]{color:#171717;font-weight:500}
+#view.view-cs2 h2.cs2-title .ed[contenteditable=true]{display:inline-block;font-size:.7em}
+
+@media (max-width:720px){
+  .cs2-wrap{padding:14px 16px 70px}#view.view-cs2 h2.cs2-title{font-size:28px}
+  .cs2-q{grid-template-columns:40px minmax(0,1fr)}.cs2-opts{grid-template-columns:1fr}.cs2-ins{grid-template-columns:1fr;gap:4px}
+}
+@page cs2stu{size:A4;margin:0}
+@media print{
+  .cs2-wrap.paper{background:#fff;padding:0;min-height:0}
+  .cs2-pages{page:cs2stu;display:block;zoom:1!important}
+  .cs2-page{border:0;border-radius:0;box-shadow:none;height:296.5mm;min-height:0;overflow:hidden;break-after:page}
+  .cs2-page:last-child{break-after:auto}
+  @page{size:A4;margin:18mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.toast,.no-print,.ed-tools{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}body{background:#fff}
+  .cs2-wrap{padding:0;max-width:none}.cs2-q,.cs2-answ{break-inside:avoid}
+  #view.view-cs2 .ed[contenteditable=true]{padding:0;border-color:transparent;background:none}
+}

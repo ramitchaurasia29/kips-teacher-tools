@@ -5,9 +5,15 @@
 .ag-out{max-width:900px;margin:0 auto;padding:24px 28px 80px}
 /* the paper: Arial 12pt, A4 portrait, 20 mm margins (§10.7) */
 .sheet-paper{position:relative;width:100%;max-width:210mm;margin:0 auto;background:#fff;border:1px solid var(--line-2);box-shadow:0 1px 3px rgba(29,33,64,.08);padding:20mm;font-family:Arial,Helvetica,sans-serif;font-size:12pt;line-height:1.45;color:#111}
+.sheet-paper.teacher{border:0;box-shadow:none}
 .ph{text-align:center;font-weight:700;margin-bottom:14pt}
 .ph-school{font-size:16pt}.ph-title{font-size:14pt;margin-bottom:2pt}
 .ph-teacher{font-size:11pt;color:#1E6B5C;margin:2pt 0 6pt}
+.tin{margin:-4pt 0 10pt;font-family:Inter,Arial,sans-serif}
+.tin-g{margin-top:10pt}
+.tin-l{font-size:9pt;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:#6B7280;margin-bottom:5pt}
+.tin-c{display:flex;flex-wrap:wrap;gap:6pt}
+.tin-chip{font-size:10pt;font-weight:500;color:#1F2937;background:#F1F1F6;border-radius:999px;padding:3pt 10pt}
 .ph-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-weight:600;font-size:11.5pt;margin-top:6pt;text-align:left}
 .psec{margin-top:30pt}
 .sec-line{display:flex;justify-content:space-between;gap:12px;margin-bottom:14pt}
@@ -48,3 +54,32 @@
   .pfoot{display:block;position:fixed;bottom:-14mm;left:0;right:0;text-align:left;font-size:9pt;color:#555}
   .psec{break-inside:auto}.tbox{break-inside:avoid}
 }
+
+/* Kept outside the .view-ag { ... } nesting block above so the #view id selector keeps its weight over the shared editor rules */
+/* Edit state of the values (spans): pale-blue box when open, stronger blue outline on the one being typed in.
+   The box takes its own 10px side room (no overlap with labels such as "(a)") and its height stays inside the row pitch, so neighbouring boxes never touch.
+   The active 2px edge is the 1px border plus a 1px inset shadow, so the box size is identical in both states. */
+#view.view-ag .ed[contenteditable=true]{display:inline-block;max-width:100%;vertical-align:top;box-sizing:border-box;padding:3px 10px;margin:0;border:1px solid #D5E8FF;border-radius:10px;background:#F2F8FF;color:#171717;outline:0;box-shadow:none;cursor:text;caret-color:#268EFF;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-color .12s,border-color .12s,box-shadow .12s}
+#view.view-ag .ed.ml[contenteditable=true]{padding:1px 10px}
+#view.view-ag .ed[contenteditable=true]:hover{outline:0}
+#view.view-ag .ed[contenteditable=true]:focus{background:#EAF5FF;border-color:#268EFF;box-shadow:inset 0 0 0 1px #268EFF;outline:0}
+@media print{#view.view-ag .ed[contenteditable=true],#view.view-ag .ed.ml[contenteditable=true]{padding:0;margin:0;border-color:transparent;background:none;box-shadow:none}}
+
+/* Edit-time helpers under a question (+ Add line, blank length, Change image): visible only while that question is open for editing, never printed */
+#view.view-ag .ed-tools{display:none;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0 6px;font:500 12.5px var(--font);color:var(--ink-3)}
+#view.view-ag .q:has(.ed[contenteditable=true]) .ed-tools{display:flex}
+#view.view-ag .ed-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 14px var(--font);color:#268EFF;cursor:pointer}
+#view.view-ag .ed-link:hover{color:#1773DB;text-decoration:underline}
+#view.view-ag .ed-link:focus-visible{outline:2px solid #268EFF;outline-offset:2px;border-radius:4px}
+#view.view-ag img.dg.up{max-width:100%;max-height:260px;width:auto;height:auto;object-fit:contain;background:#fff}
+
+/* Image edit: on hover (edit mode only) a round pencil appears at the image's top-right with an "Edit image" tooltip; it replaces the image, there is no delete */
+#view.view-ag .dgwrap{position:relative;width:fit-content;max-width:100%}
+#view.view-ag .dg-edit{display:none;position:absolute;z-index:30;top:8px;right:8px;width:40px;height:40px;padding:0;border-radius:50%;background:#EAF5FF;border:1px solid #D5E8FF;color:#268EFF;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s,background .15s}
+#view.view-ag .q:has(.ed[contenteditable=true]) .dg-edit{display:flex}
+#view.view-ag .dgwrap:hover .dg-edit,#view.view-ag .dg-edit:focus-visible{opacity:1}
+#view.view-ag .dg-edit:hover{background:#D5E8FF}
+#view.view-ag .dg-edit:focus-visible{outline:2px solid #268EFF;outline-offset:2px}
+#view.view-ag .dg-edit::after{content:"Edit image";position:absolute;bottom:calc(100% + 10px);right:-4px;padding:6px 12px;border-radius:8px;background:#1d2130;color:#fff;font:600 13px var(--font);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-ag .dg-edit::before{content:"";position:absolute;bottom:calc(100% + 4px);right:14px;border:6px solid transparent;border-top-color:#1d2130;border-bottom:0;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-ag .dg-edit:hover::after,#view.view-ag .dg-edit:hover::before,#view.view-ag .dg-edit:focus-visible::after,#view.view-ag .dg-edit:focus-visible::before{opacity:1}

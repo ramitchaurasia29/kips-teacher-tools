@@ -3,6 +3,7 @@
 
 /* ---------- Diagrams on white / transparent backgrounds only (§10.6) ---------- */
 function diagramSVG(d) {
+  if (d.kind === 'upload') return `<img class="dg up" src="${d.src}" alt="${esc(d.alt)}">`;   // an image the teacher uploaded in place of the generated one
   const S = '#222', bg = d.background === 'white' ? '<rect width="100%" height="100%" fill="#fff"/>' : '', sp = d.spec;
   const wrap = (w, h, inner) => `<svg class="dg" viewBox="0 0 ${w} ${h}" width="${w}" height="${h}" role="img" aria-label="${esc(d.alt)}">${bg}${inner}</svg>`;
   if (d.kind === 'base_ten') {
@@ -49,11 +50,14 @@ function optionsHTML(q, teacher) {
 }
 function questionHTML(s, q, teacher, paper) {
   const topic = paper.chapters.flatMap(c => c.topics).find(t => t.id === q.topic_id);
-  const tools = `<div class="qtools no-print"><span class="qtag">${esc(topic?.title || '')} · ${cap(q.difficulty)} · ${esc(q.bloom)}</span><button class="icon-btn" data-edit="${q.id}" title="Edit" aria-label="Edit question ${q.number}">${ic('edit', 's')}</button></div>`;
-  const dia = q.diagram ? `<div class="dgwrap">${diagramSVG(q.diagram)}</div>` : '';
+  const tools = `<div class="qtools no-print"><button class="icon-btn" data-edit="${q.id}" title="Edit" aria-label="Edit question ${q.number}">${ic('edit', 's')}</button></div>`;
+  /* edit-time helpers, shown only while this question is open for editing and never printed: change the image (replace only), lengthen the blank, add answer lines */
+  const dia = q.diagram ? `<div class="dgwrap" data-dg="${q.id}"><span class="dg-img">${diagramSVG(q.diagram)}</span><button type="button" class="dg-edit no-print" data-pick="${q.id}" aria-label="Edit image">${ic('edit', 's')}</button><input type="file" accept="image/*" data-newimg="${q.id}" hidden></div>` : '';   // hover pencil on the image (edit mode only): replace it, never remove it
   if (s.type === 'match') return ''; // rendered as a table
-  const tail = teacher ? teacherBox(q) : (q.lines ? lines(q.lines) : '');
-  return `<div class="q" data-q="${q.id}">${tools}<div class="qrowp"><span class="qn">${q.number}.</span><div class="qbody">${dia}<div class="qtext">${ed(q.id, 'text', q.text)}${s.type === 'tf' ? ' &nbsp;(True / False)' : ''}</div>${s.type === 'mcq' ? optionsHTML(q, teacher) : ''}${tail}</div></div></div>`;
+  const blankTool = s.type === 'fill' && /_{3,}/.test(q.text) ? `<div class="ed-tools no-print"><span>Blank length</span><button type="button" class="ed-link" data-blank="-1" data-bq="${q.id}" aria-label="Shorter blank">−</button><button type="button" class="ed-link" data-blank="1" data-bq="${q.id}" aria-label="Longer blank">+</button></div>` : '';
+  const lineTool = `<div class="ed-tools no-print"><button type="button" class="ed-link" data-line="1" data-lq="${q.id}">+ Add line</button></div>`;
+  const tail = teacher ? teacherBox(q) : (q.lines ? `<div class="alines" data-lines="${q.id}" data-n="${q.lines}">${lines(q.lines)}</div>${lineTool}` : '');
+  return `<div class="q" data-q="${q.id}">${tools}<div class="qrowp"><span class="qn">${q.number}.</span><div class="qbody">${dia}<div class="qtext">${ed(q.id, 'text', q.text)}${s.type === 'tf' ? ' &nbsp;(True / False)' : ''}</div>${blankTool}${s.type === 'mcq' ? optionsHTML(q, teacher) : ''}${tail}</div></div></div>`;
 }
 function matchHTML(s, teacher, paper) {
   const qs = s.questions;
@@ -62,17 +66,23 @@ function matchHTML(s, teacher, paper) {
   return `<table class="mt"><thead><tr><th>Column A</th><th class="gap"></th><th>Column B</th></tr></thead><tbody>${rows}</tbody></table>
   ${teacher ? `<div class="tbox"><div><span class="tlab">Answer:</span> ${qs.map(q => `${q.number} → (${'abcdefghij'[s.column_b.indexOf(q.answer)]}) ${esc(q.answer)}`).join('; ')}</div><div><span class="tlab">Solution:</span> ${qs.map(q => `${q.number}. ${esc(q.text)} → ${esc(q.answer)}`).join('<br>')}</div>${notes}</div>` : ''}`;
 }
+/* Teacher view only: the inputs the paper was built from, shown as chips under the header */
+function teacherInputsHTML(paper) {
+  const m = paper.metadata, group = (label, items) => items.length ? `<div class="tin-g"><div class="tin-l">${label}</div><div class="tin-c">${items.map(i => `<span class="tin-chip">${esc(i)}</span>`).join('')}</div></div>` : '';
+  const blooms = m.blooms_selected.length ? m.blooms_selected : Object.keys(m.blooms_resolved).filter(b => m.blooms_resolved[b] > 0);
+  return `<div class="tin">${group('Chapters', paper.chapters.map(c => c.title))}${group('Topics', paper.chapters.flatMap(c => c.topics.map(t => t.title)))}${group('Bloom’s levels', blooms)}${group('Question types', [...new Set(paper.sections.map(s => agType(s.type)?.label).filter(Boolean))])}</div>`;
+}
 function agPaperHTML(paper, teacher) {
   const m = paper.metadata;
-  const head = `<div class="ph">${m.school ? `<div class="ph-school">${esc(m.school)}</div>` : ''}<div class="ph-title">${esc(m.title)}</div>${teacher ? '<div class="ph-teacher">Teacher view: answers and solutions</div>' : ''}
+  const head = `<div class="ph">${m.school ? `<div class="ph-school">${esc(m.school)}</div>` : ''}<div class="ph-title">${esc(m.title)}</div>${teacher ? '<div class="ph-teacher">Teacher view: answers and solutions</div>' : `
     <div class="ph-row"><span>Name of the student: ____________________</span><span>Roll No. ________</span></div>
     <div class="ph-row"><span>Class: ${esc(m.grade)}</span><span>Section: ______</span><span>Time: ${m.time_minutes} min</span></div>
-    <div class="ph-row"><span>Subject: ${esc(m.subject)}</span><span>Marks: ${m.total_marks}</span></div></div>`;
+    <div class="ph-row"><span>Subject: ${esc(m.subject)}</span><span>Marks: ${m.total_marks}</span></div>`}</div>${teacher ? teacherInputsHTML(paper) : ''}`;
   const secs = paper.sections.map(s => `<section class="psec"><div class="sec-line"><b>${s.letter}. ${esc(s.instruction)}</b><b>${s.notation}</b></div>
     ${s.help_box ? `<div class="help-box">${s.help_box.map(esc).join(' &nbsp;·&nbsp; ')}</div>` : ''}
     ${s.type === 'match' ? matchHTML(s, teacher, paper) : s.questions.map(q => questionHTML(s, q, teacher, paper)).join('')}</section>`).join('');
-  return `<article class="sheet-paper ${teacher ? 'teacher' : 'student'}">${head}${secs}<div class="pclose">All the best!</div>
-    <div class="pfoot">${esc(m.subject)} · Class ${esc(m.grade)} · ${esc(m.title)} · ${teacher ? 'Teacher view' : 'Student view'}</div></article>`;
+  return `<article class="sheet-paper ${teacher ? 'teacher' : 'student'}">${head}${secs}${teacher ? '' : `<div class="pclose">All the best!</div>
+    <div class="pfoot">${esc(m.subject)} · Class ${esc(m.grade)} · ${esc(m.title)} · Student view</div>`}</article>`;
 }
 
 /* ---------- Screen ---------- */
@@ -100,8 +110,11 @@ function agBindOutput() {
   $('#agDl').onclick = () => { keepEdits(); downloadModal({ view: agView, file: agFileName, run: agDownload, formats: ['word', 'pdf'] }); }; // PRD §10.5: Word or PDF
   /* every value (question text, options, answer, solution, marking points, Column B...) is a span.ed inside fixed structure */
   const norm = s => String(s ?? '').replace(/\s+/g, ' ').trim();
+  const pendingImg = {};   // images chosen during this edit, kept until Save (a re-draw without saving drops them, like text edits)
   const commitEdits = qid => { // writes the changed values back (all questions, or one) and re-checks the question; returns how many questions changed
     const patches = {};
+    $$('[data-lines]').forEach(el => { const id = el.dataset.lines; if (qid && id !== qid) return; const q = findQS(agPaper, id)[1]; if (+el.dataset.n !== q.lines) (patches[id] ||= {}).lines = +el.dataset.n; });
+    Object.entries(pendingImg).forEach(([id, im]) => { if (qid && id !== qid) return; (patches[id] ||= {}).diagram = im; delete pendingImg[id]; });
     $$('.ed').forEach(el => {
       const id = el.dataset.qid, f = el.dataset.f, i = el.dataset.i; if (qid && id !== qid) return;
       const raw = (el.classList.contains('ml') ? el.innerText : el.textContent).trim();
@@ -121,6 +134,30 @@ function agBindOutput() {
     $$('.ed').forEach(el => { el.contentEditable = 'true'; el.classList.add('editing'); });
     $('#view').classList.add('is-editing'); syncTop(); $('.ed')?.focus();
   };
+  /* edit-time helpers: more answer lines, longer/shorter blank, replace an image (an empty, invalid or unreadable file keeps the current image) */
+  const out = $('#agOut');
+  out.addEventListener('click', e => {
+    const l = e.target.closest('[data-line]'), b = e.target.closest('[data-blank]'), pk = e.target.closest('[data-pick]');
+    if (pk) out.querySelector(`[data-newimg="${pk.dataset.pick}"]`).click();
+    if (l) { const box = out.querySelector(`[data-lines="${l.dataset.lq}"]`), n = Math.max(1, Math.min(20, +box.dataset.n + +l.dataset.line)); box.dataset.n = n; box.innerHTML = lines(n); }
+    if (b) { const sp = out.querySelector(`.ed[data-qid="${b.dataset.bq}"][data-f="text"]`); if (sp) sp.textContent = sp.textContent.replace(/_{3,}/, m => '_'.repeat(Math.max(4, Math.min(30, m.length + 2 * +b.dataset.blank)))); }
+  });
+  out.addEventListener('change', e => {
+    const inp = e.target.closest('[data-newimg]'); if (!inp) return;
+    const id = inp.dataset.newimg, f = inp.files && inp.files[0]; inp.value = '';
+    const fail = why => toast(`${why} The current image is kept.`);
+    if (!f || !f.size) return fail('That file is empty.');
+    if (!/^image\//.test(f.type)) return fail('Please choose an image file.');
+    if (f.size > 4 * 1024 * 1024) return fail('That image is over 4 MB.');
+    const rd = new FileReader();
+    rd.onerror = () => fail('That image could not be read.');
+    rd.onload = () => { const img = new Image(); img.onerror = () => fail('That image could not be opened.');
+      img.onload = () => { if (!img.naturalWidth || !img.naturalHeight) return fail('That image has no content.');
+        const q = findQS(agPaper, id)[1]; pendingImg[id] = { src: rd.result, alt: q.diagram ? q.diagram.alt : f.name };
+        out.querySelector(`[data-dg="${id}"] .dg-img`).innerHTML = diagramSVG({ kind: 'upload', src: rd.result, alt: pendingImg[id].alt }); };
+      img.src = rd.result; };
+    rd.readAsDataURL(f);
+  });
   $$('.ed:not(.ml)').forEach(el => el.addEventListener('keydown', e => { if (e.key === 'Enter') e.preventDefault(); })); // one-line values stay one line
   $$('[data-edit]').forEach(b => b.onclick = () => { // pencil -> "save Save" for that question; structure stays, only its values open
     const id = b.dataset.edit, els = $$('.ed').filter(x => x.dataset.qid === id), on = els[0].contentEditable !== 'true';

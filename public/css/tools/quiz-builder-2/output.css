@@ -1,0 +1,174 @@
+/* Quiz Builder 2.0 - OUTPUT: Student / Teacher view of one quiz. Scoped to #view.view-qb2 / prefixed qb2- so it cannot affect other tools. */
+.qb2-wrap{max-width:900px;margin:0 auto;padding:0 28px 90px;color:#1b1e2b}
+.qb2-doc h1{font:700 40px/1.15 var(--font);letter-spacing:-.015em;color:#B01E3A;margin:34px 0 0}
+.qb2-sheet{display:grid;gap:14px;margin:26px 0 22px;font:700 15px/1.3 var(--font);color:#111}
+.qb2-sheet>div{display:flex;justify-content:space-between;align-items:baseline;gap:16px}
+.qb2-sheet>.r2,.qb2-sheet>.r3{display:grid;grid-template-columns:1fr 1fr 1fr}.qb2-sheet>.r2 span:nth-child(2),.qb2-sheet>.r3 span:nth-child(2){justify-self:center}.qb2-sheet>.r2 span:nth-child(3),.qb2-sheet>.r3 span:nth-child(3){justify-self:end}
+.qb2-ul{display:inline-block;border-bottom:2px solid #111;height:14px;vertical-align:baseline}
+.qb2-ul.w1{width:210px}.qb2-ul.w2{width:90px}.qb2-ul.w3{width:80px}
+.qb2-school{margin:0;font:600 13px var(--font);color:#626778;text-transform:uppercase;letter-spacing:.06em}
+.qb2-count{margin:14px 0 0;font-size:14px;color:#626778}
+
+/* Student view: A4 sheets on a grey canvas */
+.qb2-wrap.paper{max-width:none;padding:24px 0 70px;background:#EEF0F4;min-height:calc(100vh - 130px)}
+.qb2-pages{display:flex;flex-direction:column;align-items:center;gap:22px}
+.qb2-page{position:relative;flex:none;width:210mm;min-height:297mm;padding:16mm 18mm 0;background:#fff;border:1px solid #D9DCE5;border-radius:6px;box-shadow:0 1px 2px rgba(20,22,35,.04),0 8px 24px rgba(20,22,35,.08)}
+.qb2-pbody{min-height:263mm}.qb2-pbody.fix{height:263mm}
+.qb2-pages .qb2-sheet{margin-top:0}
+.qb2-pages .qb2-school{margin-top:14px}
+.qb2-pfoot{position:absolute;left:18mm;right:18mm;bottom:9mm;display:flex;justify-content:space-between;padding-top:5pt;border-top:1px solid #E3E5EA;font:9pt var(--font);color:#6B7084}
+@media (max-width:900px){.qb2-pages{zoom:.8}}
+@media (max-width:780px){.qb2-pages{zoom:.65}}
+@media (max-width:640px){.qb2-pages{zoom:.5}}
+@media (max-width:520px){.qb2-pages{zoom:.4}}
+
+/* question-number bar (sticks under the toolbar) */
+.qb2-qchips{position:sticky;top:var(--qb2-top,64px);z-index:30;display:flex;flex-wrap:wrap;gap:8px;margin:18px 0 0;padding:12px 0;max-height:140px;overflow-y:auto;background:#fff;border-bottom:1px solid #E8E9EE}
+.qb2-qc{min-width:32px;height:32px;padding:0 8px;border:0;border-radius:9px;background:#EFEFEF;font:600 12.5px var(--font);color:#555;cursor:pointer;transition:.15s}
+.qb2-qc:hover{background:#E4E4E4}
+
+/* questions */
+.qb2-qs{list-style:none;margin:0;padding:0}
+.qb2-q{display:grid;grid-template-columns:60px minmax(0,1fr);padding:24px 0;border-bottom:1px solid #E8E9EE}
+.qb2-n{font:500 24px/1.2 var(--font);color:#E04158}
+.qb2-b,.qb2-sbd{position:relative;min-width:0}
+.qb2-m{position:absolute;top:0;right:0;font-size:12px;color:#626778}
+.qb2-t{margin:0;padding-right:72px;font:600 15.5px/1.65 var(--font);color:#1b1e2b}
+.qb2-opts{display:grid;grid-template-columns:1fr 1fr;gap:8px 28px;margin-top:14px;font-size:14.5px;color:#626778}
+.qb2-o,.qb2-mr,.qb2-ord li{display:flex;align-items:flex-start;gap:10px;min-width:0}
+.qb2-l,.qb2-ml{flex:none;display:grid;place-items:center;min-width:22px;height:22px;border-radius:99px;background:#EFEFEF;font:600 11px var(--font);color:#1b1e2b}
+.qb2-o.ok{color:#1b1e2b;font-weight:600}
+.qb2-o.ok .qb2-l{background:#EE4259;color:#fff}.qb2-o.ok .qb2-l .i{width:12px;height:12px;stroke-width:3}
+.qb2-ord{list-style:none;margin:14px 0 0;padding:0;display:grid;gap:8px;font-size:14.5px;color:#444}
+.qb2-ml{background:none;min-width:18px;font-size:13px;color:#626778}
+.qb2-match{display:grid;grid-template-columns:1fr 1fr;gap:6px 28px;margin-top:14px;font-size:14.5px}
+.qb2-match h4{margin:0 0 8px;font:600 12.5px var(--font);color:#626778}
+.qb2-match>div{display:grid;gap:8px;align-content:start}
+.qb2-stmt{margin:14px 0 0;padding:12px 16px;border-radius:12px;background:#F4F4F4;font-size:14.5px;font-style:italic;color:#333;line-height:1.6}
+.qb2-stmt.plain{font-style:normal}
+.qb2-ins{margin:10px 0 0;font-size:13.5px;font-style:italic;color:#626778}
+.qb2-ar{margin:14px 0 4px;display:grid;gap:8px;font-size:14px}
+.qb2-ar>div{display:grid;grid-template-columns:110px 1fr;gap:12px}
+.qb2-ar dt{color:#626778}.qb2-ar dd{margin:0;color:#444;line-height:1.55}
+
+/* figures */
+.qb2-fig{margin:16px 0 0;max-width:620px}
+.qb2-fcard{position:relative;border:1px solid #E3E5EA;border-radius:14px;padding:14px 14px 16px;background:#fff;box-shadow:0 1px 3px rgba(20,22,35,.04)}
+.qb2-fh{text-align:center;font:700 19px/1.3 var(--font);color:#1b1e2b;margin-bottom:12px}
+.qb2-svg{display:block;width:100%;height:auto}
+.qb2-ftw{overflow-x:auto}
+.qb2-ft{width:100%;border-collapse:collapse;font-size:15px;text-align:center}
+.qb2-ft th{background:#0A6FB5;color:#fff;font-weight:700;padding:10px 12px}
+.qb2-ft th:first-child{border-radius:8px 0 0 8px}.qb2-ft th:last-child{border-radius:0 8px 8px 0}
+.qb2-ft td{padding:9px 12px;border:1px solid #EEF0F3;height:38px;background:#FAFBFC}
+.qb2-fig figcaption{margin-top:8px;text-align:center;font-size:13px;color:#626778}
+
+/* writing spaces (Student view): ruled lines, blanks and order boxes */
+.qb2-lines{margin-top:10px}
+.qb2-line{border-bottom:1px solid #b9bdc9;height:32px;max-width:560px}
+.qb2-blank{display:inline-block;flex:none;width:64px;height:20px;border-bottom:1px solid #8b90a1}
+.qb2-tfa{margin-top:10px}
+.qb2-mr .qb2-blank{width:34px;margin-right:2px}
+.qb2-ordbox{display:flex;gap:10px;margin-top:14px}
+.qb2-ordbox span{width:40px;height:40px;border:1px solid #b9bdc9;border-radius:8px}
+.qb2-img{display:block;max-width:100%;max-height:300px;margin:0 auto;object-fit:contain;background:#fff}
+
+/* edit-time helpers: + Add line, and the pencil that replaces a figure's image */
+#view.view-qb2 .ed-tools{display:none;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0 0;font:500 12.5px var(--font);color:#8b90a1}
+#view.view-qb2 .qb2-q:has(.ed[contenteditable=true]) .ed-tools{display:flex}
+#view.view-qb2 .ed-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 14px var(--font);color:#268EFF;cursor:pointer}
+#view.view-qb2 .ed-link:hover{color:#1773DB;text-decoration:underline}
+#view.view-qb2 .dg-edit{display:none;position:absolute;z-index:30;top:10px;right:10px;width:40px;height:40px;padding:0;border-radius:50%;background:#EAF5FF;border:1px solid #D5E8FF;color:#268EFF;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s,background .15s}
+#view.view-qb2 .qb2-q:has(.ed[contenteditable=true]) .dg-edit{display:flex}
+#view.view-qb2 .qb2-fcard:hover .dg-edit,#view.view-qb2 .dg-edit:focus-visible{opacity:1}
+#view.view-qb2 .dg-edit:hover{background:#D5E8FF}
+#view.view-qb2 .dg-edit::after{content:"Edit image";position:absolute;bottom:calc(100% + 10px);right:-4px;padding:6px 12px;border-radius:8px;background:#1d2130;color:#fff;font:600 13px var(--font);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-qb2 .dg-edit:hover::after{opacity:1}
+
+/* case-study parts */
+.qb2-sub{display:grid;grid-template-columns:44px minmax(0,1fr);margin-top:22px;padding-top:18px;border-top:1px solid #E8E9EE}
+.qb2-sl{font:600 14px var(--font);color:#E04158}
+.qb2-sub .qb2-t{font-size:14.5px}
+
+/* answers (Teacher view) */
+.qb2-tag{display:block;margin:0 0 6px;font-size:12px;color:#626778}
+.qb2-answ{margin-top:14px}
+.qb2-ans{padding:16px 20px;border-radius:16px;background:#ED4459;color:#fff;font-size:14px;line-height:1.65}
+.qb2-ans b{font-weight:700}.qb2-al+.qb2-al{margin-top:4px}
+.qb2-ans p{margin:8px 0 0;font-weight:400}.qb2-al+p{margin-top:10px}
+.qb2-ans p:first-child{margin-top:0}
+
+/* edit state of the values (pale-blue box when open) - kept outside any nesting so the #view selector keeps its weight over the shared editor rules */
+#view.view-qb2 .ed[contenteditable=true]{box-sizing:border-box;padding:2px 8px;border:1px solid #D5E8FF;border-radius:8px;background:#F2F8FF;color:#171717;outline:0;cursor:text;caret-color:#268EFF}
+#view.view-qb2 .ed.ml[contenteditable=true]{white-space:pre-line}
+#view.view-qb2 .qb2-ans .ed[contenteditable=true]{color:#171717;font-weight:500}
+
+@media (max-width:720px){
+  .qb2-wrap{padding:14px 16px 70px}.qb2-doc h1{font-size:30px}
+  .qb2-q{grid-template-columns:40px minmax(0,1fr)}.qb2-opts,.qb2-match{grid-template-columns:1fr}.qb2-ar>div{grid-template-columns:1fr;gap:2px}
+
+}
+@page qb2stu{size:A4;margin:0}
+@media print{
+  .qb2-wrap.paper{background:#fff;padding:0;min-height:0}
+  .qb2-pages{page:qb2stu;display:block;zoom:1!important}
+  .qb2-page{border:0;border-radius:0;box-shadow:none;height:296.5mm;min-height:0;overflow:hidden;break-after:page}
+  .qb2-page:last-child{break-after:auto}
+  @page{size:A4;margin:18mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.toast,.no-print,.ed-tools,.dg-edit{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}body{background:#fff}
+  .qb2-wrap{padding:0;max-width:none}.qb2-q,.qb2-fig,.qb2-answ{break-inside:avoid}
+  #view.view-qb2 .ed[contenteditable=true]{padding:0;border-color:transparent;background:none}
+}
+
+/* Student sheets: tighter spacing so more questions fit on each A4 page */
+.qb2-pages .qb2-q{grid-template-columns:44px minmax(0,1fr);padding:16px 0}
+.qb2-pages .qb2-n{font-size:21px}
+.qb2-pages .qb2-t{font-size:14.5px;line-height:1.55}
+.qb2-pages .qb2-opts{margin-top:10px;gap:6px 24px;font-size:14px}
+.qb2-pages .qb2-fig{margin-top:10px;max-width:440px}
+.qb2-pages .qb2-fh{font-size:16px;margin-bottom:8px}
+.qb2-pages .qb2-fcard{padding:10px 10px 12px}
+.qb2-pages .qb2-ft{font-size:13.5px}.qb2-pages .qb2-ft th{padding:6px 10px}.qb2-pages .qb2-ft td{height:30px;padding:5px 10px}
+.qb2-pages .qb2-stmt{margin-top:10px;padding:9px 14px}
+.qb2-pages .qb2-sub{margin-top:14px;padding-top:12px}
+.qb2-pages .qb2-line{height:28px}
+.qb2-pages .qb2-sheet{gap:10px;font-size:14px}
+
+/* Student sheets: no divider lines between questions, spacing does the separating */
+.qb2-pages .qb2-q{border-bottom:0;padding:17px 0}
+.qb2-pages .qb2-sub{border-top:0;margin-top:12px;padding-top:0}
+
+/* Sheet = column: the questions take the room they need and the footer always sits below them (also while editing makes a page taller) */
+.qb2-page{display:flex;flex-direction:column;padding-bottom:9mm}
+.qb2-pbody{flex:1 1 auto;min-height:0}.qb2-pbody.fix{flex:none;height:262mm}
+.qb2-pfoot{position:static;flex:none;margin-top:10px}
+@media print{.qb2-page{padding-bottom:9mm}}
+
+/* answer lines run the full width of the question, like ruled paper */
+.qb2-pages .qb2-lines{margin-top:12px}
+.qb2-pages .qb2-line{max-width:none;width:100%;height:34px;border-bottom:1px solid #b9bdc9}
+
+/* heading at the top of the quiz */
+#view.view-qb2 h1.qb2-qh{margin:8px 0 0;text-align:center;font:700 28px/1.2 var(--font);letter-spacing:.01em;color:#111}
+#view.view-qb2 .qb2-pages h1.qb2-qh{margin-top:0}
+.qb2-qh+.qb2-sheet{margin-top:22px}
+#view.view-qb2 .qb2-qh+.qb2-info{margin-top:22px}
+
+/* the choices made in the input form, under the header block */
+.qb2-info{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px 16px;margin:20px 0 6px;padding:10px 14px;border:1px solid #E3E5EA;border-radius:8px;background:#F3F4F7}
+.qb2-info>div{display:flex;flex-direction:column;gap:2px;line-height:1.35;min-width:0}.qb2-info>.wide{grid-column:1/-1}
+.qb2-info span{font:600 10.5px var(--font);letter-spacing:.06em;text-transform:uppercase;color:#6B7084}
+.qb2-info b{font:600 13px var(--font);color:#1b1b1b}
+
+/* edit mode: a value that wraps over several lines is one proper box, not a stepped inline box */
+#view.view-qb2 .ed.ml[contenteditable=true]{display:block;padding:6px 10px;white-space:pre-line}
+#view.view-qb2 .qb2-ans .ed.ml[contenteditable=true]{margin:2px 0}
+
+/* Teacher view: what was asked for, as small labelled chip groups */
+#view.view-qb2 .qb2-info{display:block;margin:20px 0 6px;padding:0;border:0;background:none}
+#view.view-qb2 .qb2-info>div{display:block;margin:0 0 14px}
+#view.view-qb2 .qb2-info span{display:block;margin-bottom:7px;font:600 12px var(--font);letter-spacing:.06em;text-transform:uppercase;color:#6B7084}
+#view.view-qb2 .qb2-info p{display:flex;flex-wrap:wrap;gap:8px;margin:0}
+#view.view-qb2 .qb2-info i{font:500 14px/1.3 var(--font);font-style:normal;padding:7px 14px;border-radius:99px;background:#F0F1F5;color:#1b1e2b}

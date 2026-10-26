@@ -1,0 +1,109 @@
+/* Assignment generator 2.0 - OUTPUT: one student-facing document with a sticky section nav. Scoped to #view.view-asg2 / prefixed a2- so it cannot affect other tools. */
+#view.view-asg2 .toolbar-in{grid-template-columns:40px minmax(150px,1fr) auto}
+.a2-wrap{display:grid;grid-template-columns:190px minmax(0,1fr);gap:28px;max-width:1200px;margin:0 auto;padding:24px 28px 90px;color:#1b1e2b}
+
+/* sticky nav: red dot on the section in view, counts on the right */
+.a2-nav{position:sticky;top:92px;align-self:start;display:flex;flex-direction:column;gap:14px;padding-top:30px}
+.a2-nav a{display:flex;align-items:center;gap:12px;color:#8b90a1;font:500 14px var(--font);text-decoration:none;cursor:pointer}
+.a2-nav a i{flex:none;width:6px;height:6px;border-radius:50%;background:#D9DBE2}
+.a2-nav a span{margin-left:auto;font-size:13px;color:#8b90a1}
+.a2-nav a.on{color:#1b1e2b;font-weight:600}.a2-nav a.on i{background:#E5384F}
+
+.a2-doc{min-width:0;max-width:900px}
+.a2-blk{position:relative}
+.a2-head{padding:6px 0 30px;border-bottom:1px solid #E8E9EE}
+.a2-head h1{font:700 40px/1.15 var(--font);letter-spacing:-.015em;color:#B01E3A;max-width:600px;margin:0}
+.a2-meta{display:grid;grid-template-columns:150px 1fr;align-items:baseline;margin-top:30px;font-size:14px}
+.a2-meta span{color:#626778}.a2-meta b{font-weight:600;color:#1b1e2b}
+.a2-stu{display:grid;grid-template-columns:1fr 1fr;gap:26px 48px;margin-top:30px;width:100%}
+.a2-sf{display:flex;align-items:flex-end;gap:12px;font-size:14px}
+.a2-sf span{flex:none;color:#626778}
+.a2-sf i{flex:1;min-width:0;height:22px;border-bottom:1px solid #b9bdc9}
+.a2-sec h2{font:600 20px/1.3 var(--font);color:#1b1e2b;margin:0 0 14px}
+.a2-sec{margin-top:56px}
+.a2-ovt{margin:0;max-width:580px;color:#626778;font-size:15px;line-height:1.85}
+.a2-brief{margin:18px 0 0;display:grid;gap:10px;max-width:580px}
+.a2-brief div{display:grid;grid-template-columns:150px 1fr;gap:10px;font-size:14.5px}
+.a2-brief dt{color:#626778}.a2-brief dd{margin:0;color:#1b1e2b;line-height:1.6}
+
+/* numbered tasks */
+.a2-tasks{list-style:none;margin:0;padding:0;border-top:1px solid #E8E9EE}
+.a2-task{display:grid;grid-template-columns:60px minmax(0,1fr);padding:22px 36px 24px 0;border-bottom:1px solid #E8E9EE}
+.a2-n{font:500 24px/1.2 var(--font);color:#E04158}
+.a2-tt{margin:0;max-width:560px;font-size:15px;line-height:1.7;color:#1b1e2b}
+.a2-opts{list-style:none;margin:10px 0 0;padding:0;display:grid;grid-template-columns:1fr 1fr;gap:6px 18px;max-width:560px;font-size:14.5px}
+.a2-case{max-width:560px;margin:0 0 12px;padding:12px 16px;border:1px solid #DADCE5;border-left:3px solid #1b1e2b;border-radius:10px;background:#fff;font-size:14.5px;line-height:1.65}
+.a2-case p{margin:6px 0 0}
+.a2-fig{margin:16px 0 0;max-width:560px}
+.a2-fcard{position:relative;border:1px solid #E3E5EA;border-radius:14px;padding:14px 14px 16px;background:#fff;box-shadow:0 1px 3px rgba(20,22,35,.04)}
+.a2-fh{text-align:center;font:700 17px/1.3 var(--font);margin-bottom:12px}
+.a2-ftw{overflow-x:auto}
+.a2-ft{width:100%;border-collapse:collapse;font-size:14px;text-align:center}
+.a2-ft th{background:#0A6FB5;color:#fff;font-weight:700;padding:9px 12px}
+.a2-ft th:first-child{border-radius:8px 0 0 8px}.a2-ft th:last-child{border-radius:0 8px 8px 0}
+.a2-ft td{padding:9px 12px;border:1px solid #EEF0F3;height:36px}
+.a2-ft tbody tr:nth-child(odd) td{background:#F8F9FB}
+.a2-img{display:block;max-width:100%;max-height:300px;margin:0 auto;object-fit:contain;background:#fff}
+.a2-fig figcaption{margin-top:8px;text-align:center;font-size:13px;color:#626778}
+.a2-line{border-bottom:1px solid #b9bdc9;height:32px;width:100%}
+.a2-lines{margin-top:6px}
+
+/* rubric */
+.a2-rh{display:flex;justify-content:space-between;align-items:baseline;gap:12px;flex-wrap:wrap}
+.a2-hint{font-size:13px;color:#626778}
+.a2-rub-card{margin-top:10px;border:1px solid #E5E7EB;border-radius:18px;overflow-x:auto}
+.a2-rub{width:100%;min-width:680px;border-collapse:collapse;font-size:14px}
+.a2-rub th{text-transform:none;letter-spacing:normal}
+.a2-rub thead th{background:#F7F7F8;padding:16px 16px 14px;text-align:left;vertical-align:top;font-weight:600}
+.a2-rub thead th.a2-crit{font:600 13px var(--font);color:#626778;width:21%}
+.a2-rub thead th[data-lv]{cursor:pointer}
+.a2-rub thead th b{display:block;font-size:15px;color:#1b1e2b}
+.a2-bars{display:flex;gap:3px;margin-top:8px}
+.a2-bars i{width:15px;height:4px;border-radius:2px;background:#E4E5EA}.a2-bars i.on{background:#E5384F}
+.a2-rub tbody th{position:relative;text-align:left;vertical-align:top;padding:20px 16px;font:600 14px/1.5 var(--font);color:#1b1e2b}
+.a2-rub tbody td{vertical-align:top;padding:20px 16px;color:#626778;line-height:1.65}
+.a2-rub tbody tr+tr th,.a2-rub tbody tr+tr td{border-top:1px solid #EEEFF2}
+.a2-rub[data-lv="0"] .l1,.a2-rub[data-lv="0"] .l2,.a2-rub[data-lv="0"] .l3,.a2-rub[data-lv="1"] .l0,.a2-rub[data-lv="1"] .l2,.a2-rub[data-lv="1"] .l3,
+.a2-rub[data-lv="2"] .l0,.a2-rub[data-lv="2"] .l1,.a2-rub[data-lv="2"] .l3,.a2-rub[data-lv="3"] .l0,.a2-rub[data-lv="3"] .l1,.a2-rub[data-lv="3"] .l2{opacity:.35}
+.a2-rub[data-lv="0"] td.l0,.a2-rub[data-lv="1"] td.l1,.a2-rub[data-lv="2"] td.l2,.a2-rub[data-lv="3"] td.l3{background:#FFF7F8;color:#1b1e2b}
+
+/* per-block pencil: appears on hover (the shared rule in editor-toolbar.css hides it while the whole page is open for editing) */
+.a2-pen{position:absolute;top:10px;right:0;width:32px;height:32px;opacity:0;transition:opacity .15s,background .15s}
+.a2-task .a2-pen{top:18px}.a2-rub tbody th .a2-pen{top:14px;right:6px}.a2-sec>.a2-pen{top:-4px}
+.a2-blk:hover>.a2-pen,.a2-blk:hover .a2-pen:hover,.a2-pen.on,.a2-pen:focus-visible,.a2-rub tbody tr:hover .a2-pen{opacity:1}
+
+/* Edit state of the values: pale-blue box when open, stronger blue 2px outline on the one being typed in (same as the Assessment generator).
+   The active 2px edge is the 1px border plus a 1px inset shadow, so the box size is identical in both states. */
+#view.view-asg2 .ed[contenteditable=true]{box-sizing:border-box;padding:3px 10px;margin:0;border:1px solid #D5E8FF;border-radius:10px;background:#F2F8FF;color:#171717;outline:0;box-shadow:none;cursor:text;caret-color:#268EFF;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-color .12s,border-color .12s,box-shadow .12s}
+#view.view-asg2 .ed.ml[contenteditable=true]{padding:1px 10px}
+#view.view-asg2 .ed[contenteditable=true]:hover{outline:0}
+#view.view-asg2 .ed[contenteditable=true]:focus{background:#EAF5FF;border-color:#268EFF;box-shadow:inset 0 0 0 1px #268EFF;outline:0}
+
+/* edit-time helpers: + Add line, hover pencil on a figure's image (replace only, never delete) - only while that block is open */
+#view.view-asg2 .ed-tools{display:none;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0 0;font:500 12.5px var(--font);color:#8b90a1}
+#view.view-asg2 .a2-blk:has(.ed[contenteditable=true]) .ed-tools{display:flex}
+#view.view-asg2 .ed-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 14px var(--font);color:#268EFF;cursor:pointer}
+#view.view-asg2 .ed-link:hover{color:#1773DB;text-decoration:underline}
+#view.view-asg2 .dg-edit{display:none;position:absolute;z-index:30;top:10px;right:10px;width:40px;height:40px;padding:0;border-radius:50%;background:#EAF5FF;border:1px solid #D5E8FF;color:#268EFF;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s,background .15s}
+#view.view-asg2 .a2-blk:has(.ed[contenteditable=true]) .dg-edit{display:flex}
+#view.view-asg2 .a2-fcard:hover .dg-edit,#view.view-asg2 .dg-edit:focus-visible{opacity:1}
+#view.view-asg2 .dg-edit:hover{background:#D5E8FF}
+#view.view-asg2 .dg-edit:focus-visible{outline:2px solid #268EFF;outline-offset:2px}
+#view.view-asg2 .dg-edit::after{content:"Edit image";position:absolute;bottom:calc(100% + 10px);right:-4px;padding:6px 12px;border-radius:8px;background:#1d2130;color:#fff;font:600 13px var(--font);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-asg2 .dg-edit::before{content:"";position:absolute;bottom:calc(100% + 4px);right:14px;border:6px solid transparent;border-top-color:#1d2130;border-bottom:0;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-asg2 .dg-edit:hover::after,#view.view-asg2 .dg-edit:hover::before,#view.view-asg2 .dg-edit:focus-visible::after,#view.view-asg2 .dg-edit:focus-visible::before{opacity:1}
+
+@media (max-width:860px){
+  .a2-wrap{grid-template-columns:1fr;padding:16px 16px 70px;gap:8px}
+  .a2-nav{position:static;flex-direction:row;gap:18px;padding:0 0 6px;overflow-x:auto}.a2-nav a span{margin-left:4px}
+  .a2-head h1{font-size:30px}.a2-task{grid-template-columns:40px minmax(0,1fr);padding-right:0}.a2-meta{grid-template-columns:110px 1fr}.a2-stu{grid-template-columns:1fr;gap:20px}
+}
+@media print{
+  @page{size:A4;margin:18mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.toast,.no-print,.a2-nav,.a2-pen,.ed-tools,.dg-edit{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}body{background:#fff}
+  .a2-wrap{display:block;padding:0;max-width:none}.a2-doc{max-width:none}
+  .a2-task,.a2-rub-card,.a2-fig{break-inside:avoid}.a2-hint{display:none}
+  #view.view-asg2 .ed[contenteditable=true],#view.view-asg2 .ed.ml[contenteditable=true]{padding:0;margin:0;border-color:transparent;background:none;box-shadow:none}
+}

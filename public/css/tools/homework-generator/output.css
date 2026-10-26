@@ -1,0 +1,105 @@
+/* Homework generator - OUTPUT: Student view (A4 paper) and Teacher view (section cards, no paper). Scoped to #view.view-hw / prefixed hw- so it cannot affect other tools. */
+.hw-out{max-width:900px;margin:0 auto;padding:24px 28px 90px;color:#1b1e2b}
+.hw-blk{position:relative}
+
+/* the paper: Arial, A4 portrait */
+.hw-paper{position:relative;width:100%;max-width:210mm;margin:0 auto;background:#fff;border:1px solid var(--line-2);box-shadow:0 1px 3px rgba(29,33,64,.08);padding:16mm 18mm 20mm;font-family:Arial,Helvetica,sans-serif}
+/* Teacher view: open page, no sheet (like Quiz Builder 2.0) */
+.hw-paper.open{max-width:none;border:0;border-radius:0;box-shadow:none;background:transparent;padding:0}
+.hw-tsum{margin-bottom:30px}
+.hw-ttitle{margin:0 0 18px;font:700 28px/1.2 var(--font);color:#1b1e2b}
+.hw-tgrid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin-bottom:14px}
+.hw-trow{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}.hw-tgrid .hw-trow{margin:0;padding:12px 14px;border:1px solid #E8E9EE;border-radius:12px;background:#FAFAFB}
+.hw-tk{font:600 12px var(--font);letter-spacing:.04em;text-transform:uppercase;color:#6b7080}
+.hw-tv{font:500 15px/1.5 var(--font);color:#1b1e2b;display:flex;flex-wrap:wrap;gap:8px}
+.hw-tchip{padding:4px 12px;border-radius:99px;background:#F3F4F7;font:500 13px var(--font);color:#3b4054}
+@media (max-width:640px){.hw-tgrid{grid-template-columns:1fr 1fr}}
+.hw-ph{margin-bottom:30px}
+.hw-ptitle{margin:0 0 22px;text-align:center;font:700 22px/1.2 Arial,Helvetica,sans-serif;color:#111}
+.hw-prow{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;font:700 14.5px/1.3 Arial,Helvetica,sans-serif;color:#111}
+.hw-prow.three{display:grid;grid-template-columns:1.1fr 1.1fr 1fr}.hw-prow.three span:nth-child(3){justify-self:end}
+
+/* Instructions block, then sections: bold title left, "N questions" right, hairline under */
+.hw-ins{margin:0 0 34px}.hw-ins>b{display:block;font:600 13px var(--font);color:#626778}
+.hw-ins p{margin:6px 0 0;max-width:520px;font:400 16px/1.7 var(--font);color:#1b1e2b}
+.hw-sec{margin-top:36px}.hw-shead{margin-bottom:10px}
+.hw-shead{display:flex;justify-content:space-between;align-items:baseline;padding-bottom:8px;border-bottom:1px solid #E8E9EE}
+.hw-stitle{margin:0;font:600 18px/1.3 var(--font);color:#1b1e2b}
+.hw-count{font:400 12.5px var(--font);color:#6b7080}
+
+/* question: red number in a left column */
+.hw-q{display:grid;grid-template-columns:48px minmax(0,1fr);padding:14px 40px 14px 0}
+.hw-qn{font:500 18px/1.4 var(--font);color:#E5384F}
+.hw-qb{min-width:0}
+.hw-qt{margin:0;font:400 16px/1.6 var(--font);color:#1b1e2b;max-width:600px}
+.hw-opts{display:grid;grid-template-columns:1fr 1fr;gap:14px 24px;margin-top:16px;max-width:600px}.hw-opts.one{grid-template-columns:1fr}
+.hw-opt{display:flex;align-items:center;gap:10px;font:400 14px/1.4 var(--font);color:#5b6070}
+.hw-opt.right{color:#1E6B5C;font-weight:600}
+.hw-bub{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#EEEFF2;color:#1b1e2b;font:600 11px var(--font);font-style:normal}
+.hw-opt.right .hw-bub{background:#1E6B5C;color:#fff}
+.hw-tf{display:flex;gap:12px;margin-top:14px}
+.hw-pill{display:inline-grid;place-items:center;min-width:96px;padding:12px 24px;border:1px solid #E0E2E9;border-radius:12px;font:600 14px var(--font);color:#1b1e2b}
+.hw-pill.right{border-color:#1E6B5C;background:#F4F9F7;color:#1E6B5C}
+
+/* answer lines (dotted) */
+.hw-lines{margin-top:8px;max-width:560px}
+.hw-line{height:32px;border-bottom:1px dashed #DADCE5}
+
+/* paragraph based: italic passage with a red bar, then the sub-questions */
+.hw-passage{margin:0 0 20px;padding:2px 0 2px 18px;border-left:4px solid #F2677B;font:italic 400 15px/1.75 var(--font);color:#4b5063;max-width:560px}
+.hw-read{margin:0 0 12px;font:400 15px/1.6 var(--font);color:#1b1e2b}
+.hw-sub{padding:6px 0 4px}
+
+/* matching: one rounded table */
+.hw-table{margin-top:16px;max-width:600px;border:1px solid #E8E9EE;border-radius:14px;overflow:hidden}
+.hw-mrow{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:12px 18px;font:400 14px/1.45 var(--font);color:#1b1e2b;border-top:1px solid #EEEFF3}
+.hw-mh{border-top:0;background:#F7F7F8}.hw-mh b{font:600 12px var(--font);letter-spacing:.04em;text-transform:uppercase;color:#4b5063}
+.hw-mc{display:flex;gap:6px;align-items:baseline}.hw-mc em{flex:none;font-style:normal}
+.dgwrap{position:relative;width:fit-content;max-width:100%}.dg{max-width:100%;height:auto}
+
+/* Teacher answers */
+.hw-ans{margin:10px 0 2px;max-width:560px;padding:8px 12px;border-left:3px solid #1E6B5C;border-radius:0 8px 8px 0;background:#F4F9F7;font:400 14px/1.55 var(--font);color:#1b1e2b}
+.hw-al{font-weight:700;color:#1E6B5C}.hw-ax{color:#4b5170}
+
+/* pencil: on hover (screen only) */
+.hw-pen{position:absolute;top:12px;right:0;width:32px;height:32px;opacity:0;transition:opacity .15s,background .15s}
+.hw-ph>.hw-pen{top:-4px}.hw-ins>.hw-pen{top:-6px}
+.hw-blk:hover>.hw-pen,.hw-pen:hover,.hw-pen.on,.hw-pen:focus-visible{opacity:1}
+
+@media (max-width:760px){
+  .hw-out{padding:16px 14px 70px}.hw-paper{padding:8mm 6mm}
+  .hw-prow.three{grid-template-columns:1fr}.hw-prow.three span:nth-child(3){justify-self:start}
+  .hw-opts{grid-template-columns:1fr}.hw-mrow{gap:12px}
+}
+@media print{
+  @page{size:A4;margin:18mm 18mm 20mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.toast,.no-print,.hw-pen,.ed-tools,.dg-edit{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}body{background:#fff}
+  .hw-out{padding:0;max-width:none}.hw-paper{border:0;box-shadow:none;padding:0;max-width:none}
+  .hw-q{break-inside:avoid}.hw-stitle,.hw-shead,.hw-ins{break-after:avoid}
+}
+
+/* Edit state - kept at #view weight so it beats the shared editor rules. Same as the Assessment generator: pale-blue box when open, stronger outline on the one being typed in. */
+#view.view-hw .ed[contenteditable=true]{box-sizing:border-box;padding:3px 10px;margin:0;border:1px solid #D5E8FF;border-radius:10px;background:#F2F8FF;color:#171717;outline:0;box-shadow:none;cursor:text;caret-color:#268EFF;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-color .12s,border-color .12s,box-shadow .12s}
+#view.view-hw .ed.ml[contenteditable=true]{display:block;padding:3px 10px}
+#view.view-hw .ed.ml[contenteditable=true] div,#view.view-hw .ed.ml[contenteditable=true] p{margin:0}
+#view.view-hw .ed[contenteditable=true]:hover{outline:0}
+#view.view-hw .ed[contenteditable=true]:focus{background:#EAF5FF;border-color:#268EFF;box-shadow:inset 0 0 0 1px #268EFF;outline:0}
+@media print{#view.view-hw .ed[contenteditable=true],#view.view-hw .ed.ml[contenteditable=true]{padding:0;margin:0;border-color:transparent;background:none;box-shadow:none}}
+#view.view-hw .ed.ml{white-space:pre-line}
+
+/* Edit-time helpers (+ Add line, blank length, replace image): visible only while that block is open for editing, never printed */
+#view.view-hw .ed-tools{display:none;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0 6px;font:500 12.5px var(--font);color:#8b90a1}
+#view.view-hw .hw-q:has(.ed[contenteditable=true]) .ed-tools{display:flex}
+#view.view-hw .ed-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 14px var(--font);color:#268EFF;cursor:pointer}
+#view.view-hw .ed-link:hover{color:#1773DB;text-decoration:underline}
+#view.view-hw .ed-link:focus-visible{outline:2px solid #268EFF;outline-offset:2px;border-radius:4px}
+#view.view-hw .dg-edit{display:none;position:absolute;z-index:30;top:8px;right:8px;width:40px;height:40px;padding:0;border-radius:50%;background:#EAF5FF;border:1px solid #D5E8FF;color:#268EFF;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s,background .15s}
+#view.view-hw .hw-q:has(.ed[contenteditable=true]) .dg-edit{display:flex}
+#view.view-hw .dgwrap:hover .dg-edit,#view.view-hw .dg-edit:focus-visible{opacity:1}
+#view.view-hw .dg-edit:hover{background:#D5E8FF}
+#view.view-hw .dg-edit:focus-visible{outline:2px solid #268EFF;outline-offset:2px}
+#view.view-hw .dg-edit::after{content:"Edit image";position:absolute;bottom:calc(100% + 10px);right:-4px;padding:6px 12px;border-radius:8px;background:#1d2130;color:#fff;font:600 13px var(--font);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-hw .dg-edit::before{content:"";position:absolute;bottom:calc(100% + 4px);right:14px;border:6px solid transparent;border-top-color:#1d2130;border-bottom:0;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-hw .dg-edit:hover::after,#view.view-hw .dg-edit:hover::before,#view.view-hw .dg-edit:focus-visible::after,#view.view-hw .dg-edit:focus-visible::before{opacity:1}

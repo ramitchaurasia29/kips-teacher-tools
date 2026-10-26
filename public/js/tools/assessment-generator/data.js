@@ -433,6 +433,8 @@ function questionValue(paper, qid, f, i) {
 function editQuestion(paper, qid, patch) {
   const [s, q] = findQS(paper, qid), has = v => v != null && String(v).trim() !== '', each = (o, fn) => Object.entries(o || {}).forEach(([i, v]) => has(v) && fn(+i, String(v).trim()));
   if (has(patch.text)) { q.text = patch.text.trim(); if (s.type === 'match') q.solution = `${q.text} → ${q.answer}`; }
+  if (Number.isInteger(patch.lines) && patch.lines >= 1 && patch.lines <= 20 && q.lines) q.lines = patch.lines;   // student answer lines: the teacher can add lines
+  if (patch.diagram && q.diagram && /^data:image\//.test(patch.diagram.src || '')) q.diagram = { ...q.diagram, kind: 'upload', src: patch.diagram.src, alt: patch.diagram.alt || q.diagram.alt, background: 'white' };   // replace only; an image is never left empty
   each(patch.opt, (i, v) => { q.options[i] = v; });
   each(patch.alt, (i, v) => { q.alternatives[i] = v; });
   each(patch.mp, (i, v) => { q.marking_points[i].point = v; });

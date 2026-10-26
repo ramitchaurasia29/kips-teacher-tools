@@ -1,0 +1,111 @@
+/* Worksheet generator 2.0 - OUTPUT: Student view (A4 paper) and Teacher view (section cards, no paper). Scoped to #view.view-ws2 / prefixed ws2- so it cannot affect other tools. */
+.ws2-out{max-width:900px;margin:0 auto;padding:24px 28px 90px;color:#1b1e2b}
+.ws2-cards{max-width:760px;margin:0 auto}
+.ws2-blk{position:relative}
+
+/* the paper: Arial, A4 portrait */
+.ws2-paper{position:relative;width:100%;max-width:210mm;margin:0 auto;background:#fff;border:1px solid var(--line-2);box-shadow:0 1px 3px rgba(29,33,64,.08);padding:16mm 18mm 20mm;font-family:Arial,Helvetica,sans-serif}
+.ws2-ph{margin-bottom:34px}
+.ws2-ptitle{margin:0 0 22px;text-align:center;font:700 22px/1.2 Arial,Helvetica,sans-serif;color:#111}
+.ws2-prow{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin-top:18px;font:700 14.5px/1.3 Arial,Helvetica,sans-serif;color:#111}
+.ws2-prow.three{display:grid;grid-template-columns:1.1fr 1.1fr 1fr}.ws2-prow.three span:nth-child(3){justify-self:end}
+
+/* section: red number + type label on one line, bold title, hairline, italic instruction */
+.ws2-sec{margin-top:44px}.ws2-cards>.ws2-sec:first-child,.ws2-ph+.ws2-sec{margin-top:0}
+.ws2-shead{display:flex;align-items:baseline;gap:12px;padding-bottom:14px;border-bottom:1px solid #E8E9EE}
+.ws2-sn{font:600 21px/1.2 var(--font);color:#E5384F}
+.ws2-type{font:400 12.5px var(--font);color:#6b7080}
+.ws2-stitle{margin:0;font:600 21px/1.3 var(--font);color:#1b1e2b}
+.ws2-ins{margin:24px 0 4px}.ws2-ins p{margin:0;max-width:520px;font:italic 400 14px/1.55 var(--font);color:#626778}
+
+/* question */
+.ws2-q{display:grid;grid-template-columns:34px minmax(0,1fr);padding:16px 40px 8px 0}
+.ws2-q:has(.ws2-qb.full){display:block}
+.ws2-qn{font:600 15px/1.5 var(--font);color:#E5384F}
+.ws2-qb{min-width:0}.ws2-qb.full{max-width:560px}
+.ws2-qt{margin:0;font:600 15px/1.55 var(--font);color:#1b1e2b;max-width:560px}
+.ws2-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px 24px;margin-top:12px;max-width:560px}.ws2-opts.one{grid-template-columns:1fr}
+.ws2-opt{display:flex;align-items:center;gap:10px;font:400 14px/1.4 var(--font);color:#5b6070}
+.ws2-opt.right{color:#1E6B5C;font-weight:600}
+.ws2-bub{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#EEEFF2;color:#1b1e2b;font:600 11px var(--font);font-style:normal}
+.ws2-opt.right .ws2-bub{background:#1E6B5C;color:#fff}
+
+/* answer lines (dotted) */
+.ws2-lines{margin-top:8px;max-width:560px}
+.ws2-line{height:32px;border-bottom:1px dashed #DADCE5}
+
+/* case study */
+.ws2-passage{margin:14px 0 8px;padding:16px 20px;border-radius:16px;background:#F4F4F5;font:400 14px/1.75 var(--font);color:#1b1e2b;max-width:520px}
+.ws2-sub{display:grid;grid-template-columns:34px minmax(0,1fr);padding:14px 0 4px}
+.ws2-sub .ws2-qt{font-weight:500;font-size:14px}
+
+/* diagram */
+.dgwrap{position:relative;width:fit-content;max-width:100%;margin:6px 0 18px}
+.dg{max-width:100%;height:auto;background:transparent}
+img.dg.up{max-width:100%;max-height:300px;width:auto;height:auto;object-fit:contain;background:#fff}
+.ws2-qrow{display:grid;grid-template-columns:34px minmax(0,1fr)}
+.ws2-draw{margin-top:14px;min-height:150px;border:1.5px dashed #DADCE5;border-radius:14px;padding:12px 14px}
+.ws2-draw span{font:500 11.5px var(--font);letter-spacing:.06em;color:#8b90a1}
+
+/* matching: two columns, each group with its own headers */
+.ws2-match{display:block;padding-right:40px}
+.ws2-mrow{display:grid;grid-template-columns:1fr 1fr;gap:24px;padding:6px 0;font:400 14.5px/1.45 var(--font);color:#1b1e2b}
+.ws2-mh{padding-bottom:2px}.ws2-mh b{font:600 12px var(--font);color:#626778}
+.ws2-mc{display:flex;gap:12px;align-items:baseline}.ws2-mc em{flex:none;min-width:14px;font-style:normal;color:#626778}
+
+/* Teacher info block: worksheet name + the inputs that were chosen */
+.ws2-info{padding:4px 40px 30px 0;border-bottom:1px solid #E8E9EE;margin-bottom:40px}
+.ws2-ilab{font:600 12px var(--font);letter-spacing:.08em;text-transform:uppercase;color:#E5384F}
+.ws2-iname{margin:6px 0 0;font:700 32px/1.2 var(--font);letter-spacing:-.01em;color:#1b1e2b}
+.ws2-idl{margin:22px 0 0;display:grid;gap:12px}
+.ws2-irow{display:grid;grid-template-columns:160px minmax(0,1fr);gap:12px;font:400 14.5px/1.55 var(--font)}
+.ws2-irow dt{color:#626778}.ws2-irow dd{margin:0;color:#1b1e2b;font-weight:500}
+.ws2-info>.ws2-pen{top:8px}
+@media (max-width:760px){.ws2-irow{grid-template-columns:1fr;gap:2px}}
+
+/* Teacher answers */
+.ws2-ans{margin:10px 0 2px;max-width:560px;padding:8px 12px;border-left:3px solid #1E6B5C;border-radius:0 8px 8px 0;background:#F4F9F7;font:400 14px/1.55 var(--font);color:#1b1e2b}
+.ws2-al{font-weight:700;color:#1E6B5C}.ws2-ax{color:#4b5170}
+.ws2-match .ws2-ans{max-width:none}
+
+/* pencil: on hover (screen only) */
+.ws2-pen{position:absolute;top:12px;right:0;width:32px;height:32px;opacity:0;transition:opacity .15s,background .15s}
+.ws2-ph>.ws2-pen{top:-4px}.ws2-ins>.ws2-pen{top:-6px}
+.ws2-blk:hover>.ws2-pen,.ws2-pen:hover,.ws2-pen.on,.ws2-pen:focus-visible{opacity:1}
+
+@media (max-width:760px){
+  .ws2-out{padding:16px 14px 70px}.ws2-paper{padding:8mm 6mm}
+  .ws2-prow.three{grid-template-columns:1fr}.ws2-prow.three span:nth-child(3){justify-self:start}
+  .ws2-opts{grid-template-columns:1fr}.ws2-mrow{gap:12px}
+}
+@media print{
+  @page{size:A4;margin:18mm 18mm 20mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.toast,.no-print,.ws2-pen,.ed-tools,.dg-edit{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}body{background:#fff}
+  .ws2-out{padding:0;max-width:none}.ws2-paper{border:0;box-shadow:none;padding:0;max-width:none}.ws2-cards{max-width:none}
+  .ws2-q{break-inside:avoid}.ws2-stitle,.ws2-shead,.ws2-ins{break-after:avoid}
+}
+
+/* Edit state - kept at #view weight so it beats the shared editor rules. Same as the Assessment generator: pale-blue box when open, stronger outline on the one being typed in. */
+#view.view-ws2 .ed[contenteditable=true]{box-sizing:border-box;padding:3px 10px;margin:0;border:1px solid #D5E8FF;border-radius:10px;background:#F2F8FF;color:#171717;outline:0;box-shadow:none;cursor:text;caret-color:#268EFF;-webkit-box-decoration-break:clone;box-decoration-break:clone;transition:background-color .12s,border-color .12s,box-shadow .12s}
+#view.view-ws2 .ed.ml[contenteditable=true]{padding:1px 10px}
+#view.view-ws2 .ed[contenteditable=true]:hover{outline:0}
+#view.view-ws2 .ed[contenteditable=true]:focus{background:#EAF5FF;border-color:#268EFF;box-shadow:inset 0 0 0 1px #268EFF;outline:0}
+@media print{#view.view-ws2 .ed[contenteditable=true],#view.view-ws2 .ed.ml[contenteditable=true]{padding:0;margin:0;border-color:transparent;background:none;box-shadow:none}}
+#view.view-ws2 .ed.ml{white-space:pre-line}
+
+/* Edit-time helpers (+ Add line, blank length, replace image): visible only while that block is open for editing, never printed */
+#view.view-ws2 .ed-tools{display:none;align-items:center;flex-wrap:wrap;gap:12px;margin:8px 0 6px;font:500 12.5px var(--font);color:#8b90a1}
+#view.view-ws2 .ws2-q:has(.ed[contenteditable=true]) .ed-tools{display:flex}
+#view.view-ws2 .ed-link{display:inline-flex;align-items:center;gap:6px;border:0;background:none;padding:2px 0;font:600 14px var(--font);color:#268EFF;cursor:pointer}
+#view.view-ws2 .ed-link:hover{color:#1773DB;text-decoration:underline}
+#view.view-ws2 .ed-link:focus-visible{outline:2px solid #268EFF;outline-offset:2px;border-radius:4px}
+#view.view-ws2 .dg-edit{display:none;position:absolute;z-index:30;top:8px;right:8px;width:40px;height:40px;padding:0;border-radius:50%;background:#EAF5FF;border:1px solid #D5E8FF;color:#268EFF;align-items:center;justify-content:center;cursor:pointer;opacity:0;transition:opacity .15s,background .15s}
+#view.view-ws2 .ws2-q:has(.ed[contenteditable=true]) .dg-edit{display:flex}
+#view.view-ws2 .dgwrap:hover .dg-edit,#view.view-ws2 .dg-edit:focus-visible{opacity:1}
+#view.view-ws2 .dg-edit:hover{background:#D5E8FF}
+#view.view-ws2 .dg-edit:focus-visible{outline:2px solid #268EFF;outline-offset:2px}
+#view.view-ws2 .dg-edit::after{content:"Edit image";position:absolute;bottom:calc(100% + 10px);right:-4px;padding:6px 12px;border-radius:8px;background:#1d2130;color:#fff;font:600 13px var(--font);white-space:nowrap;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-ws2 .dg-edit::before{content:"";position:absolute;bottom:calc(100% + 4px);right:14px;border:6px solid transparent;border-top-color:#1d2130;border-bottom:0;opacity:0;pointer-events:none;transition:opacity .12s}
+#view.view-ws2 .dg-edit:hover::after,#view.view-ws2 .dg-edit:hover::before,#view.view-ws2 .dg-edit:focus-visible::after,#view.view-ws2 .dg-edit:focus-visible::before{opacity:1}

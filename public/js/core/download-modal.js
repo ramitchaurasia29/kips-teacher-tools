@@ -43,6 +43,22 @@ function bindPrint(id, { views = true, run }) {
   };
 }
 
+/* Shared dropdown button (e.g. Download -> PDF / Word): bindMenu(id, { items: [[key, label], ...], run: key => {...} }). Same popover look as the Print menu. */
+function bindMenu(id, { items, run }) {
+  const btn = $('#' + id); if (!btn) return;
+  const close = () => { btn.parentNode.querySelector(`.print-menu[data-for="${id}"]`)?.remove(); btn.setAttribute('aria-expanded', 'false'); document.removeEventListener('mousedown', away, true); document.removeEventListener('keydown', key, true); };
+  const away = e => { if (!e.target.closest(`.print-menu[data-for="${id}"]`) && e.target.closest('#' + id) !== btn) close(); };
+  const key = e => { if (e.key === 'Escape') { e.stopImmediatePropagation(); close(); btn.focus(); } };
+  btn.onclick = () => {
+    if (btn.getAttribute('aria-expanded') === 'true') return close();
+    btn.setAttribute('aria-expanded', 'true');
+    btn.insertAdjacentHTML('afterend', `<div class="print-menu" data-for="${id}" role="menu">${items.map(([k, l]) => `<button type="button" role="menuitem" data-mk="${k}">${l}</button>`).join('')}</div>`);
+    const menu = btn.parentNode.querySelector(`.print-menu[data-for="${id}"]`); menu.style.right = btn.parentNode.clientWidth - btn.offsetLeft - btn.offsetWidth + 'px';
+    menu.querySelectorAll('[data-mk]').forEach(b => b.onclick = () => { close(); run(b.dataset.mk); });
+    document.addEventListener('mousedown', away, true); document.addEventListener('keydown', key, true);
+  };
+}
+
 /* Saves HTML as a Word-openable .doc file */
 function downloadWord(name, bodyHTML, css = '') {
   const blob = new Blob([`<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word"><head><meta charset="utf-8"><title>${esc(name)}</title><style>@page{size:A4;margin:20mm}body{font-family:Calibri,Arial;font-size:11pt}table{border-collapse:collapse;width:100%}th,td{border:1px solid #bbb;padding:4pt;text-align:left;vertical-align:top}${css}</style></head><body>${bodyHTML}</body></html>`], { type: 'application/msword' });
