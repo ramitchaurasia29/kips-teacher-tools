@@ -8,7 +8,7 @@ function renderSidebar(r) {
 
 function route() {
   const r = location.hash.replace('#', '') || '/tools', v = $('#view');
-  v.classList.remove('bg-white', 'view-ag', 'view-asg', 'view-dlp', 'view-clp', 'view-ad', 'view-asg2', 'view-qb2', 'view-cs2', 'view-ws2', 'view-hw', 'view-pt', 'is-editing'); renderSidebar(r); document.onclick = null; window.scrollObs?.disconnect();
+  v.classList.remove('bg-white', 'view-ag', 'view-asg', 'view-dlp', 'view-clp', 'view-ad', 'view-ad2','view-vsb2', 'view-lp2', 'view-asg2', 'view-qb2', 'view-cs2', 'view-ws2', 'view-hw', 'view-pt', 'is-editing'); renderSidebar(r); document.onclick = null; window.scrollObs?.disconnect();
   if (r === '/tools') { v.innerHTML = hubView(); bindHub(); }
   else {
     let handled = false;

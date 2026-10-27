@@ -10,8 +10,8 @@
 .pt-prow.three{display:grid;grid-template-columns:1.1fr 1.1fr 1fr}.pt-prow.three span:nth-child(3){justify-self:end}
 
 /* section title: small, uppercase, red-pink */
-.pt-sec{margin-top:34px}
-.pt-stitle{margin:0 0 22px;font:800 11px/1.3 var(--font);letter-spacing:.14em;text-transform:uppercase;color:#F2677B}
+.pt-sec{margin-top:64px}.pt-sec:first-of-type{margin-top:48px}
+.pt-stitle{margin:0 0 22px;font:800 16px/1.3 var(--font);letter-spacing:.1em;text-transform:uppercase;color:#F2677B}
 
 /* question card: header (badge, meta, marks pill), hairline, body */
 .pt-q{margin:0 0 30px;border:1px solid #E5E7EB;border-radius:26px;background:#fff;overflow:hidden}
@@ -23,7 +23,7 @@
 .pt-meta i{width:4px;height:4px;border-radius:50%;background:#D4D6DD}
 .pt-meta .pt-d{font-weight:600}
 .pt-d.easy{color:#16A34A}.pt-d.medium{color:#F59E0B}.pt-d.hard{color:#EF4444}
-.pt-m{order:3;margin-left:auto;padding:6px 14px;border-radius:999px;background:#EEEEEF;font:700 9.5px var(--font);letter-spacing:.1em;color:#8E91A0}
+.pt-m{order:3;margin-left:auto;padding:6px 0;background:none;font:700 9.5px var(--font);letter-spacing:.1em;color:#8E91A0}
 .pt-qb{padding:26px 24px 22px}
 .pt-qt{margin:0;font:600 15.5px/1.6 var(--font);color:#111;max-width:760px}
 
@@ -31,12 +31,12 @@
 .pt-lines{margin-top:18px}
 .pt-line{height:34px;border-bottom:1px dashed #CFD2D9}
 
-/* MCQ: 2 x 2 option grid */
-.pt-opts{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px}
-.pt-opt{display:flex;align-items:center;gap:10px;padding:16px 18px;border:1px solid #E5E7EB;border-radius:16px;background:#FAFAFA;font:400 13.5px/1.4 var(--font);color:#3A3E4D}
-.pt-opt b{flex:none;font:700 14px var(--font);color:#9A9DAA}
-.pt-opt.right{border-color:#1E6B5C;background:#F4F9F7;color:#1E6B5C;font-weight:600}
-.pt-opt.right b{color:#1E6B5C}
+/* MCQ: lettered bubble + option text, two columns, no boxes */
+.pt-opts{display:grid;grid-template-columns:1fr 1fr;gap:16px 24px;margin-top:20px;max-width:600px}
+.pt-opt{display:flex;align-items:center;gap:12px;font:400 15px/1.4 var(--font);color:#5b6070}
+.pt-opt b{flex:none;display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:#EEEFF2;color:#1b1e2b;font:600 11px var(--font)}
+.pt-opt.right{color:#1E6B5C;font-weight:600}
+.pt-opt.right b{background:#1E6B5C;color:#fff}
 
 /* Teacher answers */
 .pt-ans{margin:16px 0 2px;max-width:760px;padding:10px 14px;border-left:3px solid #1E6B5C;border-radius:0 10px 10px 0;background:#F4F9F7;font:400 14px/1.55 var(--font);color:#1b1e2b}
@@ -75,8 +75,25 @@
 #view.view-pt .ed-link:hover{color:#1773DB;text-decoration:underline}
 #view.view-pt .ed-link:focus-visible{outline:2px solid #268EFF;outline-offset:2px;border-radius:4px}
 
-/* Student view only: the test is shown as an A4 paper sheet (Teacher view stays full-width cards) */
-.pt-sheet{max-width:210mm;margin:0 auto;background:#fff;border:1px solid var(--line-2);box-shadow:0 1px 3px rgba(29,33,64,.08);padding:16mm 18mm 20mm}
-.pt-sheet .pt-q{margin-bottom:22px}
-@media (max-width:760px){.pt-sheet{padding:8mm 6mm}}
-@media print{.pt-sheet{border:0;box-shadow:none;padding:0;max-width:none}}
+/* Student view only: flat paper layout, no outlines (Teacher view keeps the full-width cards) */
+.pt-sheet{max-width:210mm;margin:0 auto;background:#fff;padding:16mm 18mm 20mm}
+.pt-sheet .pt-stitle{margin:0 0 36px;padding-bottom:16px;border-bottom:1px solid #E8E9EE}
+.pt-sheet .pt-q{display:grid;grid-template-columns:56px minmax(0,1fr) auto;column-gap:8px;align-items:start;margin:0;padding:0 0 34px;border:0;border-radius:0;overflow:visible}
+.pt-sheet .pt-qh{display:contents}
+.pt-sheet .pt-qn{grid-column:1;grid-row:1;width:auto;height:auto;border-radius:0;background:none;place-items:start;font:500 24px/1.2 var(--font);color:#E5384F}
+.pt-sheet .pt-meta{display:none}
+.pt-sheet .pt-q{position:relative}
+.pt-sheet .pt-m{position:absolute;top:2px;right:0;margin:0}
+.pt-sheet .pt-qb{grid-column:2 / 4;grid-row:1;padding:0}
+.pt-sheet .pt-qt{padding-right:90px;max-width:none}
+.pt-sheet .pt-lines{margin-top:22px}
+.pt-sheet .pt-line{height:38px}
+.pt-sheet .pt-pen{position:absolute;top:18px;right:-40px}
+@media (max-width:760px){.pt-sheet{padding:8mm 6mm}.pt-sheet .pt-q{grid-template-columns:40px minmax(0,1fr) auto}}
+@media print{.pt-sheet{padding:0;max-width:none}.pt-sheet .pt-pen{display:none}}
+
+/* Teacher view header: chapters and topics as chips (same as the Assessment generator) */
+.pt-tin{display:flex;flex-direction:column;gap:18px;margin-top:6px}
+.pt-tl{margin-bottom:8px;font:700 11px var(--font);letter-spacing:.08em;text-transform:uppercase;color:#6B7280}
+.pt-tc{display:flex;flex-wrap:wrap;gap:8px}
+.pt-chip{padding:5px 14px;border-radius:999px;background:#F1F1F6;font:500 13px var(--font);color:#1F2937}

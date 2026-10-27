@@ -31,7 +31,7 @@ function cs2Q(q, i, t, ex) {
 function cs2PaperHTML(D, t, ex) {
   const n = D.questions.length;
   const sheet = `<div class="cs2-sheet"><div class="r1"><span>Name of the student: <i class="cs2-ul w1"></i></span><span>Roll No. <i class="cs2-ul w2"></i></span></div>
-    <div class="r2"><span>Class: ${esc(D.grade)}</span><span>Section: <i class="cs2-ul w3"></i></span><span>Time: ${cs2ed('time', D.time)} min</span></div>
+    <div class="r2"><span>Class: ${esc(D.grade)}</span><span>Section: <i class="cs2-ul w3"></i></span></div>
     <div class="r3"><span>Subject: ${esc(D.subject)}</span><span>Number of Questions: ${n}</span><span>Marks: ${D.total_marks}</span></div></div>`;
   /* Teacher view: what this case study was built from, as chip groups (replaces the student details block) */
   const grp = (label, vals) => vals.length ? `<div class="cs2-sg"><div class="cs2-sl">${label}</div><div class="cs2-chips">${vals.map(v => `<span class="cs2-sc">${esc(v)}</span>`).join('')}</div></div>` : '';
@@ -39,7 +39,7 @@ function cs2PaperHTML(D, t, ex) {
   const head = `<div class="cs2-hd"><h1 class="cs2-qh">Case Study</h1>${t ? summary : sheet}
 
     <h2 class="cs2-title">${cs2ed('title', D.title)}</h2>
-    <p class="cs2-meta">${n} question${n === 1 ? '' : 's'} · Skills: ${D.skills.map((s, i) => cs2ed(`skills.${i}`, s)).join(', ')}</p></div>`;
+    ${t ? `<p class="cs2-meta">${n} question${n === 1 ? '' : 's'} · Skills: ${D.skills.map((s, i) => cs2ed(`skills.${i}`, s)).join(', ')}</p>` : ''}</div>`;
   const secA = `<section class="cs2-sec cs2-a">${cs2Sec('A', 'Scenario')}<div class="cs2-scn">${D.scenario.map((s, i) => `<p>${cs2ed(`scenario.${i}`, s, true)}</p>`).join('')}</div>
     <div class="cs2-ins"><span class="cs2-il">Instructions</span><p>${cs2ed('instruction', D.instruction, true)}</p></div></section>`;
   const chips = t && !ex ? `<div class="cs2-qchips no-print">${D.questions.map(q => `<button type="button" class="cs2-qc" data-go="${q.number}" aria-label="Go to question ${q.number}">${q.number}</button>`).join('')}</div>` : '';

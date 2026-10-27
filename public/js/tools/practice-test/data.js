@@ -27,7 +27,7 @@ function ptBuild(form) {
   });
 
   const total = sections.reduce((n, s) => n + s.items.length * s.marks, 0);
-  return { id: 'pt' + paper.metadata.seed, title: 'Practice Test', meta: { class: String(form.grade), subject: form.subject, date: '', marks: String(total), time: '' }, sections, chapters: paper.chapters.map(c => c.title) };
+  return { id: 'pt' + paper.metadata.seed, title: 'Practice Test', meta: { class: String(form.grade), subject: form.subject, date: '', marks: String(total), time: '' }, sections, chapters: paper.chapters.map(c => c.title), topics: paper.chapters.flatMap(c => c.topics.map(t => t.title)) };
 }
 
 const ptGet = (o, path) => { const ks = path.split('.'), last = ks.pop(), host = ks.reduce((a, k) => a?.[k], o); return PT_VIRTUAL[last] ? PT_VIRTUAL[last].get(host) : host?.[last]; };

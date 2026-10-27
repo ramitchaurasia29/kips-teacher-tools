@@ -21,7 +21,7 @@ function ptItemHTML(D, si, i, teacher, ex) {
   let body;
   if (s.type === 'mcq') {
     body = `${text}<div class="pt-opts">${it.options.map((o, k) => { const right = teacher && it.ans === k;
-      return `<span class="pt-opt${right ? ' right' : ''}"><b>${'ABCD'[k]}.</b>${ptEd(g, `${P}.options.${k}`, o)}${right ? ' ✓' : ''}</span>`; }).join('')}</div>`
+      return `<span class="pt-opt${right ? ' right' : ''}"><b>${'ABCD'[k]}</b>${ptEd(g, `${P}.options.${k}`, o)}${right ? ' ✓' : ''}</span>`; }).join('')}</div>`
       + (teacher ? `<div class="pt-ans"><span class="pt-al">Answer:</span> ${ptEd(g, `${P}.ansL`, 'ABCD'[it.ans])} <span class="pt-ax">${esc(it.options[it.ans] ?? '')}</span></div>` : '');
   } else body = text + (teacher ? ptAns(g, `${P}.ans`, it.ans) : ptLinesBlock(`${P}.lines`, it.lines, ex));
   return `<div class="pt-q pt-blk" data-gp="${g}"><div class="pt-qh">${meta}${ptPen(g, ex)}</div><div class="pt-qb">${body}</div></div>`;
@@ -31,15 +31,19 @@ function ptSectionHTML(D, si, teacher, ex) {
   return `<section class="pt-sec"><h2 class="pt-stitle">Section ${s.letter} — ${esc(s.label)} (${s.marks} mark${s.marks === 1 ? '' : 's'} each)</h2>${s.items.map((_, i) => ptItemHTML(D, si, i, teacher, ex)).join('')}</section>`;
 }
 /* the page's top block: Practice Test heading, then the student details */
-function ptHeadHTML(D, ex) {
+function ptHeadHTML(D, ex, teacher) {
   const m = D.meta;
+  if (teacher) { // Teacher view: no student details - the chapters and topics the test was built from, as chips
+    const group = (label, items) => items?.length ? `<div class="pt-tg"><div class="pt-tl">${label}</div><div class="pt-tc">${items.map(i => `<span class="pt-chip">${esc(i)}</span>`).join('')}</div></div>` : '';
+    return `<header class="pt-ph"><h1 class="pt-ptitle">${esc(D.title)}</h1><div class="pt-tin">${group('Chapters', D.chapters)}${group('Topics', D.topics)}</div></header>`;
+  }
   return `<header class="pt-ph pt-blk" data-gp="hd"><h1 class="pt-ptitle">${ptEd('hd', 'title', D.title)}</h1>
     <div class="pt-prow"><span>Name of the student: ____________________</span><span>Roll No. ________</span></div>
     <div class="pt-prow three"><span>Class: ${ptEd('hd', 'meta.class', m.class)}</span><span>Section: ______</span><span>Date: ${m.date ? ptEd('hd', 'meta.date', m.date) : '__________'}</span></div>
     <div class="pt-prow three"><span>Subject: ${ptEd('hd', 'meta.subject', m.subject)}</span><span>Time: ${m.time ? ptEd('hd', 'meta.time', m.time) : '__________'}</span><span>Marks: ${ptEd('hd', 'meta.marks', m.marks)}</span></div>${ptPen('hd', ex)}</header>`;
 }
 /* ex = export copy (Word / print): the same test without edit tools */
-const ptPageHTML = (D, teacher, ex) => `<article class="pt-paper${teacher ? "" : " pt-sheet"}">${ptHeadHTML(D, ex)}${D.sections.map((_, si) => ptSectionHTML(D, si, teacher, ex)).join('')}</article>`;
+const ptPageHTML = (D, teacher, ex) => `<article class="pt-paper pt-sheet">${ptHeadHTML(D, ex, teacher)}${D.sections.map((_, si) => ptSectionHTML(D, si, teacher, ex)).join('')}</article>`;
 
 function ptOutputView() {
   const D = ptDoc, t = ptView === 'teacher';

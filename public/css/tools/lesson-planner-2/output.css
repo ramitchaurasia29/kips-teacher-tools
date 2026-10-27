@@ -1,0 +1,134 @@
+/* Lesson Planner 2.0 - OUTPUT (single-column document with tabs, edit = content only) */
+#view.view-lp2 .toolbar-in{grid-template-columns:40px minmax(150px,1fr) auto}
+#view.view-lp2 .tb-title b{font-size:15px;font-weight:600}
+
+#view.view-lp2 .lp2-out{max-width:954px;margin:0 auto;padding:58px 28px 80px;font-family:var(--font);color:#171717;box-sizing:content-box}
+#view.view-lp2.is-editing .lp2-out{padding-top:74px}   /* room for the floating edit toolbar so it never covers the title */
+#view.view-lp2 .lp2-all{display:none}
+
+/* hero */
+#view.view-lp2 .lp2-hero h1{margin:0;max-width:640px;font:600 44px/49px var(--font);letter-spacing:-.025em;color:#AE1F3E}
+#view.view-lp2 .lp2-meta{margin:14px 0 0;font-size:15px;line-height:22px;color:#666}
+#view.view-lp2 .lp2-by{margin:30px 0 8px;font-size:15px;font-weight:600;color:#444}
+#view.view-lp2 .lp2-dots{list-style:none;margin:0;padding:0}
+#view.view-lp2 .lp2-dots li{position:relative;padding-left:16px}
+#view.view-lp2 .lp2-dots li::before{content:"";position:absolute;left:1px;top:.62em;width:5px;height:5px;border-radius:50%;background:#EE4560}
+#view.view-lp2 .lp2-obj{max-width:600px}
+#view.view-lp2 .lp2-obj li{font-size:15px;line-height:24px;margin-bottom:8px}
+
+/* stage bar */
+#view.view-lp2 .lp2-bar{display:flex;gap:2px;margin-top:34px;height:12px}
+#view.view-lp2 .lp2-seg{display:block;min-width:0;cursor:default;transition:background .12s}
+#view.view-lp2 .lp2-seg:first-child{border-radius:999px 0 0 999px}
+#view.view-lp2 .lp2-seg:last-child{border-radius:0 999px 999px 0}
+#view.view-lp2 .lp2-seg.s0{background:#E8384F}
+#view.view-lp2 .lp2-seg.s1{background:#F27789}
+#view.view-lp2 .lp2-seg.s2{background:#F5A0AD}
+#view.view-lp2 .lp2-seg.s3{background:#F8BAC3}
+#view.view-lp2 .lp2-seg.s4{background:#FBD0D6}
+#view.view-lp2 .lp2-seg.s5{background:#E8384F}
+#view.view-lp2 .lp2-seg:hover{background:#E8384F}
+#view.view-lp2 .lp2-cap{margin:12px 0 0;font-size:13px;color:#666}
+.lp2-tip{position:fixed;z-index:120;display:none;padding:8px 12px;background:#fff;border:1px solid #E9EAF1;border-radius:8px;box-shadow:0 2px 10px rgba(29,33,64,.08);color:#1D2140;font:500 13px/1 var(--font);white-space:nowrap;pointer-events:none}
+.lp2-tip.on{display:block}
+
+/* tabs */
+#view.view-lp2 .lp2-tabs{display:flex;gap:4px;margin-top:38px;border-bottom:1px solid #E5E5E5}
+#view.view-lp2 .lp2-tab{padding:0 14px;height:48px;margin-bottom:-1px;border:0;border-bottom:2px solid transparent;background:none;font:500 15px var(--font);color:#555;cursor:pointer}
+#view.view-lp2 .lp2-tab:hover{color:#171717}
+#view.view-lp2 .lp2-tab.on{color:#171717;border-bottom-color:#E8384F}
+#view.view-lp2 .lp2-pane{padding-top:36px}
+
+/* shared type */
+#view.view-lp2 .lp2-h2{margin:0;padding-bottom:18px;border-bottom:1px solid #E8E8E8;font:600 24px/30px var(--font);letter-spacing:-.01em;color:#171717}
+#view.view-lp2 .lp2-gap{margin-top:56px}
+#view.view-lp2 .lp2-desc{margin:0;max-width:600px;font-size:18px;line-height:29px}
+#view.view-lp2 .lp2-pad{padding-top:18px}
+#view.view-lp2 .lp2-res{margin:12px 0 0;font-size:13px;line-height:20px;color:#666}
+#view.view-lp2 .lp2-res b{font-weight:600}
+
+/* lesson flow */
+#view.view-lp2 .lp2-flow{margin-top:-36px}
+#view.view-lp2 .lp2-stage{display:grid;grid-template-columns:162px minmax(0,1fr);padding:28px 0;border-top:1px solid #E8E8E8}
+#view.view-lp2 .lp2-stage:last-child{border-bottom:1px solid #E8E8E8}
+#view.view-lp2 .lp2-time{padding-top:2px;font-size:13px;color:#666}
+#view.view-lp2 .lp2-time b{font-size:17px;font-weight:600;color:#D9344F}
+#view.view-lp2 .lp2-sbody{max-width:545px}
+#view.view-lp2 .lp2-sbody h3{margin:0;font:600 19px/28px var(--font);color:#171717}
+#view.view-lp2 .lp2-purpose{margin:4px 0 0;font-size:15px;line-height:26px;color:#666}
+#view.view-lp2 .lp2-lab{margin-top:18px;font-size:13px;font-weight:600;color:#555}
+#view.view-lp2 .lp2-teach{margin:4px 0 0;font-size:18px;line-height:29px;color:#171717}
+
+/* teaching notes */
+#view.view-lp2 .lp2-concept{padding:30px 0;border-bottom:1px solid #E8E8E8}
+#view.view-lp2 .lp2-concept:last-child{border-bottom:0}
+#view.view-lp2 .lp2-concept h3{margin:0 0 10px;font:600 20px/28px var(--font)}
+#view.view-lp2 .lp2-concept .lp2-dots{margin:14px 0 18px}
+#view.view-lp2 .lp2-concept .lp2-dots li{font-size:15px;line-height:24px;margin-bottom:6px}
+#view.view-lp2 .lp2-kv{display:grid;grid-template-columns:104px minmax(0,1fr);padding:5px 0;font-size:15px;line-height:24px}
+#view.view-lp2 .lp2-k{color:#666}
+#view.view-lp2 .lp2-v{color:#171717}
+#view.view-lp2 .lp2-kv .lp2-dots li{margin-bottom:6px}
+#view.view-lp2 .lp2-kvs{padding-top:12px}
+
+/* questions + activities + assess lists */
+#view.view-lp2 .lp2-h2n{padding-bottom:16px;border-bottom:0}
+#view.view-lp2 .lp2-pills{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:12px}
+#view.view-lp2 .lp2-pill{padding:7px 14px;border:0;border-radius:999px;background:#EEE;font:500 14px var(--font);color:#333;cursor:pointer}
+#view.view-lp2 .lp2-pill i{font-style:normal;font-size:13px;color:#777;margin-left:2px}
+#view.view-lp2 .lp2-pill:hover{background:#E4E4E4}
+#view.view-lp2 .lp2-pill.on{background:#EE4560;color:#fff}
+#view.view-lp2 .lp2-pill.on i{color:#FFE0E5}
+#view.view-lp2 .lp2-ql{list-style:none;margin:0;padding:0;border-top:1px solid #E8E8E8}
+#view.view-lp2 .lp2-ql li{display:grid;grid-template-columns:54px minmax(0,1fr);align-items:baseline;padding:19px 0;border-bottom:1px solid #E8E8E8;font-size:18px;line-height:29px}
+#view.view-lp2 .lp2-n{font-size:18px;font-weight:500;color:#D9344F}
+#view.view-lp2 .lp2-qt{max-width:600px}
+#view.view-lp2 .lp2-act{padding:24px 0 22px;border-top:1px solid #E8E8E8}
+#view.view-lp2 .lp2-act:first-of-type{margin-top:0}
+#view.view-lp2 .lp2-ah{display:flex;justify-content:space-between;align-items:baseline;gap:20px}
+#view.view-lp2 .lp2-ah h3{margin:0;font:600 19px/28px var(--font)}
+#view.view-lp2 .lp2-am{flex:none;font-size:13px;color:#666}
+#view.view-lp2 .lp2-adesc{margin:6px 0 0;max-width:600px;font-size:18px;line-height:29px}
+#view.view-lp2 .lp2-act:last-child{border-bottom:1px solid #E8E8E8}
+
+/* edit mode: text values only */
+#view.view-lp2 .ed[contenteditable=true]{display:block;box-sizing:border-box;padding:2px 8px;margin:0 -8px;border:1px solid #D5E8FF;border-radius:8px;background:#F2F8FF;color:#171717;outline:0;cursor:text;caret-color:#268EFF}
+#view.view-lp2 .ed[contenteditable=true]:focus{background:#EAF5FF;border-color:#268EFF;box-shadow:inset 0 0 0 1px #268EFF}
+#view.view-lp2 .lp2-meta .ed[contenteditable=true],#view.view-lp2 .lp2-res .ed[contenteditable=true]{display:inline-block;margin:0 -2px;padding:0 4px}
+#view.view-lp2 .lp2-dots li .ed[contenteditable=true]{margin-left:0}
+
+@media (max-width:760px){
+  #view.view-lp2 .lp2-out{padding:32px 16px 60px}
+  #view.view-lp2 .lp2-hero h1{font-size:30px;line-height:35px}
+  #view.view-lp2 .lp2-tabs{overflow-x:auto}
+  #view.view-lp2 .lp2-tab{white-space:nowrap}
+  #view.view-lp2 .lp2-stage{grid-template-columns:1fr;gap:6px}
+  #view.view-lp2 .lp2-kv{grid-template-columns:1fr}
+  #view.view-lp2 .lp2-ah{flex-direction:column;gap:2px}
+}
+
+@media print{
+  @page{size:A4;margin:14mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  .sidebar,.topbar,.toolbar,.toast,.no-print,.lp2-tip{display:none!important}
+  .app{display:block;height:auto;overflow:visible}.content{overflow:visible}body{background:#fff}
+  #view.view-lp2 .lp2-out{display:none}
+  #view.view-lp2 .lp2-all{display:block}
+  #view.view-lp2 .lp2-doc h1{margin:0;font:600 26px/31px var(--font);color:#AE1F3E}
+  #view.view-lp2 .lp2-doc .lp2-obj li,#view.view-lp2 .lp2-doc .lp2-concept .lp2-dots li{font-size:12px;line-height:18px}
+  #view.view-lp2 .lp2-doc .lp2-tabh{margin:26px 0 12px;padding:0 0 6px;border-bottom:2px solid #E8384F;font:600 18px var(--font);color:#E8384F}
+  #view.view-lp2 .lp2-doc .lp2-ex{break-before:auto}
+  #view.view-lp2 .lp2-doc .lp2-sub{margin:16px 0 4px;font:600 14px var(--font)}
+  #view.view-lp2 .lp2-doc .lp2-h2{font-size:16px;line-height:22px;padding-bottom:8px}
+  #view.view-lp2 .lp2-doc .lp2-gap{margin-top:24px}
+  #view.view-lp2 .lp2-doc .lp2-flow{margin-top:0}
+  #view.view-lp2 .lp2-doc .lp2-stage{grid-template-columns:90px minmax(0,1fr);padding:14px 0;break-inside:avoid}
+  #view.view-lp2 .lp2-doc .lp2-sbody{max-width:none}
+  #view.view-lp2 .lp2-doc .lp2-sbody h3,#view.view-lp2 .lp2-doc .lp2-ah h3{font-size:14px;line-height:20px}
+  #view.view-lp2 .lp2-doc .lp2-teach,#view.view-lp2 .lp2-doc .lp2-desc,#view.view-lp2 .lp2-doc .lp2-adesc,#view.view-lp2 .lp2-doc .lp2-ql li,#view.view-lp2 .lp2-doc .lp2-n{font-size:12.5px;line-height:19px}
+  #view.view-lp2 .lp2-doc .lp2-purpose,#view.view-lp2 .lp2-doc .lp2-kv{font-size:12px;line-height:18px}
+  #view.view-lp2 .lp2-doc .lp2-ql li{padding:8px 0;break-inside:avoid}
+  #view.view-lp2 .lp2-doc .lp2-concept{padding:16px 0;break-inside:avoid}
+  #view.view-lp2 .lp2-doc .lp2-concept h3{font-size:15px}
+  #view.view-lp2 .lp2-doc .lp2-act{padding:12px 0;break-inside:avoid}
+}
